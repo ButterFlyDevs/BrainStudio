@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">BrainStudio</string>
 
+    <string-array name="colors">
+        <item>#004B4B</item>
+        <item>#DE9C59</item>
+        <item>#ffffff</item>
+    </string-array>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 </resources>
