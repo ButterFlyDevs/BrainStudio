@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Niveles"
+            android:label="@string/title_activity_niveles" >
+        </activity>
+        <activity
+            android:name=".Ranking"
+            android:label="@string/title_activity_ranking" >
+        </activity>
     </application>
 
 </manifest>

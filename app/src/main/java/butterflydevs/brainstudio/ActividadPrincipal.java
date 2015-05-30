@@ -1,15 +1,20 @@
 package butterflydevs.brainstudio;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -30,10 +35,26 @@ public class ActividadPrincipal extends Activity {
     private TextView customFont, customFont2;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
+
+        this.runFragment();
+        /*
+        synchronized(this) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+
+
+
         Animation loopParpadeante = AnimationUtils.loadAnimation(this, R.anim.animacionbotonplay);
 
         colors = getResources().getStringArray(R.array.colors);
@@ -48,9 +69,9 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                       // Intent intent = new Intent(ActividadPrincipal.this, ActividadNiveles.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
                         //Iniciamos la nueva actividad
-                        //startActivity(intent);
+                        startActivity(intent);
                     }
                 }
         );
@@ -122,6 +143,31 @@ public class ActividadPrincipal extends Activity {
 
     }
 
+    private void runFragment() {
+
+
+        //Declaramos una nueva hebra
+        new Thread() {
+            //Le decimos lo que queremos que haga:
+            public void run() {
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                MyDialogFragment frag = new MyDialogFragment();
+                frag.show(ft, "txn_tag");
+
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                frag.dismiss();
+
+            }
+        }.start();
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -134,5 +180,36 @@ public class ActividadPrincipal extends Activity {
         handler.removeCallbacks(r);
     }
 
+    /*
+    Para crear un fragment tenemos que extender de una de las subclases de fragment,
+    DialogFragment, ListFragment, PreferenceFragment o WebViewFragment
+     */
+    static public class MyDialogFragment extends DialogFragment {
+
+
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            Dialog d = getDialog();
+            if (d != null) {
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.MATCH_PARENT;
+                d.getWindow().setLayout(width, height);
+            }
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View root = inflater.inflate(R.layout.fragment_entrada, container, false);
+            return root;
+        }
+    }
 
 }
