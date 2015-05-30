@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -14,34 +15,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterflydevs.brainstudio.extras.ConexionServidor;
+import butterflydevs.brainstudio.extras.Jugador;
+
 
 public class Ranking extends ActionBarActivity {
+
+
+    private ConexionServidor miConexion = new ConexionServidor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Con esta orden conseguimos hacer que no se muestre la ActionBar.
+        getSupportActionBar().hide();
+        getSupportActionBar().hide();
+        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_ranking);
 
         //Asociamos el listview de la vista
         final ListView listview = (ListView)findViewById(R.id.listview);
-        //Creamos un vector de elementos
-        String[] values = new String[] { "Android\nMejor Modelo", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
-        //Creamos un arrayList e introducimos los elementos del vector
+
+        //Creamos un ArrayList que es lo que el Adapter necesita
         final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
+
+        /*Descargamos la lista de objetos Jugador desde el servidor y le pasamos la información
+          que queramos de los jugadores.
+        */
+        List <Jugador> lista = miConexion.pedirRankingNueva();
+        for(Jugador jugador: lista){
+            System.out.println(jugador.getNombre());
+            list.add(jugador.getNombre());
         }
 
-        //Ahora le pasamos la lista a nuestro StableArrayAdapter
+
+        //Una vez construida la lista se la pasamos a nuestro StableArrayAdapter
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
 
         //Configuramos el listView de la vista con el adaptador de Arrays que hemos creado.
         listview.setAdapter(adapter);
+
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,18 +67,11 @@ public class Ranking extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+                view.animate().setDuration(2000).alpha(0);
             }
 
         });
+
 
 
     }
