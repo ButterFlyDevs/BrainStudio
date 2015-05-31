@@ -3,7 +3,7 @@
     package="butterflydevs.brainstudio" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +26,10 @@
         <activity
             android:name=".Ranking"
             android:label="@string/title_activity_ranking" >
+        </activity>
+        <activity
+            android:name=".JuegoGrid12"
+            android:label="@string/title_activity_juego_grid12" >
         </activity>
     </application>
 

@@ -69,7 +69,7 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, JuegoGrid12.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
