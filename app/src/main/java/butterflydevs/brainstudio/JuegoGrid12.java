@@ -19,6 +19,8 @@ public class JuegoGrid12 extends ActionBarActivity {
 
     Animation loopParpadeante;
 
+    private boolean matrizJugada[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,9 @@ public class JuegoGrid12 extends ActionBarActivity {
             obtenerMatrizJugada(2);
             System.out.println("---");
         }
+
+        matrizJugada=obtenerMatrizJugada(2);
+
     }
 
     public void asociarElementosVista(){
