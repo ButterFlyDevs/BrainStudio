@@ -43,7 +43,7 @@
             <Button
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@+id/button3" />
+                android:id="@+id/boton3" />
 
             <Button
                 android:layout_width="100dp"

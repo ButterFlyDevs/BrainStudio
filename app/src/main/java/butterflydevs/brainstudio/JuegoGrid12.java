@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,61 +44,79 @@ public class JuegoGrid12 extends ActionBarActivity {
     //Vector de botones
     private Button[] botones = new Button[tamGrid];
 
-    Animation loopParpadeante;
+    Animation animacion1, animacion2;
 
     private boolean matrizJugada[];
+    private boolean matrizRespuesta[] = new boolean[tamGrid];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juego_grid12);
 
-        loopParpadeante= AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
+        //Con esta orden conseguimos hacer que no se muestre la ActionBar.
+        getSupportActionBar().hide();
+        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+
+        animacion1= AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
+        animacion2= AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12_2);
 
 
         //Asociamos los elementos de la vista:
         asociarElementosVista();
-        //Animamos el grid
-       // animarGrid();
+
+        ajustarAspectoBotones();
 
 
-     //   for(contador=0; contador<tamGrid; contador++) {
 
-            botones[0].setOnClickListener(
-
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Acciones del botón:
-
-                            //CAmbiarlo de color
-                            botones[0].setBackgroundColor(Color.RED);
-
-                            //Setearle un color y aplicarle una iluminación rápida.
-                            botones[0].setBackgroundColor(Color.RED);
-
-                        }
-                    }
-            );
-       // }
+        for(contador=0; contador<tamGrid; contador++) {
+            System.out.println("Boton: "+contador);
+            botones[contador].setOnClickListener(new MyListener(contador));
+        }
 
 
     }
 
+
+
     @Override
     protected void onStart(){
         super.onStart();
+
+        //Obtenemos la matriz de la jugada que el jugador debe resolver
+        matrizJugada=obtenerMatrizJugada(2,4,3);
+        for(int i=0; i<tamGrid; i++)
+            if(matrizJugada[i]==true) botones[i].setBackgroundColor(Color.RED);
+            else botones[i].setBackgroundColor(Color.BLACK);
+
         animarGrid();
+
+        //Esperar unos segundos
+
+
+        for(int i=0; i<tamGrid; i++)
+            botones[i].setBackgroundColor(Color.BLACK);
+
+
 
         //Obtenemos la matriz de la jugada que el jugador debe resolver
         matrizJugada=obtenerMatrizJugada(2,4,3);
 
+    }
+
+    public void ajustarAspectoBotones(){
 
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(150,150);
+        params.setMargins(5,5,5,5);
 
-
-
-
+        for(contador=0; contador<tamGrid; contador++){
+            botones[contador].setBackgroundColor(Color.BLACK);
+            botones[contador].setLayoutParams(params);
+        }
     }
 
 
@@ -108,7 +128,6 @@ public class JuegoGrid12 extends ActionBarActivity {
             buttonID="boton"+Integer.toString(i);
             resID = getResources().getIdentifier(buttonID, "id","butterflydevs.brainstudio");
             botones[i]=(Button)findViewById(resID);
-           // botones[i].startAnimation(loopParpadeante);
         }
 
     }
@@ -118,10 +137,14 @@ public class JuegoGrid12 extends ActionBarActivity {
      */
     public void animarGrid(){
         //Cargamos la animación del botón:
-        botones[0].startAnimation(loopParpadeante);
-        botones[11].startAnimation(loopParpadeante);
-        //for(int i=0; i<tamGrid; i++)
-          //  botones[i].startAnimation(loopParpadeante);
+        for(int i=0; i<tamGrid; i++)
+            botones[i].startAnimation(animacion1);
+    }
+
+    public void animarGrid2(){
+        //Cargamos la animación del botón:
+        for(int i=0; i<tamGrid; i++)
+            botones[i].startAnimation(animacion2);
     }
 
     /**
@@ -225,5 +248,36 @@ public class JuegoGrid12 extends ActionBarActivity {
         return matrizBooleanos;
     }
 
+
+
+    class MyListener implements Button.OnClickListener{
+
+        private int numBoton;
+
+        public MyListener(int numBoton){
+            this.numBoton=numBoton;
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Acciones a realizar al pulsar sobre un botón:
+
+                /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
+                true la celda en caso de que estuviera a false y viceversa.
+                 */
+                if(matrizRespuesta[numBoton]==false) {
+                    botones[numBoton].setBackgroundColor(Color.RED);
+                    matrizRespuesta[numBoton] = true;
+                }else {
+                    botones[numBoton].setBackgroundColor(Color.BLACK);
+                    matrizRespuesta[numBoton] = false;
+                }
+
+                //2º Comparamos ambas matrices
+
+
+
+        }
+    }
 
 }

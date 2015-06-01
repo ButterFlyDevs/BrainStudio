@@ -86,7 +86,7 @@ public class Niveles extends ActionBarActivity {
 
         //AÑadimos un boton en tiempo de ejecución: funciona.
         listaNivelesJuegoA.addView(botonPruebaA);
-        //Añadimos un diagrama de estos en timepo de ejecución, no funciona!!
+        //Añadimos un diagrama de estos en timepo de ejecución, ##################### no funciona!!
         listaNivelesJuegoA.addView(meter);
 
 

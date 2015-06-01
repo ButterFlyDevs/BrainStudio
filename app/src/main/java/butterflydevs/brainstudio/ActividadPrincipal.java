@@ -15,10 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+
+import net.frakbot.jumpingbeans.JumpingBeans;
 
 public class ActividadPrincipal extends Activity {
 
@@ -34,7 +37,9 @@ public class ActividadPrincipal extends Activity {
 
     private TextView customFont, customFont2;
 
+    private TextView textPuntos, textPTS, textPOS;
 
+    private JumpingBeans jumpingBeans1;
 
 
     @Override
@@ -42,7 +47,12 @@ public class ActividadPrincipal extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
-        this.runFragment();
+        //Con esta orden conseguimos hacer que no se muestre la ActionBar.
+        //getSupportActionBar().hide();
+        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+       // this.runFragment();
         /*
         synchronized(this) {
             try {
@@ -56,6 +66,19 @@ public class ActividadPrincipal extends Activity {
 
 
         Animation loopParpadeante = AnimationUtils.loadAnimation(this, R.anim.animacionbotonplay);
+
+        textPuntos=(TextView)findViewById(R.id.textPuntos);
+        textPTS=(TextView)findViewById(R.id.textPTS);
+        textPOS=(TextView)findViewById(R.id.textPos);
+
+        jumpingBeans1 = JumpingBeans.with(textPOS)
+                .makeTextJump(0, textPOS.getText().toString().indexOf(' '))
+                .setIsWave(false)
+                .setLoopDuration(2000)
+                .build();
+
+
+
 
         colors = getResources().getStringArray(R.array.colors);
         botonBrain = (Button)findViewById(R.id.button);
@@ -98,7 +121,7 @@ public class ActividadPrincipal extends Activity {
         meter.setTextSize(40.f);
 
         customFont = (TextView)findViewById(R.id.textView);
-        customFont2 = (TextView)findViewById(R.id.textView2);
+        customFont2 = (TextView)findViewById(R.id.textPuntos);
         Typeface font = Typeface.createFromAsset(getAssets(), "gloriahallelujah.ttf");
         customFont.setTypeface(font);
         customFont2.setTypeface(font);
@@ -141,6 +164,8 @@ public class ActividadPrincipal extends Activity {
 
 
 
+
+
     }
 
     private void runFragment() {
@@ -172,6 +197,12 @@ public class ActividadPrincipal extends Activity {
     protected void onResume(){
         super.onResume();
         handler.postDelayed(r, 500);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
     }
 
     @Override

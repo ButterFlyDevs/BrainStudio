@@ -2,8 +2,8 @@
     <alpha
         android:startOffset="500"
         android:duration="500"
-        android:fromAlpha="0"
-        android:toAlpha="1"
+        android:fromAlpha="1"
+        android:toAlpha="0"
         android:fillAfter="false"
     />
 

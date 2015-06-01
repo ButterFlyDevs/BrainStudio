@@ -23,4 +23,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile files('libs/postgresql-9.4-1201.jdbc4.jar')
+    compile 'net.frakbot:jumpingbeans:1.2.0'
 }
