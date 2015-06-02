@@ -31,6 +31,10 @@
             android:name=".JuegoGrid12"
             android:label="@string/title_activity_juego_grid12" >
         </activity>
+        <activity
+            android:name=".prueba"
+            android:label="@string/title_activity_prueba" >
+        </activity>
     </application>
 
 </manifest>
