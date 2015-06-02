@@ -12,6 +12,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -52,6 +53,8 @@ public class JuegoGrid12 extends ActionBarActivity{
 
     //Tamaño del grid
     final private int tamGrid=12;
+    private int numCeldas=2;
+
     int contador =0;
 
     //Vector de botones
@@ -62,6 +65,13 @@ public class JuegoGrid12 extends ActionBarActivity{
     private boolean matrizJugada[];
     private boolean matrizRespuesta[] = new boolean[tamGrid];
 
+    private int numCeldasActivadas=0;
+
+    //Variables de partida
+    private int numJugadasGridConIgualTamaño;
+
+
+    private ProgressBar barraProgreso;
 
 
     @Override
@@ -170,6 +180,7 @@ public class JuegoGrid12 extends ActionBarActivity{
             resID = getResources().getIdentifier(buttonID, "id","butterflydevs.brainstudio");
             botones[i]=(Button)findViewById(resID);
         }
+        barraProgreso=(ProgressBar)findViewById(R.id.progressBar);
 
     }
 
@@ -178,71 +189,26 @@ public class JuegoGrid12 extends ActionBarActivity{
         super.onStart();
 
         //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada=obtenerMatrizJugada(2,4,3);
+        matrizJugada=obtenerMatrizJugada(numCeldas,4,3);
+
         for(int i=0; i<tamGrid; i++)
-            if(matrizJugada[i]==true) botones[i].setBackgroundColor(Color.RED);
-            else botones[i].setBackgroundColor(Color.BLACK);
-
-
-        //Esperar unos segundos
-
-         /*
-        synchronized(this) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        */
-
-
-
-        //for(int i=0; i<tamGrid; i++)
-          //  botones[i].setBackgroundColor(Color.BLACK);
-
-
-        //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada=obtenerMatrizJugada(2,4,3);
-
+            if(matrizJugada[i]==true)
+                botones[i].setBackgroundColor(Color.RED);
+            else
+                botones[i].setBackgroundColor(Color.BLACK);
 
         //Ilumina el grid
         animarGrid();
-
-
-        //animarGrid2();
-
-
-       // for(int i=0; i<tamGrid; i++)
-         // botones[i].setBackgroundColor(Color.TRANSPARENT);
-
     }
 
     /**
      * Función para animar el grid al entrar en la actívity
      */
     public void animarGrid(){
-
-
-
-       // AnimatorSet setAnimacion = new AnimatorSet();
-
-
-
-
-    //Cargamos la animación del botón:
-    for(int i=0; i<tamGrid; i++)
-            botones[i].startAnimation(animacion1);
-    }
-
-    public void animarGrid2(){
         //Cargamos la animación del botón:
         for(int i=0; i<tamGrid; i++)
-            botones[i].startAnimation(animacion2);
+                botones[i].startAnimation(animacion1);
     }
-
-
-
 
     /**
      * Función para comparar la matriz original y la que crea el usuario
@@ -257,6 +223,22 @@ public class JuegoGrid12 extends ActionBarActivity{
         /*
         El único objetivo es compara si dos matrices son iguales, para eso comprobaremos celda a celda.
         */
+
+
+        for(int i=0; i<numFilas*numColumnas; i++) {
+            if(matrizOriginal[i]==false)
+                System.out.print("0");
+            else
+                System.out.print("1");
+        }
+        System.out.println("");
+        for(int i=0; i<numFilas*numColumnas; i++) {
+            if(matrizJugador[i]==false)
+                System.out.print("0");
+            else
+                System.out.print("1");
+        }
+
 
         boolean resultado=true;
         int tamGrid=numFilas*numColumnas;
@@ -291,7 +273,6 @@ public class JuegoGrid12 extends ActionBarActivity{
             matrizBooleanos[i]=false;
 
         //Rellenamos la matriz con el número de celdas positivas que nos indique el parámetro:
-
 
         //Random que hace imposible repetir dos veces un número:
         List<Integer> enteros = new ArrayList<>();
@@ -339,12 +320,40 @@ public class JuegoGrid12 extends ActionBarActivity{
             matrizBooleanos[elemento]=true;
         }
 
-
-
-
         return matrizBooleanos;
     }
 
+    public void siguienteJugada(){
+
+
+        //Ajuste de variables:
+
+
+
+
+
+        //Cuando se acierta se reinicia el proceso.
+
+        for(int i=0; i<tamGrid; i++) {
+            matrizJugada[i] = false;
+            matrizRespuesta[i] = false;
+        }
+        numCeldasActivadas=0;
+
+        //Obtenemos la matriz de la jugada que el jugador debe resolver
+        matrizJugada=obtenerMatrizJugada(numCeldas,4,3);
+
+        //Seteamos el grid visual con la matriz obtenida.
+        for(int i=0; i<tamGrid; i++)
+            if(matrizJugada[i]==true)
+                botones[i].setBackgroundColor(Color.RED);
+            else
+                botones[i].setBackgroundColor(Color.BLACK);
+
+        //Ilumina el grid
+        animarGrid();
+
+    }
 
 
 
@@ -360,20 +369,43 @@ public class JuegoGrid12 extends ActionBarActivity{
         public void onClick(View v) {
             //Acciones a realizar al pulsar sobre un botón:
 
+
+                barraProgreso.setProgress(50);
+
+
                 /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
                 true la celda en caso de que estuviera a false y viceversa.
                  */
                 if(matrizRespuesta[numBoton]==false) {
                     botones[numBoton].setBackgroundColor(Color.RED);
                     matrizRespuesta[numBoton] = true;
+                    numCeldasActivadas++;
                 }else {
                     botones[numBoton].setBackgroundColor(Color.BLACK);
                     matrizRespuesta[numBoton] = false;
+                    numCeldasActivadas--;
                 }
 
                 //2º Comparamos ambas matrices
 
+                    /*
+                    Lo ideal sería llevar el control del número de celdas pulsadas para no realizar comprobaciones
+                    antes de tiempo.
+                     */
+                    System.out.println("Celdas Activadas: "+ numCeldasActivadas);
+                    if(numCeldasActivadas==numCeldas) {
+                        System.out.println("Hay que comparar matrices");
 
+                        if(compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
+                            System.out.println("SUCESS");
+                            siguienteJugada();
+
+                        }else
+                            System.out.println("FAIL");
+
+
+
+                    }
 
         }
     }
