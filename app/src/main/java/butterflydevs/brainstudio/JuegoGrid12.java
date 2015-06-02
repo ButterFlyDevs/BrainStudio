@@ -1,19 +1,18 @@
 package butterflydevs.brainstudio;
 
-import android.animation.AnimatorSet;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -46,7 +44,12 @@ import java.util.TimerTask;
 
 public class JuegoGrid12 extends ActionBarActivity{
 
-    private Timer timer;
+
+
+
+    //Variables para el reloj:
+    private CountDownTimer countDownTimer;
+    private int time;
 
     private NumberProgressBar bnp;
 
@@ -68,10 +71,21 @@ public class JuegoGrid12 extends ActionBarActivity{
     private int numCeldasActivadas=0;
 
     //Variables de partida
-    private int numJugadasGridConIgualTamaño;
+    private int numRepeticionesMaximas;
+    private int numRepeticionActual;
+    private int numMaximoCeldas;
 
 
     private ProgressBar barraProgreso;
+
+
+
+    public JuegoGrid12(){
+        time=100;
+        numRepeticionesMaximas=4;
+        numRepeticionActual=1;
+        numMaximoCeldas=3;
+    }
 
 
     @Override
@@ -99,6 +113,7 @@ public class JuegoGrid12 extends ActionBarActivity{
                 for(int i=0; i<tamGrid; i++)
                     botones[i].setBackgroundColor(Color.TRANSPARENT);
 
+                //Cuando la animacion 1 acaba se encarga de lanzar la animacion 2
                 for(int i=0; i<tamGrid; i++)
                     botones[i].startAnimation(animacion2);
 
@@ -112,12 +127,6 @@ public class JuegoGrid12 extends ActionBarActivity{
 
         });
 
-
-
-
-
-
-
         animacion2= AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12_2);
         animacion2.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -129,6 +138,8 @@ public class JuegoGrid12 extends ActionBarActivity{
             @Override
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
+                //Cuando la segunda animación termina el tiempo comienza a correr.
+                countDownTimer.start();
 
             }
 
@@ -140,24 +151,39 @@ public class JuegoGrid12 extends ActionBarActivity{
 
         });
 
-
         //Asociamos los elementos de la vista:
         asociarElementosVista();
 
         ajustarAspectoBotones();
-
-
 
         for(contador=0; contador<tamGrid; contador++) {
             System.out.println("Boton: "+contador);
             botones[contador].setOnClickListener(new MyListener(contador));
         }
 
+        //Configuracion del temporizador.
+        //Le pasamos al constructor la variable tiempo
+        countDownTimer = new CountDownTimer(time*1000, 1000) {
 
-    }
+            //Lo que hacemos en cada tick del reloj.
+            public void onTick(long millisUntilFinished) {
+                barraProgreso.setProgress((int)millisUntilFinished / 1000);
+                System.out.println("reloj:" + millisUntilFinished / 1000);
+            }
+            //Comportamiento al acabarse el timepo.
+            public void onFinish() {
 
+                barraProgreso.setProgress(0);
 
+            }
+        };
+        //countDownTimer.start();
 
+    } //Fin onCreate
+
+    /**
+     * Ajuste del aspecto del grid de botones
+     */
     public void ajustarAspectoBotones(){
 
 
@@ -170,7 +196,9 @@ public class JuegoGrid12 extends ActionBarActivity{
         }
     }
 
-
+    /**
+     * Hace la asociación de los elementos de la vista con variables de esta clase para poder controlarlos.
+     */
     public void asociarElementosVista(){
         String buttonID;
         int resID;
@@ -181,6 +209,7 @@ public class JuegoGrid12 extends ActionBarActivity{
             botones[i]=(Button)findViewById(resID);
         }
         barraProgreso=(ProgressBar)findViewById(R.id.progressBar);
+
 
     }
 
@@ -326,11 +355,31 @@ public class JuegoGrid12 extends ActionBarActivity{
     public void siguienteJugada(){
 
 
+
+        /*
+        *Dependiendo del estado de nivel se crea una jugada u otra
+        */
+
+        //Si se ha llegado al maximo numero de repeticiones para este numero de celdas se aumenta el numero de celdas.
+
+
+
+        System.out.println("##JUGADA## Celdas: "+numCeldas+"  Repeticiones: "+numRepeticionActual + " de máx "+ numRepeticionesMaximas);
+
+        if(numRepeticionActual==numRepeticionesMaximas) {
+            System.out.println("pasando a 3 celdas");
+            numCeldas++;
+            numRepeticionActual=0;
+            /*
+            Numero de celdas se usara a continuacion apra configurar la matriz de la jugada (la que tiene que recordar el jugador)
+             */
+        }
+
+        if(numCeldas==numMaximoCeldas)
+            salirNivel();
+
+
         //Ajuste de variables:
-
-
-
-
 
         //Cuando se acierta se reinicia el proceso.
 
@@ -353,9 +402,28 @@ public class JuegoGrid12 extends ActionBarActivity{
         //Ilumina el grid
         animarGrid();
 
+
+        //Aumentamos el valor de repeticion actual:
+        numRepeticionActual++;
     }
 
+    public void salirNivel(){
 
+        //Avisar de que se ha acabado el juego y salir al panel de niveles.
+
+        //¿Mostrar un fragment con la puntuación y y el porcentaje completado?
+
+        new AlertDialog.Builder(this)
+                .setTitle("TERMINADO")
+                .setMessage("has llegado al final del nivel")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
     class MyListener implements Button.OnClickListener{
 
@@ -370,7 +438,7 @@ public class JuegoGrid12 extends ActionBarActivity{
             //Acciones a realizar al pulsar sobre un botón:
 
 
-                barraProgreso.setProgress(50);
+
 
 
                 /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
@@ -398,16 +466,23 @@ public class JuegoGrid12 extends ActionBarActivity{
 
                         if(compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
                             System.out.println("SUCESS");
+
+
+
                             siguienteJugada();
+
+
 
                         }else
                             System.out.println("FAIL");
 
-
-
                     }
+
+
+
+        }
 
         }
     }
 
-}
+
