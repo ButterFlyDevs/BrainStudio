@@ -1,6 +1,7 @@
 package butterflydevs.brainstudio;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.CountDownTimer;
@@ -13,12 +14,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.github.premnirmal.textcounter.CounterView;
+import com.github.premnirmal.textcounter.Formatter;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 
@@ -50,8 +57,14 @@ public class JuegoGrid12 extends ActionBarActivity{
     //Variables para el reloj:
     private CountDownTimer countDownTimer;
     private int time;
+    private float timeNow;
+
+    private float puntuacion;
 
     private NumberProgressBar bnp;
+
+    private CounterView counterView;
+
 
 
     //Tamaño del grid
@@ -62,6 +75,8 @@ public class JuegoGrid12 extends ActionBarActivity{
 
     //Vector de botones
     private Button[] botones = new Button[tamGrid];
+    private TextView textPuntos;
+
 
     Animation animacion1, animacion2;
 
@@ -81,10 +96,11 @@ public class JuegoGrid12 extends ActionBarActivity{
 
 
     public JuegoGrid12(){
-        time=100;
+        time=5;
         numRepeticionesMaximas=4;
         numRepeticionActual=1;
-        numMaximoCeldas=3;
+        numMaximoCeldas=6;
+        puntuacion=0;
     }
 
 
@@ -169,6 +185,8 @@ public class JuegoGrid12 extends ActionBarActivity{
             public void onTick(long millisUntilFinished) {
                 barraProgreso.setProgress((int)millisUntilFinished / 1000);
                 System.out.println("reloj:" + millisUntilFinished / 1000);
+                timeNow= millisUntilFinished;
+
             }
             //Comportamiento al acabarse el timepo.
             public void onFinish() {
@@ -194,6 +212,8 @@ public class JuegoGrid12 extends ActionBarActivity{
             botones[contador].setBackgroundColor(Color.BLACK);
             botones[contador].setLayoutParams(params);
         }
+
+//        textPuntos.setText("0");
     }
 
     /**
@@ -203,12 +223,33 @@ public class JuegoGrid12 extends ActionBarActivity{
         String buttonID;
         int resID;
 
+        //Asociación de los botones de forma dinámica
         for(int i=0; i<tamGrid; i++) {
             buttonID="boton"+Integer.toString(i);
             resID = getResources().getIdentifier(buttonID, "id","butterflydevs.brainstudio");
             botones[i]=(Button)findViewById(resID);
         }
+
         barraProgreso=(ProgressBar)findViewById(R.id.progressBar);
+       // textPuntos=(TextView)findViewById(R.id.textPuntos);
+
+        counterView=(CounterView)findViewById(R.id.counter);
+
+        counterView.setAutoFormat(false);
+        counterView.setFormatter(new Formatter() {
+            @Override
+            public String format(String prefix, String suffix, float value) {
+                return prefix + NumberFormat.getNumberInstance(Locale.US).format(value) + suffix;
+            }
+        });
+        counterView.setAutoStart(false);
+        counterView.setStartValue(0);
+        counterView.setEndValue(0);
+        counterView.setIncrement(1f); // the amount the number increments at each time interval
+        counterView.setTimeInterval(2); // the time interval (ms) at which the text changes
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+        counterView.start();
 
 
     }
@@ -375,7 +416,7 @@ public class JuegoGrid12 extends ActionBarActivity{
              */
         }
 
-        if(numCeldas==numMaximoCeldas)
+        if(numCeldas==numMaximoCeldas+1)
             salirNivel();
 
 
@@ -405,6 +446,37 @@ public class JuegoGrid12 extends ActionBarActivity{
 
         //Aumentamos el valor de repeticion actual:
         numRepeticionActual++;
+    }
+
+
+    public void calculaPuntuacion(){
+        float a= (float) 4.5;
+        System.out.println("Tiempo al acabar: " +(float)timeNow/1000);
+
+        //Ajustamos el tiempo a segundos con un decimal:
+        String tiempo = Float.toString((float)timeNow/1000);
+        tiempo = tiempo.substring(0,4);
+
+        timeNow=Float.parseFloat(tiempo);
+
+        counterView.setStartValue(puntuacion);
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+        puntuacion+=timeNow*numCeldas;
+
+        counterView.setEndValue(puntuacion);
+        counterView.start();
+        System.out.println("Puntuacón : "+puntuacion );
+
+
+
+        //Ponemos la puntuación en pantalla
+        //textPuntos.setText(Float.toString(puntuacion));
+
+
+
+        //puntuacion=numCeldas*
+
     }
 
     public void salirNivel(){
@@ -439,8 +511,6 @@ public class JuegoGrid12 extends ActionBarActivity{
 
 
 
-
-
                 /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
                 true la celda en caso de que estuviera a false y viceversa.
                  */
@@ -464,11 +534,13 @@ public class JuegoGrid12 extends ActionBarActivity{
                     if(numCeldasActivadas==numCeldas) {
                         System.out.println("Hay que comparar matrices");
 
+                        //Se ha completado el grid
                         if(compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
                             System.out.println("SUCESS");
 
-
-
+                            //Se calcula la puntuación obtenida
+                            calculaPuntuacion();
+                            //Se pasa a la siguiente jugada
                             siguienteJugada();
 
 

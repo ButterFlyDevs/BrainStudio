@@ -25,5 +25,6 @@ dependencies {
     compile files('libs/postgresql-9.4-1201.jdbc4.jar')
     compile 'net.frakbot:jumpingbeans:1.2.0'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    compile 'com.github.premnirmal:TextCounter:1.1.0'
 
 }
