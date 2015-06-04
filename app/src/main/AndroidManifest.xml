@@ -32,7 +32,7 @@
             android:label="@string/title_activity_juego_grid12" >
         </activity>
         <activity
-            android:name=".prueba"
+            android:name=".JuegoGrid40"
             android:label="@string/title_activity_prueba" >
         </activity>
     </application>

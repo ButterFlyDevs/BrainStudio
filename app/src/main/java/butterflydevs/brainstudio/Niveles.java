@@ -1,96 +1,68 @@
 package butterflydevs.brainstudio;
 
-import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Xml;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-
-import org.xmlpull.v1.XmlPullParser;
+import android.view.KeyEvent;
+import android.view.View;
 
 
 public class Niveles extends ActionBarActivity {
 
 
-    //Filas de juegos dentro de la actividad Juegos
-    LinearLayout listaNivelesJuegoA, listaJuegoB, listaNivelesJuegoC, listaNivelesJuegoD, listaNivelesJuegoE;
-
-
-    //Contadores de progreso de cada juego:
-    private CircularCounter meter, meter2;
-    //Colores usados en los indicadores de progreso
-    private String[] colors;
-    //Variable para el manejo de fuentes de texto
-    private TextView customFont, customFont2;
-
-
-
-    //Variables necesarias para realizar la carga en una hebra independiente
+    private CircularCounter meterA, meterB;
     private Handler handler;
     private Runnable r;
-
+    private String[] colors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_niveles);
 
+        colors = getResources().getStringArray(R.array.colors);
+
+        meterA=(CircularCounter)findViewById(R.id.meter1);
+        meterB=(CircularCounter)findViewById(R.id.meter2);
 
 
-        //Definición de uno de los indicadores:
-        //  meter = (CircularCounter) findViewById(R.id.meter);
-
-
-        XmlPullParser parser=getResources().getXml(R.xml.attrs);
-        AttributeSet attrs = Xml.asAttributeSet(parser);
-          meter = new CircularCounter(this, null);
-        // meter2 = (CircularCounter) findViewById(R.id.meter2);
-
-        /*
-        meter.setFirstWidth(getResources().getDimension(R.dimen.first))
+        meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
                 .setFirstColor(Color.parseColor(colors[0]))
 
                         //.setSecondWidth(getResources().getDimension(R.dimen.second))
                         //.setSecondColor(Color.parseColor(colors[1]))
-
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
                         //.setThirdColor(Color.parseColor(colors[2]))
                 .setBackgroundColor(Color.TRANSPARENT);
-        //.setBackgroundColor(-14606047); */
+        //.setBackgroundColor(-14606047);
 
-        meter.setFirstColor(Color.BLACK);
-        meter.setBackgroundColor(Color.BLACK);
-        meter.setMetricText("");
-        meter.setMetricSize(30.f);
-        meter.setRange(100);
-        meter.setTextColor(Color.GRAY);
-        meter.setTextSize(40.f);
+        meterA.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterA.setRange(100);
+        meterA.setTextColor(Color.GRAY);
+        meterA.setTextSize(40.f);
 
 
+        meterB.setFirstWidth(getResources().getDimension(R.dimen.first))
+                .setFirstColor(Color.parseColor(colors[0]))
 
-        listaNivelesJuegoA=(LinearLayout)findViewById(R.id.faseA);
+                        //.setSecondWidth(getResources().getDimension(R.dimen.second))
+                        //.setSecondColor(Color.parseColor(colors[1]))
+                        //.setThirdWidth(getResources().getDimension(R.dimen.third))
+                        //.setThirdColor(Color.parseColor(colors[2]))
+                .setBackgroundColor(Color.TRANSPARENT);
+        //.setBackgroundColor(-14606047);
 
-        Button botonPruebaA = new Button(this);
-
-        botonPruebaA.setText("yeah, yeah");
-
-        //AÑadimos un boton en tiempo de ejecución: funciona.
-        listaNivelesJuegoA.addView(botonPruebaA);
-        //Añadimos un diagrama de estos en timepo de ejecución, ##################### no funciona!!
-        listaNivelesJuegoA.addView(meter);
-
+        meterB.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterB.setRange(100);
+        meterB.setTextColor(Color.GRAY);
+        meterB.setTextSize(40.f);
 
         handler = new Handler();
+
         r = new Runnable(){
 
             int currV = 0;
@@ -98,30 +70,89 @@ public class Niveles extends ActionBarActivity {
 
             public void run(){
 
-                /*
-                if(currV == 60 && go)
-                    go = false;
-                else if(currV == -60 && !go)
-                    go = true;
-
-                if(go)
-                    currV++;
-                else
-                    currV--;
-                */
                 if(currV<46)
                     currV++;
 
-
-
-                meter.setValues(currV, 0, 0);
+                meterA.setValues(currV, 0, 0);
+                meterB.setValues(currV, 0, 0);
                 //  meter2.setValues(currV, currV*2, currV*3);
 
                 handler.postDelayed(this, 30);
             }
         };
 
+
+        meterA.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Niveles.this, JuegoGrid12.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        meterB.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Niveles.this, JuegoGrid40.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
+
     }
 
+    /**
+     * Sobrecarga para el control de los botones físicos del terminal.
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+
+        //Si pulsamos el botón back nos devuelve a la pantalla principal!.
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+
+            Intent intent = new Intent(Niveles.this, ActividadPrincipal.class);
+            startActivity(intent);
+
+            //Aplicacion de transicion animada entre activities:
+            //overridePendingTransition(R.anim.entrada_abajo2, R.anim.salida_abajo2);
+
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handler.postDelayed(r, 500);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        handler.removeCallbacks(r);
+    }
 
 }

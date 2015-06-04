@@ -8,11 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -92,7 +89,7 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, JuegoGrid12.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, Niveles.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -101,14 +98,13 @@ public class ActividadPrincipal extends Activity {
 
 
         meter = (CircularCounter) findViewById(R.id.meter);
-        // meter2 = (CircularCounter) findViewById(R.id.meter2);
+
 
         meter.setFirstWidth(getResources().getDimension(R.dimen.first))
                 .setFirstColor(Color.parseColor(colors[0]))
 
                         //.setSecondWidth(getResources().getDimension(R.dimen.second))
                         //.setSecondColor(Color.parseColor(colors[1]))
-
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
                         //.setThirdColor(Color.parseColor(colors[2]))
                 .setBackgroundColor(Color.TRANSPARENT);

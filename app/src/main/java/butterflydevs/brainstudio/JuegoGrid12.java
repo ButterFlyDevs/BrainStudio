@@ -1,8 +1,8 @@
 package butterflydevs.brainstudio;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.github.premnirmal.textcounter.CounterView;
 import com.github.premnirmal.textcounter.Formatter;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Timer;
+
+import butterflydevs.brainstudio.extras.matrixHelper;
 
 
 /**
@@ -93,6 +95,9 @@ public class JuegoGrid12 extends ActionBarActivity{
 
     private ProgressBar barraProgreso;
 
+    private Button botonBack;
+    private Button botonHelp;
+
 
 
     public JuegoGrid12(){
@@ -101,6 +106,8 @@ public class JuegoGrid12 extends ActionBarActivity{
         numRepeticionActual=1;
         numMaximoCeldas=6;
         puntuacion=0;
+
+
     }
 
 
@@ -108,6 +115,9 @@ public class JuegoGrid12 extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juego_grid12);
+
+
+
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
@@ -172,10 +182,40 @@ public class JuegoGrid12 extends ActionBarActivity{
 
         ajustarAspectoBotones();
 
+        //Configuramos el comportamiento del grid de botones con un Listener específico.
         for(contador=0; contador<tamGrid; contador++) {
             System.out.println("Boton: "+contador);
             botones[contador].setOnClickListener(new MyListener(contador));
         }
+
+
+
+        botonBack.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(JuegoGrid12.this, Niveles.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        botonHelp.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                       // Intent intent = new Intent(JuegoGrid12.this, Help.class);
+                        //Iniciamos la nueva actividad
+                       // startActivity(intent);
+                    }
+                }
+        );
+
+
 
         //Configuracion del temporizador.
         //Le pasamos al constructor la variable tiempo
@@ -189,9 +229,11 @@ public class JuegoGrid12 extends ActionBarActivity{
 
             }
             //Comportamiento al acabarse el timepo.
-            public void onFinish() {
+            public void onFinish(){
 
                 barraProgreso.setProgress(0);
+                mensajeFin();
+
 
             }
         };
@@ -206,7 +248,7 @@ public class JuegoGrid12 extends ActionBarActivity{
 
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(150,150);
-        params.setMargins(5,5,5,5);
+        params.setMargins(5, 5, 5, 5);
 
         for(contador=0; contador<tamGrid; contador++){
             botones[contador].setBackgroundColor(Color.BLACK);
@@ -232,6 +274,10 @@ public class JuegoGrid12 extends ActionBarActivity{
 
         barraProgreso=(ProgressBar)findViewById(R.id.progressBar);
        // textPuntos=(TextView)findViewById(R.id.textPuntos);
+        botonBack=(Button)findViewById(R.id.botonBack);
+        botonHelp=(Button)findViewById(R.id.botonHelp);
+
+
 
         counterView=(CounterView)findViewById(R.id.counter);
 
@@ -252,6 +298,8 @@ public class JuegoGrid12 extends ActionBarActivity{
         counterView.start();
 
 
+
+
     }
 
     @Override
@@ -259,7 +307,7 @@ public class JuegoGrid12 extends ActionBarActivity{
         super.onStart();
 
         //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada=obtenerMatrizJugada(numCeldas,4,3);
+        matrizJugada=matrixHelper.obtenerMatrizJugada(numCeldas,4,3);
 
         for(int i=0; i<tamGrid; i++)
             if(matrizJugada[i]==true)
@@ -280,118 +328,6 @@ public class JuegoGrid12 extends ActionBarActivity{
                 botones[i].startAnimation(animacion1);
     }
 
-    /**
-     * Función para comparar la matriz original y la que crea el usuario
-     * @param matrizOriginal La matriz de referencia (la correcta)
-     * @param matrizJugador  La matriz que crea el jugador al pulsar los botones
-     * @param numFilas Número de filas de las matrices
-     * @param numColumnas Número de columnas de las matrices
-     * @return true si las matrices son iguales y false si no lo son
-     */
-    public boolean compruebaMatrices(boolean matrizOriginal[], boolean matrizJugador[], int numFilas, int numColumnas){
-
-        /*
-        El único objetivo es compara si dos matrices son iguales, para eso comprobaremos celda a celda.
-        */
-
-
-        for(int i=0; i<numFilas*numColumnas; i++) {
-            if(matrizOriginal[i]==false)
-                System.out.print("0");
-            else
-                System.out.print("1");
-        }
-        System.out.println("");
-        for(int i=0; i<numFilas*numColumnas; i++) {
-            if(matrizJugador[i]==false)
-                System.out.print("0");
-            else
-                System.out.print("1");
-        }
-
-
-        boolean resultado=true;
-        int tamGrid=numFilas*numColumnas;
-
-        //De esta forma si el error está al principio no tiene que recorrer toda la matriz
-        int pos=0;
-        while(resultado==true && pos<tamGrid){
-            if(matrizOriginal[pos]!=matrizJugador[pos]) resultado=false;
-            pos++;
-        }
-
-        return resultado;
-    }
-
-    /**
-     * Esta es la función que se copiará en el código de AndroidStudio
-     * @param numCeldas El número de celdas a con las que jugar.
-     * @param numFilas El número de filas que tiene el grid de la jugada.
-     * @param numColumnas El número de columnas que tiene el grid de la jugada.
-     * @return
-     */
-    public boolean[] obtenerMatrizJugada(int numCeldas, int numFilas, int numColumnas){
-
-        boolean depuracion=false;
-
-        int tamGrid=numFilas*numColumnas;
-        //Creamos el vector que vamos a devolver:
-        boolean [] matrizBooleanos = new boolean[tamGrid];
-
-        //Inicializamos el vector:
-        for(int i=0; i<tamGrid; i++)
-            matrizBooleanos[i]=false;
-
-        //Rellenamos la matriz con el número de celdas positivas que nos indique el parámetro:
-
-        //Random que hace imposible repetir dos veces un número:
-        List<Integer> enteros = new ArrayList<>();
-        for(int i=0; i<tamGrid; i++)
-            enteros.add(i);
-
-        if(depuracion){
-            for(int elemento: enteros)
-                System.out.print(elemento);
-            System.out.println("");
-        }
-
-
-        ArrayList finales = new ArrayList();
-
-        //Sacamos cuantos numeros nos sean necesarios como celdas tengamos que rellenar.
-        int elegido;
-        int numero;
-        int numFinal=tamGrid;
-        Random rnd = new Random();
-        for(int i=0; i<numCeldas; i++) {
-            elegido = (int)(rnd.nextDouble() * numFinal); //Random de números entre el 0 y el numFinal
-            if(depuracion) System.out.println("elegido: "+elegido);
-
-            if(depuracion){
-                System.out.println("Vector de enteros antes");
-                for(int elemento: enteros)
-                    System.out.print(elemento);
-                System.out.println("");
-
-
-                System.out.println("Vector de enteros después");
-                for(int elemento: enteros)
-                    System.out.print(elemento);
-                System.out.println("");
-            }
-
-            finales.add(enteros.get(elegido));
-            enteros.remove(elegido);
-            numFinal--;
-        }
-
-        for(int i=0; i<finales.size(); i++){
-            int elemento = (int)finales.get(i);
-            matrizBooleanos[elemento]=true;
-        }
-
-        return matrizBooleanos;
-    }
 
     public void siguienteJugada(){
 
@@ -431,7 +367,7 @@ public class JuegoGrid12 extends ActionBarActivity{
         numCeldasActivadas=0;
 
         //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada=obtenerMatrizJugada(numCeldas,4,3);
+        matrizJugada=matrixHelper.obtenerMatrizJugada(numCeldas,4,3);
 
         //Seteamos el grid visual con la matriz obtenida.
         for(int i=0; i<tamGrid; i++)
@@ -497,6 +433,25 @@ public class JuegoGrid12 extends ActionBarActivity{
                 .show();
     }
 
+    public void mensajeFin(){
+        new AlertDialog.Builder(this)
+                .setTitle("YOU ARE DEAD")
+                .setMessage("Se te acabó el tiempo!")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+
+                        //Creamos el Intent
+                        Intent intent = new Intent(JuegoGrid12.this, Niveles.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     class MyListener implements Button.OnClickListener{
 
         private int numBoton;
@@ -535,7 +490,7 @@ public class JuegoGrid12 extends ActionBarActivity{
                         System.out.println("Hay que comparar matrices");
 
                         //Se ha completado el grid
-                        if(compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
+                        if(matrixHelper.compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
                             System.out.println("SUCESS");
 
                             //Se calcula la puntuación obtenida
