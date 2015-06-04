@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -13,12 +14,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import butterflydevs.brainstudio.extras.matrixHelper;
+
 
 public class JuegoGrid40 extends ActionBarActivity {
 
     final private int numFilas=8;
     final private int numColumnas=5;
 
+    private int numCeldas=2;
+    private boolean matrizJugada[];
+    private boolean matrizRespuesta[] = new boolean[numFilas*numColumnas];
+    private int numCeldasActivadas=0;
 
     private int tamButtons=90;
 
@@ -90,7 +97,7 @@ public class JuegoGrid40 extends ActionBarActivity {
             @Override
             public void onAnimationStart(Animation animation) {
                 System.out.println("La animación empieza");for(int i=0; i<numFilas*numColumnas; i++)
-                    botones[i].setBackgroundColor(Color.BLACK);
+                    botones[i].setBackgroundColor(Color.DKGRAY);
             }
 
             @Override
@@ -172,7 +179,11 @@ public class JuegoGrid40 extends ActionBarActivity {
             }
 
 
-
+        //Configuramos el comportamiento del grid de botones con un Listener específico.
+        for(int i=0; i<numFilas*numColumnas; i++) {
+            System.out.println("Boton: "+i);
+            botones[i].setOnClickListener(new MyListener(i));
+        }
 
     }
 
@@ -190,6 +201,16 @@ public class JuegoGrid40 extends ActionBarActivity {
     protected void onStart(){
         super.onStart();
 
+
+        //Obtenemos la matriz de la jugada que el jugador debe resolver
+        matrizJugada= matrixHelper.obtenerMatrizJugada(numCeldas, numFilas, numColumnas);
+
+        //Coloreamos la matriz según la matriz de jugada pedida al matrixHelper
+        for(int i=0; i<numFilas*numColumnas; i++)
+            if(matrizJugada[i]==true)
+                botones[i].setBackgroundColor(Color.rgb(154,184,0));
+            else
+                botones[i].setBackgroundColor(Color.DKGRAY);
 
         //Ilumina el grid
         animarGrid();
@@ -216,4 +237,64 @@ public class JuegoGrid40 extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+class MyListener implements Button.OnClickListener{
+
+    private int numBoton;
+
+    public MyListener(int numBoton){
+        this.numBoton=numBoton;
+    }
+
+    @Override
+    public void onClick(View v) {
+        //Acciones a realizar al pulsar sobre un botón:
+
+
+
+                /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
+                true la celda en caso de que estuviera a false y viceversa.
+                 */
+        if(matrizRespuesta[numBoton]==false) {
+            botones[numBoton].setBackgroundColor(Color.rgb(154,184,0));
+            matrizRespuesta[numBoton] = true;
+            numCeldasActivadas++;
+        }else {
+            botones[numBoton].setBackgroundColor(Color.BLACK);
+            matrizRespuesta[numBoton] = false;
+            numCeldasActivadas--;
+        }
+
+        //2º Comparamos ambas matrices
+
+                    /*
+                    Lo ideal sería llevar el control del número de celdas pulsadas para no realizar comprobaciones
+                    antes de tiempo.
+                     */
+        /*
+        System.out.println("Celdas Activadas: "+ numCeldasActivadas);
+        if(numCeldasActivadas==numCeldas) {
+            System.out.println("Hay que comparar matrices");
+
+            //Se ha completado el grid
+            if(matrixHelper.compruebaMatrices(matrizJugada,matrizRespuesta,4,3)) {
+                System.out.println("SUCESS");
+
+                //Se calcula la puntuación obtenida
+                calculaPuntuacion();
+                //Se pasa a la siguiente jugada
+                siguienteJugada();
+
+
+
+            }else
+                System.out.println("FAIL");
+        */
+
+        }
+
+
+
+    }
+
 }
