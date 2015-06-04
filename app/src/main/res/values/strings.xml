@@ -7,6 +7,10 @@
         <item>#ffffff</item>
     </string-array>
 
+    <string-array name="colores">
+
+    </string-array>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_niveles">Niveles</string>

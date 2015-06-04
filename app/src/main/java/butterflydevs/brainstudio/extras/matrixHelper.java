@@ -93,9 +93,8 @@ public class matrixHelper {
     public static boolean compruebaMatrices(boolean matrizOriginal[], boolean matrizJugador[], int numFilas, int numColumnas){
 
         /*
-        El único objetivo es compara si dos matrices son iguales, para eso comprobaremos celda a celda.
+        El único objetivo es comparar si dos matrices son iguales, para eso comprobaremos celda a celda.
         */
-
 
         for(int i=0; i<numFilas*numColumnas; i++) {
             if(matrizOriginal[i]==false)
