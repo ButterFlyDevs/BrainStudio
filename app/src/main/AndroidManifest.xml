@@ -35,6 +35,10 @@
             android:name=".JuegoGrid40"
             android:label="@string/title_activity_prueba" >
         </activity>
+        <activity
+            android:name=".eliminame"
+            android:label="@string/title_activity_eliminame" >
+        </activity>
     </application>
 
 </manifest>

@@ -26,5 +26,6 @@ dependencies {
     compile 'net.frakbot:jumpingbeans:1.2.0'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.github.premnirmal:TextCounter:1.1.0'
+    compile 'com.akexorcist:RoundCornerProgressBar:1.2.0'
 
 }

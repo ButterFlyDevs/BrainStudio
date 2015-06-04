@@ -15,29 +15,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-
-
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.github.premnirmal.textcounter.CounterView;
 import com.github.premnirmal.textcounter.Formatter;
-
 import java.text.NumberFormat;
-import java.util.ArrayList;
-
-import java.util.List;
 import java.util.Locale;
-import java.util.Random;
+
 
 import butterflydevs.brainstudio.extras.matrixHelper;
 
 
 /**
- * ### Explicación de la rutina: ###
+ *  ### Explicaci&oacute;n de la rutina: ###
  *
- * En esta actividad se crean 20 pantallas de juego. Se empieza preguntando por 2 celdas y este número va aumentando
- * hasta 6 ( el grid es de doce y es el punto donde se llega el máximo de dificultad), entonces se recorren 5 niveles.
- * Dentro de cada nivel se pregunta cuatro veces la matriz (con distinta disposición de los elementos).
+ * En esta actividad se crean 20 pantallas de juego. Se empieza preguntando por 2 celdas y este n&uacute;mero va aumentando
+ * hasta 6 ( el grid es de doce y es el punto donde se llega el m&aacute;ximo de dificultad), entonces se recorren 5 niveles.
+ * Dentro de cada nivel se pregunta cuatro veces la matriz (con distinta disposici&oacute;n de los elementos).
  *
  * Cada vez que el jugador pusa cualquier boton:
  *      1. Este se ilumina
@@ -47,10 +40,10 @@ import butterflydevs.brainstudio.extras.matrixHelper;
  *      tantos botones como se espera para la solucion. Si se esperan 5 celdas del jugador no tiene sentido ir
  *      comprobando cuando pulsa 1, 2, 3, porque siempre dara resultado negativo.)
  *
+ *
+ * @author Juan A. Fern&aacute;ndez S&aacute;nchez
+ * @version Junio 2015
  */
-
-
-
 public class JuegoGrid12 extends ActionBarActivity{
 
 

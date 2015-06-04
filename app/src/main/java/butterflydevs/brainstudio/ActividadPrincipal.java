@@ -89,7 +89,7 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, Niveles.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, eliminame.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
