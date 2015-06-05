@@ -16,6 +16,7 @@
     <string name="title_activity_niveles">Niveles</string>
         <string name="title_activity_ranking">Ranking</string>
         <string name="title_activity_juego_grid12">juegoGrid12</string>
+    <string name="title_activity_juego_grid24">juegoGrid12</string>
         <string name="title_activity_prueba">prueba</string>
         <string name="title_activity_eliminame">eliminame</string>
 

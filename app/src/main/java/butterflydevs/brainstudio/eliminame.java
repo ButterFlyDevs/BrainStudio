@@ -9,6 +9,14 @@ import android.view.MenuItem;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.view.LineChartView;
+
 
 public class eliminame extends ActionBarActivity {
 
@@ -20,6 +28,11 @@ public class eliminame extends ActionBarActivity {
 
     private Runnable r;
 
+
+
+    LineChartView chart;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +41,32 @@ public class eliminame extends ActionBarActivity {
 
         progressTwo = (RoundCornerProgressBar) findViewById(R.id.progress_two);
         progressTwo.setBackgroundColor(Color.TRANSPARENT);
+
+        /*
+        chart=(LineChartView)findViewById(R.id.chart);
+
+        List<PointValue> values = new ArrayList<PointValue>();
+        values.add(new PointValue(0, 2));
+        values.add(new PointValue(1, 4));
+        values.add(new PointValue(2, 3));
+        values.add(new PointValue(3, 4));
+
+        //In most cased you can call data model methods in builder-pattern-like manner.
+        Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
+        List<Line> lines = new ArrayList<Line>();
+        lines.add(line);
+
+        LineChartData data = new LineChartData();
+        data.setLines(lines);
+
+        chart.setLineChartData(data);
+        */
+
+
+
+
+
+
 
 
         updateProgressTwo();

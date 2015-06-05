@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.github.premnirmal.textcounter.CounterView;
@@ -29,11 +28,11 @@ import java.util.Locale;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
 
-public class JuegoGrid40 extends ActionBarActivity {
+public class JuegoGrid24 extends ActionBarActivity {
 
     //Constantes que definen el tamaño del grid
-    final private int numFilas = 8;
-    final private int numColumnas = 5;
+    final private int numFilas = 6;
+    final private int numColumnas = 4;
 
     //Variables de elementos visuales que necesitan referenciación
     private RoundCornerProgressBar barraProgreso;
@@ -75,7 +74,7 @@ public class JuegoGrid40 extends ActionBarActivity {
     //Variables para la configuración del grid de botones en tiempo de ejecución
 
         //El tamaño de los botones, usado para el alto y el ancho.
-        final private int tamButtons = 70;
+        final private int tamButtons = 120;
 
         //Para referenciar el layout grande donde van todos los layout que componen las filas
         private LinearLayout layoutGridBotones;
@@ -92,7 +91,7 @@ public class JuegoGrid40 extends ActionBarActivity {
     //Variables para las animaciones del grid.
     Animation animacion1, animacion2;
 
-    public JuegoGrid40() {
+    public JuegoGrid24() {
 
         matrizRespuesta = new boolean[numFilas * numColumnas];
         for(int i=0; i<numFilas*numColumnas; i++)
@@ -111,7 +110,7 @@ public class JuegoGrid40 extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego_grid40);
+        setContentView(R.layout.activity_juego_grid24);
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
@@ -285,7 +284,7 @@ public class JuegoGrid40 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid40.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid24.this, Niveles.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -522,7 +521,7 @@ public class JuegoGrid40 extends ActionBarActivity {
                         // continue with delete
 
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid40.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid24.this, Niveles.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 
