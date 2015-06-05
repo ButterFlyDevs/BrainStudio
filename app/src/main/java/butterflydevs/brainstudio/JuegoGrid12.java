@@ -189,7 +189,7 @@ public class JuegoGrid12 extends ActionBarActivity{
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid12.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid12.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -435,7 +435,7 @@ public class JuegoGrid12 extends ActionBarActivity{
                         // continue with delete
 
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid12.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid12.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 

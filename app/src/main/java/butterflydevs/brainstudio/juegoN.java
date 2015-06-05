@@ -9,10 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 
 
-public class Niveles extends ActionBarActivity {
+public class juegoN extends ActionBarActivity {
 
 
-    private CircularCounter meterA, meterB;
+    private CircularCounter meterA, meterB, meterC;
     private Handler handler;
     private Runnable r;
     private String[] colors;
@@ -20,12 +20,13 @@ public class Niveles extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_niveles);
+        setContentView(R.layout.activity_juego_n);
 
         colors = getResources().getStringArray(R.array.colors);
 
         meterA=(CircularCounter)findViewById(R.id.meter1);
         meterB=(CircularCounter)findViewById(R.id.meter2);
+        meterC=(CircularCounter)findViewById(R.id.meter3);
 
 
         meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
@@ -61,6 +62,23 @@ public class Niveles extends ActionBarActivity {
         meterB.setTextColor(Color.GRAY);
         meterB.setTextSize(40.f);
 
+        meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
+
+                .setFirstColor(Color.parseColor(colors[0]))
+
+                        //.setSecondWidth(getResources().getDimension(R.dimen.second))
+                        //.setSecondColor(Color.parseColor(colors[1]))
+                        //.setThirdWidth(getResources().getDimension(R.dimen.third))
+                        //.setThirdColor(Color.parseColor(colors[2]))
+                .setBackgroundColor(Color.TRANSPARENT);
+        //.setBackgroundColor(-14606047);
+
+        meterC.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterC.setRange(100);
+        meterC.setTextColor(Color.GRAY);
+        meterC.setTextSize(40.f);
+
         handler = new Handler();
 
         r = new Runnable(){
@@ -75,6 +93,7 @@ public class Niveles extends ActionBarActivity {
 
                 meterA.setValues(currV, 0, 0);
                 meterB.setValues(currV, 0, 0);
+                meterC.setValues(currV, 0, 0);
                 //  meter2.setValues(currV, currV*2, currV*3);
 
                 handler.postDelayed(this, 30);
@@ -88,7 +107,7 @@ public class Niveles extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Niveles.this, JuegoGrid12.class);
+                        Intent intent = new Intent(juegoN.this, JuegoGrid12.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -101,7 +120,19 @@ public class Niveles extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Niveles.this, JuegoGrid40.class);
+                        Intent intent = new Intent(juegoN.this, JuegoGrid24.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        meterC.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(juegoN.this, JuegoGrid40.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -124,7 +155,7 @@ public class Niveles extends ActionBarActivity {
         //Si pulsamos el botón back nos devuelve a la pantalla principal!.
         if(keyCode==KeyEvent.KEYCODE_BACK){
 
-            Intent intent = new Intent(Niveles.this, ActividadPrincipal.class);
+            Intent intent = new Intent(juegoN.this, ActividadPrincipal.class);
             startActivity(intent);
 
             //Aplicacion de transicion animada entre activities:

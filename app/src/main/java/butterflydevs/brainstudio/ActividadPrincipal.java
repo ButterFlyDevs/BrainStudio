@@ -89,7 +89,7 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, JuegoGrid24.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, juegos.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Niveles"
+            android:name=".juegoN"
             android:label="@string/title_activity_niveles" >
         </activity>
         <activity
@@ -42,6 +42,10 @@
         <activity
             android:name=".eliminame"
             android:label="@string/title_activity_eliminame" >
+        </activity>
+        <activity
+            android:name=".juegos"
+            android:label="@string/title_activity_juegos" >
         </activity>
     </application>
 

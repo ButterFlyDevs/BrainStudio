@@ -17,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.github.premnirmal.textcounter.CounterView;
@@ -285,7 +284,7 @@ public class JuegoGrid40 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid40.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid40.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -522,7 +521,7 @@ public class JuegoGrid40 extends ActionBarActivity {
                         // continue with delete
 
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid40.this, Niveles.class);
+                        Intent intent = new Intent(JuegoGrid40.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 
