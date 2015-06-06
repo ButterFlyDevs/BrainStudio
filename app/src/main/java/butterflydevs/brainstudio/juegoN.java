@@ -100,14 +100,20 @@ public class juegoN extends ActionBarActivity {
             }
         };
 
-
         meterA.setOnClickListener(
 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(juegoN.this, JuegoGrid12.class);
+                        Intent intent = new Intent(juegoN.this, Juego1.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",1);
+
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -120,7 +126,13 @@ public class juegoN extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(juegoN.this, JuegoGrid24.class);
+                        Intent intent = new Intent(juegoN.this, Juego1.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",2);
+
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -132,7 +144,13 @@ public class juegoN extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(juegoN.this, JuegoGrid40.class);
+                        Intent intent = new Intent(juegoN.this, Juego1.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",3);
+
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

@@ -28,11 +28,11 @@ import java.util.Locale;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
 
-public class JuegoGrid24 extends ActionBarActivity {
+public class Juego1 extends ActionBarActivity {
 
     //Constantes que definen el tamaño del grid
-    final private int numFilas = 6;
-    final private int numColumnas = 4;
+    private int numFilas = 6;
+    private int numColumnas = 4;
 
     //Variables de elementos visuales que necesitan referenciación
     private RoundCornerProgressBar barraProgreso;
@@ -74,7 +74,7 @@ public class JuegoGrid24 extends ActionBarActivity {
     //Variables para la configuración del grid de botones en tiempo de ejecución
 
         //El tamaño de los botones, usado para el alto y el ancho.
-        final private int tamButtons = 120;
+        private int tamButtons = 120;
 
         //Para referenciar el layout grande donde van todos los layout que componen las filas
         private LinearLayout layoutGridBotones;
@@ -85,17 +85,16 @@ public class JuegoGrid24 extends ActionBarActivity {
         //Vector de botones (solo uno, no habra un vector por fila, para el procesamiento posterior es mejor tenerlos todos en un solo vector)
         private Button[] botones;
 
+        Intent intent;
 
 
 
     //Variables para las animaciones del grid.
     Animation animacion1, animacion2;
 
-    public JuegoGrid24() {
+    public Juego1() {
 
-        matrizRespuesta = new boolean[numFilas * numColumnas];
-        for(int i=0; i<numFilas*numColumnas; i++)
-            matrizRespuesta[i]=false;
+
 
         time = 15;
         numRepeticionesMaximas = 4;
@@ -110,12 +109,21 @@ public class JuegoGrid24 extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego_grid24);
+        setContentView(R.layout.activity_juego_1);
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
         //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //Obtenemos los datos que se le pasa a la actividad.
+        intent=getIntent();
+        //Obtenemos la información del intent que nos evía la actividad que nos crea.
+        int level=intent.getIntExtra("nivel",0);
+
+        System.out.println("recibiod de la actividad llamante: "+level);
+        ajustarNivel(level);
+
 
         //Cargamos el fichero que define la animación 1
         animacion1 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
@@ -284,7 +292,7 @@ public class JuegoGrid24 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid24.this, juegoN.class);
+                        Intent intent = new Intent(Juego1.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -307,6 +315,72 @@ public class JuegoGrid24 extends ActionBarActivity {
         //Hacemos transparente el fondo de la barra de progreso.
         barraProgreso.setBackgroundColor(Color.TRANSPARENT);
 
+    }
+
+    public void ajustarNivel(int level){
+        if(level==1){
+
+            //1º Establecemos el tamaño del grid
+
+                numFilas=4;
+                numColumnas=3;
+
+                //Inicializamos la matriz
+                matrizRespuesta = new boolean[numFilas * numColumnas];
+
+                //La inicializamos a false
+                for(int i=0; i<numFilas*numColumnas; i++)
+                    matrizRespuesta[i]=false;
+
+            //2º Establecemos el número máximo de celdas a preguntar
+
+                numMaximoCeldas=6;
+
+            //3º Ajustar el tamaño de los botones
+                tamButtons = 150;
+
+        }else if(level==2){
+
+            //1º Establecemos el tamaño del grid
+
+            numFilas=6;
+            numColumnas=4;
+
+            //Inicializamos la matriz
+            matrizRespuesta = new boolean[numFilas * numColumnas];
+
+            //La inicializamos a false
+            for(int i=0; i<numFilas*numColumnas; i++)
+                matrizRespuesta[i]=false;
+
+            //2º Establecemos el número máximo de celdas a preguntar
+
+                numMaximoCeldas=12;
+
+            //3º Ajustar el tamaño de los botones
+                tamButtons = 110;
+
+        }else if(level==3){
+            //1º Establecemos el tamaño del grid
+
+            numFilas=8;
+            numColumnas=5;
+
+            //Inicializamos la matriz
+            matrizRespuesta = new boolean[numFilas * numColumnas];
+
+            //La inicializamos a false
+            for(int i=0; i<numFilas*numColumnas; i++)
+                matrizRespuesta[i]=false;
+
+            //2º Establecemos el número máximo de celdas a preguntar
+            numMaximoCeldas=20;
+
+            //3º Ajustar el tamaño de los botones
+                tamButtons = 80;
+
+
+        }
     }
 
     public float reglaTres(int x){
@@ -491,7 +565,8 @@ public class JuegoGrid24 extends ActionBarActivity {
         //Ajustamos el tiempo a segundos con un decimal:
         String tiempo = Float.toString((float) timeNow / 1000);
 
-        tiempo = tiempo.substring(0, 4);
+        if(tiempo.length()>=4)
+            tiempo = tiempo.substring(0, 4);
 
         timeNow = Float.parseFloat(tiempo);
 
@@ -521,7 +596,7 @@ public class JuegoGrid24 extends ActionBarActivity {
                         // continue with delete
 
                         //Creamos el Intent
-                        Intent intent = new Intent(JuegoGrid24.this, juegoN.class);
+                        Intent intent = new Intent(Juego1.this, juegoN.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 
