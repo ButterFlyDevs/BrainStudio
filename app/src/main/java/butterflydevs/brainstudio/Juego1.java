@@ -1,110 +1,43 @@
 package butterflydevs.brainstudio;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.github.premnirmal.textcounter.CounterView;
-import com.github.premnirmal.textcounter.Formatter;
+import java.util.List;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import butterflydevs.brainstudio.extras.matrixHelper;
+import butterflydevs.brainstudio.extras.Jugada;
+import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 
 public class Juego1 extends ActionBarActivity {
 
-    //Constantes que definen el tamaño del grid
-    private int numFilas = 6;
-    private int numColumnas = 4;
 
-    //Variables de elementos visuales que necesitan referenciación
-    private RoundCornerProgressBar barraProgreso;
-    private int progress2 = 100;
+    private CircularCounter meterA, meterB, meterC;
+    private Handler handler;
+    private Runnable r;
+    private String[] colors;
+
+    private Jugada maxJugadaNivel1;
+    private Jugada maxJugadaNivel2;
+    private Jugada maxJugadaNivel3;
+
+    private int porcentajePuntosNivel1;
+    private int porcentajePuntosNivel2;
+    private int porcentajePuntosNivel3;
 
     private Button botonBack;
     private Button botonHelp;
 
-    private boolean puedeMostrarBarra=true;
-
-
-    //Matrices usadas en el juego:
-
-        //Matriz aleatoria con el número de celdas a adescubrir creada por el matrixHelper
-        private boolean matrizJugada[];
-        //Matriz que se inicializa a false
-        private boolean matrizRespuesta[];
-
-
-    private int numCeldasActivadas = 0;
-
-    private int numRepeticionActual;
-    private int numRepeticionesMaximas;
-    private int numMaximoCeldas;
-
-    private float puntuacion;
-
-    private int numCeldas = 2;
-
-    //Variables para el reloj:
-    private CountDownTimer countDownTimer;
-    private CounterView counterView;
-    private int time;
-    private float timeNow;
-
-
-
-
-    //Variables para la configuración del grid de botones en tiempo de ejecución
-
-        //El tamaño de los botones, usado para el alto y el ancho.
-        private int tamButtons = 120;
-
-        //Para referenciar el layout grande donde van todos los layout que componen las filas
-        private LinearLayout layoutGridBotones;
-
-        //Filas del grid de botones:
-        private LinearLayout[] filasLinearLayout; //Cada fila de botones es un linearLayout
-
-        //Vector de botones (solo uno, no habra un vector por fila, para el procesamiento posterior es mejor tenerlos todos en un solo vector)
-        private Button[] botones;
-
-        Intent intent;
-
-
-
-    //Variables para las animaciones del grid.
-    Animation animacion1, animacion2;
-
-    public Juego1() {
-
-
-
-        time = 15;
-        numRepeticionesMaximas = 4;
-        numRepeticionActual = 1;
-        numMaximoCeldas = 20;
-        puntuacion = 0;
-
-
-    }
-
+    private TextView puntosNivel1;
+    private TextView puntosNivel2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,176 +47,196 @@ public class Juego1 extends ActionBarActivity {
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
         //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        //Obtenemos los datos que se le pasa a la actividad.
-        intent=getIntent();
-        //Obtenemos la información del intent que nos evía la actividad que nos crea.
-        int level=intent.getIntExtra("nivel",0);
-
-        System.out.println("recibiod de la actividad llamante: "+level);
-        ajustarNivel(level);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        //Cargamos el fichero que define la animación 1
-        animacion1 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
-        //Especificamos el comportamiento al empezar y al finalizar
-        animacion1.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                System.out.println("La animación empieza");
-                barraProgreso.setProgress(100f);
-                updateProgressTwoColor(100f);
+        botonBack=(Button)findViewById(R.id.botonBack);
+        botonHelp=(Button)findViewById(R.id.botonHelp);
+        puntosNivel1=(TextView)findViewById(R.id.puntosNivel1);
+        puntosNivel2=(TextView)findViewById(R.id.puntosNivel2);
 
+        //Lo primero que hacemos es recuperar los datos que necesitamos
+            MySQLiteHelper db = new MySQLiteHelper(this);
 
-            }
+            //Obtener todas la jugadas
+            List<Jugada> jugadasNivel1=db.getAllJugadas(1);
+            List<Jugada> jugadasNivel2=db.getAllJugadas(2);
 
-            //Especificamos que ocurre cuando la animación1 termina
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                System.out.println("La animacion acaba");
-                //Cuando la animación 1 termina volvemos todos los botones transparentes.
-                for (int i = 0; i < numFilas * numColumnas; i++)
-                    botones[i].setBackgroundColor(Color.TRANSPARENT);
+            System.out.println("datos"+jugadasNivel1.size()+jugadasNivel1.toString());
 
-                //Cuando la animacion 1 acaba se encarga de lanzar la animacion 2
-                for (int i = 0; i < numFilas * numColumnas; i++)
-                    botones[i].startAnimation(animacion2);
+            maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
+            puntosNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
 
-                puedeMostrarBarra=true;
-            }
+            porcentajePuntosNivel1=calculaPorcentaje(1, maxJugadaNivel1.getPuntuacion());
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+            maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
+            puntosNivel2.setText(Integer.toString(maxJugadaNivel2.getPuntuacion())+" puntos");
 
-            }
+            porcentajePuntosNivel2=calculaPorcentaje(2, maxJugadaNivel2.getPuntuacion());
 
-
-        });
-
-        //Cargamos el fichero que define la animación 2, que se lanza al acabar la animación 1
-        animacion2 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12_2);
-        //Especificamos el comportamiento al empezar y al finalizar
-        animacion2.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                System.out.println("La animación empieza");
-                //En la animación 2 volvemos todos los botones grises cuando empieza.
-                for (int i = 0; i < numFilas * numColumnas; i++)
-                    botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                System.out.println("La animacion acaba");
-                //Cuando la segunda animación termina el tiempo comienza a correr.
-                  countDownTimer.start();
-                  //countDownTimer.
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-
-
-        });
+            System.out.println("max:"+maxJugadaNivel1.toString());
 
 
 
-        //Configuracion del temporizador.
-        //Le pasamos al constructor la variable tiempo
-        countDownTimer = new CountDownTimer(time*1000, 1000) {
 
-            //Lo que hacemos en cada tick del reloj.
-            public void onTick(long millisUntilFinished) {
-
-                if(puedeMostrarBarra) //Evita mostrar la barra corriendo cuando no debe
-                    barraProgreso.setProgress(reglaTres((int)millisUntilFinished / 1000));
-
-                updateProgressTwoColor((int)millisUntilFinished / 1000);
-
-                System.out.println("reloj:" + (int)millisUntilFinished / 1000);
-                timeNow= millisUntilFinished;
-
-            }
-            //Comportamiento al acabarse el timepo.
-            public void onFinish(){
-
-                barraProgreso.setProgress(0f);
-                //updateProgressTwoColor();
-                mensajeFin();
+        /**
+         * Aquí podemos hacer dos cosas:
+         * A: procesar la lista nosotros para sacar lo que queremos (en este caso la jugada de mayor puntuación del usuario)
+         * B: hacer un consulta especial que nos la devuelva
+         */
 
 
+
+
+        colors = getResources().getStringArray(R.array.colors);
+
+        meterA=(CircularCounter)findViewById(R.id.meter1);
+        meterB=(CircularCounter)findViewById(R.id.meter2);
+        meterC=(CircularCounter)findViewById(R.id.meter3);
+
+
+        meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
+                .setFirstColor(Color.parseColor(colors[0]))
+
+                .setSecondWidth(getResources().getDimension(R.dimen.first))
+                .setSecondColor(Color.parseColor(colors[1]))
+                        //.setThirdWidth(getResources().getDimension(R.dimen.third))
+                        //.setThirdColor(Color.parseColor(colors[2]))
+                .setBackgroundColor(Color.TRANSPARENT);
+        //.setBackgroundColor(-14606047);
+
+        meterA.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterA.setRange(100);
+        meterA.setTextColor(Color.GRAY);
+        meterA.setTextSize(30.f);
+
+
+        meterB.setFirstWidth(getResources().getDimension(R.dimen.first))
+                .setFirstColor(Color.parseColor(colors[0]))
+                .setSecondWidth(getResources().getDimension(R.dimen.first))
+                .setSecondColor(Color.parseColor(colors[1]))
+
+                        //.setSecondWidth(getResources().getDimension(R.dimen.second))
+                        //.setSecondColor(Color.parseColor(colors[1]))
+                        //.setThirdWidth(getResources().getDimension(R.dimen.third))
+                        //.setThirdColor(Color.parseColor(colors[2]))
+                .setBackgroundColor(Color.TRANSPARENT);
+        //.setBackgroundColor(-14606047);
+
+        meterB.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterB.setRange(100);
+        meterB.setTextColor(Color.GRAY);
+        meterB.setTextSize(30.f);
+
+        meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
+
+                .setFirstColor(Color.parseColor(colors[0]))
+
+                        //.setSecondWidth(getResources().getDimension(R.dimen.second))
+                        //.setSecondColor(Color.parseColor(colors[1]))
+                        //.setThirdWidth(getResources().getDimension(R.dimen.third))
+                        //.setThirdColor(Color.parseColor(colors[2]))
+                .setBackgroundColor(Color.TRANSPARENT);
+        //.setBackgroundColor(-14606047);
+
+        meterC.setMetricText("");
+        //meter.setMetricSize(30.f);
+        meterC.setRange(100);
+        meterC.setTextColor(Color.GRAY);
+        meterC.setTextSize(40.f);
+
+        handler = new Handler();
+
+        r = new Runnable(){
+
+            int level1 = 0;
+            int level11=0;
+            int level2 =0;
+            int level22=0;
+
+            boolean go = true;
+
+            public void run(){
+
+                if(level1<maxJugadaNivel1.getPorcentaje())
+                    level1++;
+                if(level11<porcentajePuntosNivel1)
+                    level11++;
+                if(level22<porcentajePuntosNivel2)
+                    level22++;
+                if(level2<maxJugadaNivel2.getPorcentaje())
+                    level2++;
+
+                meterA.setValues(level1, level11, 0);
+                meterB.setValues(level2, level22, 0);
+
+
+                //meterC.setValues(currV, 0, 0);
+                //  meter2.setValues(currV, currV*2, currV*3);
+
+                handler.postDelayed(this, 30);
             }
         };
 
-        asociarElementosVista();
+        meterA.setOnClickListener(
 
-        //Inicializamos el vector de filas.
-        filasLinearLayout = new LinearLayout[numFilas];
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
 
-        //Inicializamos el vector de botones:
-        botones = new Button[numFilas * numColumnas];
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",1);
 
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
 
-        //Inicializamos los botones
-        for (int i = 0; i < numFilas * numColumnas; i++) {
-            //Inicializamos cada uno de los elementos del vector
-            botones[i] = new Button(this);
-            //Establecemos parametros de layout a cada uno:
-            botones[i].setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tamButtons, tamButtons);
-            params.setMargins(5, 5, 5, 5);
-            botones[i].setLayoutParams(params);
-            botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
-        }
+        meterB.setOnClickListener(
 
-        //Inicializamos los LinearLayout (filas)
-        for (int i = 0; i < numFilas; i++) {
-            filasLinearLayout[i] = new LinearLayout(this);
-            filasLinearLayout[i].setOrientation(LinearLayout.HORIZONTAL);
-            filasLinearLayout[i].setGravity(Gravity.CENTER);
-        }
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
 
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",2);
 
-        // prueba=new Button(this);
-        //prueba.setText("prueba");
-        //prueba.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        //prueba.setWidth(50);
-        //prueba.setHeight(50);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        meterC.setOnClickListener(
 
-        //Asociamos el layout principal
-        layoutGridBotones = (LinearLayout) findViewById(R.id.gridBotones);
-        //Le especificamos una horientación
-        layoutGridBotones.setOrientation(LinearLayout.VERTICAL);
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
 
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("nivel",3);
 
-        //Añadimos todos los layout de filas al layout principal
-        for (int i = 0; i < numFilas; i++)
-            layoutGridBotones.addView(filasLinearLayout[i]);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
 
-
-        //Añadimos un boto de prueba
-        //filasLinearLayout[0].addView(botones[0]);
-        //filasLinearLayout[1].addView(botones[1]);
-
-        //filasLinearLayout es un vector de filas!
-
-        int numBoton = 0;
-        for (int i = 0; i < numFilas; i++) //i sera el numero de fila
-            for (int j = 0; j < numColumnas; j++) {
-                filasLinearLayout[i].addView(botones[numBoton]); //no usamos numColumnas porque es 5 y tendriamos que reajustar
-                numBoton++;
-            }
-
-
-        //Configuramos el comportamiento del grid de botones con un Listener específico.
-        for (int i = 0; i < numFilas * numColumnas; i++) {
-            System.out.println("Boton: " + i);
-            botones[i].setOnClickListener(new MyListener(i));
-        }
 
 
         botonBack.setOnClickListener(
@@ -292,7 +245,7 @@ public class Juego1 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, juegoN.class);
+                        Intent intent = new Intent(Juego1.this, juegos.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -312,362 +265,68 @@ public class Juego1 extends ActionBarActivity {
         );
 
 
-        //Hacemos transparente el fondo de la barra de progreso.
-        barraProgreso.setBackgroundColor(Color.TRANSPARENT);
-
     }
 
-    public void ajustarNivel(int level){
-        if(level==1){
+    public int calculaPorcentaje(int nivel, int puntuacion){
 
-            //1º Establecemos el tamaño del grid
+        /*
+        Tanto el 1200 como el 4620 son las puntuaciones máximas que se podrían sacar en ambos niveles
+        si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podrá conseguir
+        tanta puntuación pero obviamente podrá acercarse si es muy rápido contestando y no se equivoca.
+         */
 
-                numFilas=4;
-                numColumnas=3;
-
-                //Inicializamos la matriz
-                matrizRespuesta = new boolean[numFilas * numColumnas];
-
-                //La inicializamos a false
-                for(int i=0; i<numFilas*numColumnas; i++)
-                    matrizRespuesta[i]=false;
-
-            //2º Establecemos el número máximo de celdas a preguntar
-
-                numMaximoCeldas=6;
-
-            //3º Ajustar el tamaño de los botones
-                tamButtons = 150;
-
-        }else if(level==2){
-
-            //1º Establecemos el tamaño del grid
-
-            numFilas=6;
-            numColumnas=4;
-
-            //Inicializamos la matriz
-            matrizRespuesta = new boolean[numFilas * numColumnas];
-
-            //La inicializamos a false
-            for(int i=0; i<numFilas*numColumnas; i++)
-                matrizRespuesta[i]=false;
-
-            //2º Establecemos el número máximo de celdas a preguntar
-
-                numMaximoCeldas=12;
-
-            //3º Ajustar el tamaño de los botones
-                tamButtons = 110;
-
-        }else if(level==3){
-            //1º Establecemos el tamaño del grid
-
-            numFilas=8;
-            numColumnas=5;
-
-            //Inicializamos la matriz
-            matrizRespuesta = new boolean[numFilas * numColumnas];
-
-            //La inicializamos a false
-            for(int i=0; i<numFilas*numColumnas; i++)
-                matrizRespuesta[i]=false;
-
-            //2º Establecemos el número máximo de celdas a preguntar
-            numMaximoCeldas=20;
-
-            //3º Ajustar el tamaño de los botones
-                tamButtons = 80;
-
-
-        }
+        int resultado=0;
+        if(nivel==1)
+            resultado=(100*puntuacion)/1200;
+        if(nivel==2)
+            resultado=(100*puntuacion)/4620;
+        return resultado;
     }
 
-    public float reglaTres(int x){
-        return (x*100)/(time-1);
-    }
-
-    private void updateProgressTwoColor(float time ) {
-        if(time <= 2) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_red_progress));
-        } else if(time > 2 && time <= 6) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_orange_progress));
-        } else if(time > 6) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_green_progress));
-        }
-    }
-
-
-
-    public void asociarElementosVista(){
-
-
-        barraProgreso=(RoundCornerProgressBar)findViewById(R.id.progress_two);
-
-        botonBack=(Button)findViewById(R.id.botonBack);
-        botonHelp=(Button)findViewById(R.id.botonHelp);
-
-
-        //CounterView es el texto de puntos que va aumentando
-        counterView=(CounterView)findViewById(R.id.counter);
-
-        counterView.setAutoFormat(false);
-        counterView.setFormatter(new Formatter() {
-            @Override
-            public String format(String prefix, String suffix, float value) {
-                return prefix + NumberFormat.getNumberInstance(Locale.US).format(value) + suffix;
-            }
-        });
-        counterView.setAutoStart(false);
-        counterView.setStartValue(0);
-        counterView.setEndValue(0);
-        counterView.setIncrement(1f); // the amount the number increments at each time interval
-        counterView.setTimeInterval(2); // the time interval (ms) at which the text changes
-        counterView.setPrefix("");
-        counterView.setSuffix("");
-        counterView.start();
-
-
-
-
-    }
 
     /**
-     * Función para animar el grid al entrar en la actívity
-     */
-    public void animarGrid() {
-        //Cargamos la animación "animacion1" a cada uno de los botones que componen el grid.
-        for (int i = 0; i < numFilas * numColumnas; i++)
-            botones[i].startAnimation(animacion1);
-    }
-
-    /**
-     * Método que se ejecuta cuando la actividad se ha cargado y comienza a funcionar.
+     * Sobrecarga para el control de los botones físicos del terminal.
+     * @param keyCode
+     * @param event
+     * @return
      */
     @Override
-    protected void onStart() {
-        super.onStart();
+    public boolean onKeyDown(int keyCode, KeyEvent event){
 
+        //Si pulsamos el botón back nos devuelve a la pantalla principal!.
+        if(keyCode==KeyEvent.KEYCODE_BACK){
 
-        //1º Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
-        matrizJugada = matrixHelper.obtenerMatrizJugada(numCeldas, numFilas, numColumnas);
+            Intent intent = new Intent(Juego1.this, ActividadPrincipal.class);
+            startActivity(intent);
 
-        //2º Coloreamos los botones del grid según el contenido de la matriz de booleanos
-        for (int i = 0; i < numFilas * numColumnas; i++)
-            if (matrizJugada[i] == true)
-                botones[i].setBackgroundColor(Color.rgb(154, 184, 0));
-            else
-                botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
+            //Aplicacion de transicion animada entre activities:
+            //overridePendingTransition(R.anim.entrada_abajo2, R.anim.salida_abajo2);
 
-        //3º Con los botones configurados como la matriz llamamos a animarGrid para que anime la visualización
-        animarGrid();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_prueba, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public void siguienteJugada() {
-
-
-
-        /*
-        *Dependiendo del estado de nivel se crea una jugada u otra
-        */
-
-        //Si se ha llegado al maximo numero de repeticiones para este numero de celdas se aumenta el numero de celdas.
-
-
-        System.out.println("##JUGADA## Celdas: " + numCeldas + "  Repeticiones: " + numRepeticionActual + " de máx " + numRepeticionesMaximas);
-
-        if (numRepeticionActual == numRepeticionesMaximas) {
-            System.out.println("pasando a 3 celdas");
-            numCeldas++;
-            numRepeticionActual = 0;
-            /*
-            Numero de celdas se usara a continuacion apra configurar la matriz de la jugada (la que tiene que recordar el jugador)
-             */
-        }
-
-        if (numCeldas == numMaximoCeldas + 1)
-            salirNivel();
-
-
-        //Ajuste de variables:
-
-        //Cuando se acierta se reinicia el proceso.
-
-        for (int i = 0; i < numFilas * numColumnas; i++) {
-            matrizJugada[i] = false;
-            matrizRespuesta[i] = false;
-        }
-        numCeldasActivadas = 0;
-
-        //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada = matrixHelper.obtenerMatrizJugada(numCeldas, numFilas, numColumnas);
-
-        //Seteamos el grid visual con la matriz obtenida.
-        for (int i = 0; i < numFilas * numColumnas; i++)
-            if (matrizJugada[i] == true)
-                botones[i].setBackgroundColor(getResources().getColor(R.color.kiwi));
-            else
-                botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
-
-        //Ilumina el grid
-        animarGrid();
-
-
-        //Aumentamos el valor de repeticion actual:
-        numRepeticionActual++;
-    }
-
-    public void salirNivel() {
-
-        //Avisar de que se ha acabado el juego y salir al panel de niveles.
-
-        //¿Mostrar un fragment con la puntuación y y el porcentaje completado?
-
-        new AlertDialog.Builder(this)
-                .setTitle("TERMINADO")
-                .setMessage("has llegado al final del nivel")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-    public void calculaPuntuacion() {
-        float a = (float) 4.5;
-        System.out.println("Tiempo al acabar: " + (float) timeNow / 1000);
-
-        //Ajustamos el tiempo a segundos con un decimal:
-        String tiempo = Float.toString((float) timeNow / 1000);
-
-        if(tiempo.length()>=4)
-            tiempo = tiempo.substring(0, 4);
-
-        timeNow = Float.parseFloat(tiempo);
-
-        counterView.setStartValue(puntuacion);
-        counterView.setPrefix("");
-        counterView.setSuffix("");
-        puntuacion += timeNow * numCeldas;
-
-        counterView.setEndValue(puntuacion);
-        counterView.start();
-        System.out.println("Puntuacón : " + puntuacion);
-
-
-        //Ponemos la puntuación en pantalla
-        //textPuntos.setText(Float.toString(puntuacion));
-
-
-        //puntuacion=numCeldas*
+        return super.onKeyDown(keyCode, event);
 
     }
-    public void mensajeFin(){
-        new AlertDialog.Builder(this)
-                .setTitle("YOU ARE DEAD")
-                .setMessage("Se te acabó el tiempo!")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
 
-                        //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, juegoN.class);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
-
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handler.postDelayed(r, 500);
     }
 
-    class MyListener implements Button.OnClickListener {
-
-        private int numBoton;
-
-        public MyListener(int numBoton) {
-            this.numBoton = numBoton;
-        }
+    @Override
+    protected void onStart(){
+        super.onStart();
 
 
-        @Override
-        public void onClick(View v) {
-            //Acciones a realizar al pulsar sobre un botón:
-
-
-
-                /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
-                true la celda en caso de que estuviera a false y viceversa.
-                 */
-            if (matrizRespuesta[numBoton] == false) {
-                botones[numBoton].setBackgroundColor(getResources().getColor(R.color.kiwi));
-                matrizRespuesta[numBoton] = true;
-                numCeldasActivadas++;
-            } else {
-                botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));
-                matrizRespuesta[numBoton] = false;
-                numCeldasActivadas--;
-            }
-
-            //2º Comparamos ambas matrices
-
-                    /*
-                    Lo ideal sería llevar el control del número de celdas pulsadas para no realizar comprobaciones
-                    antes de tiempo.
-                     */
-
-            System.out.println("Celdas Activadas: " + numCeldasActivadas);
-            if (numCeldasActivadas == numCeldas) {
-                System.out.println("Hay que comparar matrices");
-
-                //Se ha completado el grid
-                if (matrixHelper.compruebaMatrices(matrizJugada, matrizRespuesta, numFilas, numColumnas)) {
-                    System.out.println("SUCESS");
-
-
-                    barraProgreso.setProgress(100f);
-
-                    puedeMostrarBarra=false;
-
-                    //Se calcula la puntuación obtenida
-                    calculaPuntuacion();
-                    //Se pasa a la siguiente jugada
-                    siguienteJugada();
-
-
-                } else
-                    System.out.println("FAIL");
-
-
-            }
-
-
-        }
 
     }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        handler.removeCallbacks(r);
+    }
+
 }

@@ -1,25 +1,21 @@
 package butterflydevs.brainstudio;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
-import android.database.MatrixCursor;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MyAdapter;
+import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.Nivel;
 
 
@@ -44,8 +40,8 @@ public class juegos extends Activity {
                 Intent intent;
 
                 //Dependiendo de la posición pulsada vamos a una activity u a otra.
-                if(itemPosition==1) {
-                    intent = new Intent(juegos.this, juegoN.class);
+                if(itemPosition==0) {
+                    intent = new Intent(juegos.this, Juego1.class);
                     //Iniciamos la actividad
                     startActivity(intent);
                 }
@@ -64,13 +60,35 @@ public class juegos extends Activity {
     private ArrayList<Nivel> generateData(){
 
         ArrayList<Nivel> items = new ArrayList<Nivel>();
-        items.add(new Nivel(25,2748973));
-        items.add(new Nivel(60,3387894));
+        items.add(new Nivel(25,puntuacionJuego1()));
+        //items.add(new Nivel(60,3387894));
 
 
         return items;
     }
 
+
+    public int puntuacionJuego1(){
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1);
+        Jugada maxJugadaNivel1= Jugada.obtenMaximaJugada(jugadasNivel1);
+
+        List<Jugada> jugadasNivel2=db.getAllJugadas(2);
+        Jugada maxJugadaNivel2= Jugada.obtenMaximaJugada(jugadasNivel2);
+
+
+        int maxPuntuacion1 = maxJugadaNivel1.getPuntuacion();
+        int maxPuntuacion2 = maxJugadaNivel2.getPuntuacion();
+
+
+        return maxPuntuacion1+maxPuntuacion2;
+    }
+    public int porcentajeJuego1(){
+
+        return 2;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

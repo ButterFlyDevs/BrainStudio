@@ -204,18 +204,18 @@ public class ActividadPrincipal extends Activity {
     protected void onStart(){
         super.onStart();
 
-        MySQLiteHelper db = new MySQLiteHelper(this);
+       // MySQLiteHelper db = new MySQLiteHelper(this);
 
         //Operaciones de prueba:
 
         //Añadir jugadas
-        db.addJugada(new Jugada(4839984, 54));
-        db.addJugada(new Jugada(2783827, 67));
+       // db.addJugada(new Jugada(4839984, 54));
+       // db.addJugada(new Jugada(2783827, 67));
 
         //Obtener todas la jugadas
-        List<Jugada> jugadas=db.getAllJugadas();
+        //List<Jugada> jugadas=db.getAllJugadas();
 
-        System.out.println("datos"+jugadas.size()+jugadas.toString());
+       // System.out.println("datos"+jugadas.size()+jugadas.toString());
 
 
 

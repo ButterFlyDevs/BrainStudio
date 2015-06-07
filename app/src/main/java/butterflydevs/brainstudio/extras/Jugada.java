@@ -1,5 +1,7 @@
 package butterflydevs.brainstudio.extras;
 
+import java.util.List;
+
 /**
  * Created by juan on 6/06/15.
  */
@@ -32,7 +34,25 @@ public class Jugada {
 
     @Override
     public String toString(){
-        return "Level [puntuacion="+puntuacion+", porcentaje="+porcentajeCompletado+" }";
+        return "[puntuacion="+puntuacion+", porcentaje="+porcentajeCompletado+"]\n";
+    }
+
+    /**
+     * Método estático de la clase ya que nos hace falta en varios lugares
+     * @param jugadas
+     * @return
+     */
+    static public Jugada obtenMaximaJugada(List<Jugada> jugadas){
+
+        int puntuacion = 0;
+        int porcentaje = 0;
+
+        for(Jugada jugada: jugadas)
+            if(jugada.getPuntuacion()>puntuacion) {
+                puntuacion = jugada.getPuntuacion();
+                porcentaje = jugada.getPorcentaje();
+            }
+        return new Jugada(puntuacion,porcentaje);
     }
 
 }

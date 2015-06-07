@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".juegoN"
+            android:name=".Juego1"
             android:label="@string/title_activity_niveles" >
         </activity>
         <activity
@@ -32,7 +32,7 @@
             android:label="@string/title_activity_juego_grid12" >
         </activity>
         <activity
-            android:name=".Juego1"
+            android:name=".Juego1niveln"
             android:label="@string/title_activity_juego_grid24" >
         </activity>
         <activity
