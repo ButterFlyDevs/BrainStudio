@@ -41,4 +41,19 @@
         <string name="title_activity_juegos">juegos</string>
     <string name="title_activity_pruebas_facebook">PruebasFacebook</string>
 
+    <string name="cancelled"></string>
+    <string name="ok"></string>
+    <string name="permission_not_granted"></string>
+    <string name="hello_user"></string>
+    <string name="success"></string>
+    <string name="successfully_posted_post"></string>
+    <string name="error"></string>
+    <string name="status_update"></string>
+    <string name="photo_post"></string>
+    <string name="exception"></string>
+    <string name="no_friends_selected"></string>
+    <string name="you_picked"></string>
+    <string name="no_place_selected"></string>
+    <string name="pick_seattle_place"></string>
 </resources>
+
