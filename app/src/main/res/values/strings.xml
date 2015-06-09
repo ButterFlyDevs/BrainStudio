@@ -39,5 +39,6 @@
     <string name="increase"><![CDATA[>]]></string>
     <string name="zero">0</string>
         <string name="title_activity_juegos">juegos</string>
+    <string name="title_activity_pruebas_facebook">PruebasFacebook</string>
 
 </resources>

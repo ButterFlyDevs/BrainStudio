@@ -28,16 +28,8 @@
             android:label="@string/title_activity_ranking" >
         </activity>
         <activity
-            android:name=".JuegoGrid12"
-            android:label="@string/title_activity_juego_grid12" >
-        </activity>
-        <activity
             android:name=".Juego1niveln"
             android:label="@string/title_activity_juego_grid24" >
-        </activity>
-        <activity
-            android:name=".JuegoGrid40"
-            android:label="@string/title_activity_prueba" >
         </activity>
         <activity
             android:name=".eliminame"
@@ -46,6 +38,10 @@
         <activity
             android:name=".juegos"
             android:label="@string/title_activity_juegos" >
+        </activity>
+        <activity
+            android:name=".PruebasFacebook"
+            android:label="@string/title_activity_pruebas_facebook" >
         </activity>
     </application>
 
