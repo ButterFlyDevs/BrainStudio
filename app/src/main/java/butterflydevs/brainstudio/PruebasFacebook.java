@@ -31,6 +31,7 @@ public class PruebasFacebook extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+            //Comentario
         }
 
         return super.onOptionsItemSelected(item);
