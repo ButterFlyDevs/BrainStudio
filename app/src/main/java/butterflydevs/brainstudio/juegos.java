@@ -45,7 +45,12 @@ public class juegos extends Activity {
                     //Iniciamos la actividad
                     startActivity(intent);
                 }
-
+                else if(itemPosition==1)
+                {
+                    //TODO IMPLEMENTAR JUEGO2
+                    intent = new Intent(juegos.this,Juego2niveln.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -60,9 +65,9 @@ public class juegos extends Activity {
     private ArrayList<Nivel> generateData(){
 
         ArrayList<Nivel> items = new ArrayList<Nivel>();
-        items.add(new Nivel(25,puntuacionJuego1()));
+        items.add(new Nivel(25, puntuacionJuego1()));
         //items.add(new Nivel(60,3387894));
-
+        items.add(new Nivel(25,puntuacionJuego2()));
 
         return items;
     }
@@ -84,6 +89,12 @@ public class juegos extends Activity {
 
 
         return maxPuntuacion1+maxPuntuacion2;
+    }
+
+    // TODO POR HACER IMPLEMENTACION DE ESTA FUNCION
+
+    public int puntuacionJuego2(){
+        return 5;
     }
     public int porcentajeJuego1(){
 
