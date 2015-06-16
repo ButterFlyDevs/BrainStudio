@@ -58,6 +58,10 @@
             android:name=".Juego2niveln"
             android:label="@string/title_activity_juego2niveln" >
         </activity>
+        <activity
+            android:name=".Juego2"
+            android:label="@string/title_activity_juego2" >
+        </activity>
     </application>
 
 </manifest>

@@ -58,5 +58,6 @@
     <string name="exception">Exception: %1$s</string>
     <string name="facebook_app_id">548471218624081</string>
     <string name="title_activity_juego2niveln">Juego2niveln</string>
+    <string name="title_activity_juego2">Juego2</string>
 </resources>
 
