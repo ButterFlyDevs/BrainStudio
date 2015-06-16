@@ -518,6 +518,188 @@ public class Juego2niveln extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Método usado para calcular la puntuación de la jugada.
+     * Tiene en cuenta el tiempo que quedaba restante para finalizar la partida (a más tiempo, más puntuación),y
+     * el número de celdas que el usuario ha acertado.
+     *
+     * Modifica la variable de clase "puntuación"
+     */
+    public void calculaPuntuacion() {
+        System.out.println("Tiempo al acabar: " + (float) timeNow / 1000);
+
+        //Ajustamos el tiempo a segundos con un decimal:
+        String tiempo = Float.toString((float) timeNow / 1000);
+
+        if(tiempo.length()>=4)
+            tiempo = tiempo.substring(0, 4);
+
+        timeNow = Float.parseFloat(tiempo);
+
+        counterView.setStartValue(puntuacion);
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+        puntuacion += timeNow * numCeldas;
+
+        counterView.setEndValue(puntuacion);
+        counterView.start();
+        System.out.println("Puntuacón : " + puntuacion);
+
+
+        //Ponemos la puntuación en pantalla
+        //textPuntos.setText(Float.toString(puntuacion));
+
+
+        //puntuacion=numCeldas*
+
+    }
+
+    /**
+     * Método usado para definir nuevos colores de celdas marcadas y de
+     */
+    public void nuevosColores(){
+
+
+
+        /**
+         * Para que funcione tienen que existir al menos dos colores en el array xml en colors.xml
+         */
+        Random rnd = new Random();
+        colorMarcado=(int)(rnd.nextDouble() * 3 + 0);
+        System.out.println("Color seleccionado "+colorMarcado);
+
+        //this.colorFondo=Color.DKGRAY;
+    }
+
+    /**
+     * Método para calcular el porcentaje superado
+     *
+     * @return porcentaje superado del nivel
+     */
+    public int calculaPorcentaje(){
+
+        int resultado;
+
+        int gridsTotales=(numMaximoCeldas-1)*numRepeticionesMaximas;
+
+        //Una regla de tres simple
+        resultado=(int)(100*numGridsJugados)/gridsTotales;
+
+        System.out.println("numGridJugados "+numGridsJugados);
+
+        return resultado;
+
+
+    }
+
+    /**
+     * Para grabar los datos en la base de datos cuando se acaba la partida
+     */
+    public void grabarDatosBD(){
+
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        /*
+        Realizamos la insercción en la base de datos.
+        --> Estamos haciendo un redondeo de la puntuación (esto hay que modificarlo)
+         */
+
+        //System.out.println("GRabando "+(int)puntuacion+" puntos "+calculaPorcentaje()+"%");
+        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level);
+    }
+    /**
+     * Función para animar el grid al entrar en la actívity
+     */
+    public void animarGrid() {
+        //Cargamos la animación "animacion1" a cada uno de los botones que componen el grid.
+        for (int i = 0; i < numFilas * numColumnas; i++)
+            botones[i].startAnimation(animacion1);
+    }
+
+    /**
+     * Método para salir de un nivel al terminar la partida.
+     */
+    public void salirNivel() {
+
+        //Avisar de que se ha acabado el juego y salir al panel de niveles.
+
+        //¿Mostrar un fragment con la puntuación y y el porcentaje completado?
+
+        new AlertDialog.Builder(this)
+                .setTitle("TERMINADO")
+                .setMessage("has llegado al final del nivel")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        grabarDatosBD();
+                        //Creamos el Intent
+                        Intent intent = new Intent(Juego1niveln.this, Juego1.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    /**
+     * Método que prepara la siguiente jugada
+     */
+    public void siguienteJugada() {
+
+        nuevosColores();
+
+        /*
+        *Dependiendo del estado de nivel se configura el grid de una manera u otra
+        */
+
+        //Si se ha llegado al maximo numero de repeticiones para este numero de celdas se aumenta el numero de celdas.
+
+
+        System.out.println("##JUGADA## Celdas: " + numCeldas + "  Repeticiones: " + numRepeticionActual + " de máx " + numRepeticionesMaximas);
+
+        if (numRepeticionActual == numRepeticionesMaximas) {
+            System.out.println("pasando a 3 celdas");
+            numCeldas++;
+            numRepeticionActual = 0;
+            /*
+            Numero de celdas se usara a continuacion apra configurar la matriz de la jugada (la que tiene que recordar el jugador)
+             */
+        }
+
+        if (numCeldas == numMaximoCeldas + 1)
+            salirNivel();
+
+        //Ajuste de variables:
+
+        //Cuando se acierta se reinicia el proceso.
+
+        for (int i = 0; i < numFilas * numColumnas; i++) {
+            matrizJugada[i] = false;
+            matrizRespuesta[i] = false;
+        }
+        numCeldasActivadas = 0;
+
+        //Obtenemos la matriz de la jugada que el jugador debe resolver
+        matrizJugada = matrixHelper.obtenerMatrizJugada(numCeldas, numFilas, numColumnas);
+
+        //Seteamos el grid visual con la matriz obtenida.
+        for (int i = 0; i < numFilas * numColumnas; i++)
+            if (matrizJugada[i] == true)
+                botones[i].setBackgroundColor(Color.parseColor(colores[colorMarcado]));
+            else
+                botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
+
+        //Ilumina el grid
+        animarGrid();
+
+        //Aumentamos el valor de repeticion actual:
+        numRepeticionActual++;
+
+        //Calculamos los siguiente colores:
+
+    }
     class MyListener implements Button.OnClickListener {
 
         private int numBoton;
