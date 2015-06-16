@@ -1,3 +1,4 @@
+
 package butterflydevs.brainstudio;
 
 import android.app.AlertDialog;
@@ -36,26 +37,26 @@ import butterflydevs.brainstudio.extras.matrixHelper;
  * #################### Clase del juego 2 ##########################
  * ___________________________________________________________
  *
- * En este juego, se usan figuras para rellenar la matriz. El usuario debe recordar las figuras, y la aplicación
- * le preguntará por una de ellas, y debe de marcar todas las figuras del tipo marcado en la matriz.
+ * En este juego, se usan figuras para rellenar la matriz. El usuario debe recordar las figuras, y la aplicacion
+ * le preguntara por una de ellas, y debe de marcar todas las figuras del tipo marcado en la matriz.
  * En esencia, es muy parecido al juego 1, solo que ahora la matriz no debe ser de booleanos; debe ser una matriz
- * de enteros, y cada figura dentrá un entero asociado a ella.
+ * de enteros, y cada figura dentra un entero asociado a ella.
  *
- *  La codificación de las figuras es:
+ *  La codificacion de las figuras es:
  *  0 ==> Esa celda no tiene figura
  *  1 ==> Esa celda tiene un cuadrado
- *  2 ==> Esa celda tiene un triángulo
- *  3 ==> Esa celda tiene un córculo
+ *  2 ==> Esa celda tiene un triangulo
+ *  3 ==> Esa celda tiene un circulo
  *
  */
 public class Juego2niveln extends ActionBarActivity {
 
 
-    //Constantes que definen el tamaño del grid
+    //Constantes que definen el tamano del grid
     private int numFilas = 6;
     private int numColumnas = 4;
 
-    //Variables de elementos visuales que necesitan referenciación
+    //Variables de elementos visuales que necesitan referenciacion
     private RoundCornerProgressBar barraProgreso;
     private int progress2 = 100;
 
@@ -67,10 +68,10 @@ public class Juego2niveln extends ActionBarActivity {
 
     //Matrices usadas en el juego:
 
-        //Matriz aleatoria con el número de celdas a adescubrir creada por el matrixHelper
-        private boolean matrizJugada[];
-        //Matriz que se inicializa a 0
-        private int matrizRespuesta[];
+    //Matriz aleatoria con el numero de celdas a adescubrir creada por el matrixHelper
+    private boolean matrizJugada[];
+    //Matriz que se inicializa a 0
+    private int matrizRespuesta[];
 
 
     private int numCeldasActivadas = 0;
@@ -94,9 +95,9 @@ public class Juego2niveln extends ActionBarActivity {
     private int level;
 
 
-    //Variables para la configuración del grid de botones en tiempo de ejecución
+    //Variables para la configuracion del grid de botones en tiempo de ejecucion
 
-    //El tamaño de los botones, usado para el alto y el ancho.
+    //El tamanio de los botones, usado para el alto y el ancho.
     private int tamButtons = 120;
 
     //Para referenciar el layout grande donde van todos los layout que componen las filas
@@ -139,34 +140,34 @@ public class Juego2niveln extends ActionBarActivity {
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
-        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        //Con esta hacemos que la barra de estado del telefono no se vea y la actividad sea a pantalla completa.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         colores= getResources().getStringArray(R.array.colores);
 
         //Obtenemos los datos que se le pasa a la actividad.
         intent=getIntent();
-        //Obtenemos la información del intent que nos evía la actividad que nos crea.
+        //Obtenemos la informacion del intent que nos evia la actividad que nos crea.
         level=intent.getIntExtra("nivel",0);
 
         System.out.println("recibiod de la actividad llamante: "+level);
         ajustarNivel(level);
 
 
-        //Cargamos el fichero que define la animación 1
+        //Cargamos el fichero que define la animacion 1
         animacion1 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
         //Especificamos el comportamiento al empezar y al finalizar
         animacion1.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                System.out.println("La animación empieza");
+                System.out.println("La animacion empieza");
                 barraProgreso.setProgress(100f);
                 updateProgressTwoColor(100f);
 
 
             }
 
-            //Especificamos que ocurre cuando la animación1 termina
+            //Especificamos que ocurre cuando la animacion1 termina
             @Override
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
@@ -322,7 +323,7 @@ public class Juego2niveln extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2niveln.this, Juego1.class);
+                        Intent intent = new Intent(Juego2niveln.this, Juego2.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
