@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.github.premnirmal.textcounter.CounterView;
@@ -177,7 +178,7 @@ public class Juego2niveln extends ActionBarActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
-                //Cuando la animación 1 termina volvemos todos los botones transparentes.
+                //Cuando la animaciï¿½n 1 termina volvemos todos los botones transparentes.
                 for (int i = 0; i < numFilas * numColumnas; i++)
                     botones[i].setBackgroundColor(Color.TRANSPARENT);
 
@@ -194,14 +195,14 @@ public class Juego2niveln extends ActionBarActivity {
             }
         });
 
-        //Cargamos el fichero que define la animación 2, que se lanza al acabar la animación 1
+        //Cargamos el fichero que define la animaciï¿½n 2, que se lanza al acabar la animaciï¿½n 1
         animacion2 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12_2);
         //Especificamos el comportamiento al empezar y al finalizar
         animacion2.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                System.out.println("La animación empieza");
-                //En la animación 2 volvemos todos los botones grises cuando empieza.
+                System.out.println("La animaciï¿½n empieza");
+                //En la animaciï¿½n 2 volvemos todos los botones grises cuando empieza.
                 for (int i = 0; i < numFilas * numColumnas; i++)
                     botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
             }
@@ -209,7 +210,7 @@ public class Juego2niveln extends ActionBarActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
-                //Cuando la segunda animación termina el tiempo comienza a correr.
+                //Cuando la segunda animaciï¿½n termina el tiempo comienza a correr.
                 countDownTimer.start();
                 //countDownTimer.
             }
@@ -247,7 +248,7 @@ public class Juego2niveln extends ActionBarActivity {
                 //updateProgressTwoColor();
 
                 finalizarPartida();
-                //Si el mensaje anterior queda ahí se añade muchisimas veces la puntuación otenida.
+                //Si el mensaje anterior queda ahï¿½ se aï¿½ade muchisimas veces la puntuaciï¿½n otenida.
 
 
             }
@@ -291,16 +292,16 @@ public class Juego2niveln extends ActionBarActivity {
 
         //Asociamos el layout principal
         layoutGridBotones = (LinearLayout) findViewById(R.id.gridBotones);
-        //Le especificamos una horientación
+        //Le especificamos una horientaciï¿½n
         layoutGridBotones.setOrientation(LinearLayout.VERTICAL);
 
 
-        //Añadimos todos los layout de filas al layout principal
+        //Aï¿½adimos todos los layout de filas al layout principal
         for (int i = 0; i < numFilas; i++)
             layoutGridBotones.addView(filasLinearLayout[i]);
 
 
-        //Añadimos un boto de prueba
+        //Aï¿½adimos un boto de prueba
         //filasLinearLayout[0].addView(botones[0]);
         //filasLinearLayout[1].addView(botones[1]);
 
@@ -314,7 +315,7 @@ public class Juego2niveln extends ActionBarActivity {
             }
 
 
-        //Configuramos el comportamiento del grid de botones con un Listener específico.
+        //Configuramos el comportamiento del grid de botones con un Listener especï¿½fico.
         for (int i = 0; i < numFilas * numColumnas; i++) {
             System.out.println("Boton: " + i);
             botones[i].setOnClickListener(new MyListener(i));
@@ -338,10 +339,34 @@ public class Juego2niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String mensaje;
+                        switch(figura_a_preguntar){
+                            case CIRCULO: mensaje="Circulo";break;
+                            case TRIANGULO: mensaje="Triangulo";break;
+                            default: mensaje="Cuadrado";break;
+                        }
                         //Creamos el Intent
                         // Intent intent = new Intent(JuegoGrid12.this, Help.class);
                         //Iniciamos la nueva actividad
                         // startActivity(intent);
+                        /*
+                        String mensaje;
+                        switch(figura_a_preguntar){
+                            case CIRCULO: mensaje="Circulo";break;
+                            case TRIANGULO: mensaje="Triangulo";break;
+                            default: mensaje="Cuadrado";break;
+                        }
+                        new AlertDialog.Builder(this)
+                                .setTitle("Figura")
+                                .setMessage(mensaje)
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();*/
+                        Toast.makeText(getApplicationContext(), mensaje,
+                                Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -350,15 +375,15 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método usado para ajustar el nivel del juego. Recibe un nivel como parámetro (1,2, o 3) y ajusta
-     * las matrices del tablero y el tamaño de los botones para ese nivel
+     * Mï¿½todo usado para ajustar el nivel del juego. Recibe un nivel como parï¿½metro (1,2, o 3) y ajusta
+     * las matrices del tablero y el tamaï¿½o de los botones para ese nivel
      *
      * @param nivel ==> el nivel de tablero (1,2 o 3) que se debe preparar
      */
     private void ajustarNivel(int nivel){
         if(level==1){
 
-            //1º Establecemos el tamaño del grid
+            //1ï¿½ Establecemos el tamaï¿½o del grid
 
             numFilas=4;
             numColumnas=3;
@@ -370,16 +395,16 @@ public class Juego2niveln extends ActionBarActivity {
             for(int i=0; i<numFilas*numColumnas; i++)
                 matrizRespuesta[i]=0;
 
-            //2º Establecemos el número máximo de celdas a preguntar
+            //2ï¿½ Establecemos el nï¿½mero mï¿½ximo de celdas a preguntar
 
             numMaximoCeldas=6;
 
-            //3º Ajustar el tamaño de los botones
+            //3ï¿½ Ajustar el tamaï¿½o de los botones
             tamButtons = 150;
 
         }else if(level==2){
 
-            //1º Establecemos el tamaño del grid
+            //1ï¿½ Establecemos el tamaï¿½o del grid
 
             numFilas=6;
             numColumnas=4;
@@ -391,15 +416,15 @@ public class Juego2niveln extends ActionBarActivity {
             for(int i=0; i<numFilas*numColumnas; i++)
                 matrizRespuesta[i]=0;
 
-            //2º Establecemos el número máximo de celdas a preguntar
+            //2ï¿½ Establecemos el nï¿½mero mï¿½ximo de celdas a preguntar
 
             numMaximoCeldas=12;
 
-            //3º Ajustar el tamaño de los botones
+            //3ï¿½ Ajustar el tamaï¿½o de los botones
             tamButtons = 110;
 
         }else if(level==3){
-            //1º Establecemos el tamaño del grid
+            //1ï¿½ Establecemos el tamaï¿½o del grid
 
             numFilas=8;
             numColumnas=5;
@@ -411,10 +436,10 @@ public class Juego2niveln extends ActionBarActivity {
             for(int i=0; i<numFilas*numColumnas; i++)
                 matrizRespuesta[i]=0;
 
-            //2º Establecemos el número máximo de celdas a preguntar
+            //2ï¿½ Establecemos el nï¿½mero mï¿½ximo de celdas a preguntar
             numMaximoCeldas=20;
 
-            //3º Ajustar el tamaño de los botones
+            //3ï¿½ Ajustar el tamaï¿½o de los botones
             tamButtons = 80;
 
 
@@ -423,8 +448,8 @@ public class Juego2niveln extends ActionBarActivity {
 
 
     /**
-     * Método usado para actualizar el progreso de la barra de tiempo durante el juego. Recibe el parámetro tiempo,
-     * y si es menor de 2 segundos colorea la barra de rojo, entre 2 y 6 e amarillo, y más de 6 verde.
+     * Mï¿½todo usado para actualizar el progreso de la barra de tiempo durante el juego. Recibe el parï¿½metro tiempo,
+     * y si es menor de 2 segundos colorea la barra de rojo, entre 2 y 6 e amarillo, y mï¿½s de 6 verde.
      *
      * @param time ==> Tiempo que falta hasta acabar el juego
      */
@@ -451,7 +476,7 @@ public class Juego2niveln extends ActionBarActivity {
     public void mensajeFin(){
         new AlertDialog.Builder(this)
                 .setTitle("YOU ARE DEAD")
-                .setMessage("Se te acabó el tiempo!")
+                .setMessage("Se te acabï¿½ el tiempo!")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
@@ -470,8 +495,8 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método para asociar los elementos creados en las funciones anteriores a elementos visibles en la vista
-     * de la aplicación.
+     * Mï¿½todo para asociar los elementos creados en las funciones anteriores a elementos visibles en la vista
+     * de la aplicaciï¿½n.
      */
     public void asociarElementosVista(){
 
@@ -513,10 +538,10 @@ public class Juego2niveln extends ActionBarActivity {
         super.onStart();
 
 
-        //1º Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
+        //1ï¿½ Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
         matrizJugada = matrixHelper.obtenerMatrizJugada_juego2(numCeldas, numFilas, numColumnas);
 
-        //2º Ponemos las figuras en los botones
+        //2ï¿½ Ponemos las figuras en los botones
         for (int i = 0; i < numFilas * numColumnas; i++)
             switch(matrizJugada[i]){
                 case TRIANGULO: botones[i].setBackgroundResource(R.drawable.triangulo); break;
@@ -525,10 +550,10 @@ public class Juego2niveln extends ActionBarActivity {
                 default: botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
             }
 
-        //3º Con los botones configurados como la matriz llamamos a animarGrid para que anime la visualización
+        //3ï¿½ Con los botones configurados como la matriz llamamos a animarGrid para que anime la visualizaciï¿½n
         animarGrid();
 
-        //4º Seleccionamos una figura aleatoria a preguntar al usuario, y la mostramos
+        //4ï¿½ Seleccionamos una figura aleatoria a preguntar al usuario, y la mostramos
 
         obtenerYmostrarFigura();
     }
@@ -549,37 +574,22 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método que calcula una figura a preguntar aleatoriamente y la muestra al usuario.
+     * Mï¿½todo que calcula una figura a preguntar aleatoriamente y la muestra al usuario.
      */
     public void obtenerYmostrarFigura(){
         //Generamos la figura aleatoriamente
         Random rnd = new Random();
-        figura_a_preguntar = rnd.nextInt(3) +1; // Nçumero aleatorio entre 1 y 3 inclusive
+        figura_a_preguntar = rnd.nextInt(3) +1; // Nï¿½umero aleatorio entre 1 y 3 inclusive
 
         //Preguntamos al usuario por la figura escogida
 
-        String mensaje;
-        switch(figura_a_preguntar){
-            case CIRCULO: mensaje="Circulo";break;
-            case TRIANGULO: mensaje="Triangulo";break;
-            default: mensaje="Cuadrado";break;
-        }
-        new AlertDialog.Builder(this)
-                .setTitle("Figura")
-                .setMessage(mensaje)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
     /**
-     * Método usado para calcular la puntuación de la jugada.
-     * Tiene en cuenta el tiempo que quedaba restante para finalizar la partida (a más tiempo, más puntuación),y
-     * el número de celdas que el usuario ha acertado.
+     * Mï¿½todo usado para calcular la puntuaciï¿½n de la jugada.
+     * Tiene en cuenta el tiempo que quedaba restante para finalizar la partida (a mï¿½s tiempo, mï¿½s puntuaciï¿½n),y
+     * el nï¿½mero de celdas que el usuario ha acertado.
      *
-     * Modifica la variable de clase "puntuación"
+     * Modifica la variable de clase "puntuaciï¿½n"
      */
     public void calculaPuntuacion() {
         System.out.println("Tiempo al acabar: " + (float) timeNow / 1000);
@@ -599,10 +609,10 @@ public class Juego2niveln extends ActionBarActivity {
 
         counterView.setEndValue(puntuacion);
         counterView.start();
-        System.out.println("Puntuacón : " + puntuacion);
+        System.out.println("Puntuacï¿½n : " + puntuacion);
 
 
-        //Ponemos la puntuación en pantalla
+        //Ponemos la puntuaciï¿½n en pantalla
         //textPuntos.setText(Float.toString(puntuacion));
 
 
@@ -611,7 +621,7 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método usado para definir nuevos colores de celdas marcadas y de
+     * Mï¿½todo usado para definir nuevos colores de celdas marcadas y de
      */
     public void nuevosColores(){
 
@@ -628,7 +638,7 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método para calcular el porcentaje superado
+     * Mï¿½todo para calcular el porcentaje superado
      *
      * @return porcentaje superado del nivel
      */
@@ -657,30 +667,30 @@ public class Juego2niveln extends ActionBarActivity {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         /*
-        Realizamos la insercción en la base de datos.
-        --> Estamos haciendo un redondeo de la puntuación (esto hay que modificarlo)
+        Realizamos la insercciï¿½n en la base de datos.
+        --> Estamos haciendo un redondeo de la puntuaciï¿½n (esto hay que modificarlo)
          */
 
         //System.out.println("GRabando "+(int)puntuacion+" puntos "+calculaPorcentaje()+"%");
         db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level);
     }
     /**
-     * Función para animar el grid al entrar en la actívity
+     * Funciï¿½n para animar el grid al entrar en la actï¿½vity
      */
     public void animarGrid() {
-        //Cargamos la animación "animacion1" a cada uno de los botones que componen el grid.
+        //Cargamos la animaciï¿½n "animacion1" a cada uno de los botones que componen el grid.
         for (int i = 0; i < numFilas * numColumnas; i++)
             botones[i].startAnimation(animacion1);
     }
 
     /**
-     * Método para salir de un nivel al terminar la partida.
+     * Mï¿½todo para salir de un nivel al terminar la partida.
      */
     public void salirNivel() {
 
         //Avisar de que se ha acabado el juego y salir al panel de niveles.
 
-        //¿Mostrar un fragment con la puntuación y y el porcentaje completado?
+        //ï¿½Mostrar un fragment con la puntuaciï¿½n y y el porcentaje completado?
 
         new AlertDialog.Builder(this)
                 .setTitle("TERMINADO")
@@ -700,7 +710,7 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * Método que prepara la siguiente jugada
+     * Mï¿½todo que prepara la siguiente jugada
      */
     public void siguienteJugada() {
 
@@ -713,7 +723,7 @@ public class Juego2niveln extends ActionBarActivity {
         //Si se ha llegado al maximo numero de repeticiones para este numero de celdas se aumenta el numero de celdas.
 
 
-        System.out.println("##JUGADA## Celdas: " + numCeldas + "  Repeticiones: " + numRepeticionActual + " de máx " + numRepeticionesMaximas);
+        System.out.println("##JUGADA## Celdas: " + numCeldas + "  Repeticiones: " + numRepeticionActual + " de mï¿½x " + numRepeticionesMaximas);
 
         if (numRepeticionActual == numRepeticionesMaximas) {
             System.out.println("pasando a 3 celdas");
@@ -769,11 +779,11 @@ public class Juego2niveln extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            //Acciones a realizar al pulsar sobre un botón:
+            //Acciones a realizar al pulsar sobre un botï¿½n:
 
 
 
-                /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
+                /*1ï¿½ Cambiamos de color el boton en funciï¿½n de su estado y por consiguiente la matriz del jugador haciendo
                 true la celda en caso de que estuviera a false y viceversa.
                  */
             if (matrizRespuesta[numBoton] == 0) {
@@ -792,10 +802,10 @@ public class Juego2niveln extends ActionBarActivity {
                 numCeldasActivadas--;
             }
 
-            //2º Comparamos ambas matrices
+            //2ï¿½ Comparamos ambas matrices
 
                     /*
-                    Lo ideal sería llevar el control del número de celdas pulsadas para no realizar comprobaciones
+                    Lo ideal serï¿½a llevar el control del nï¿½mero de celdas pulsadas para no realizar comprobaciones
                     antes de tiempo.
                      */
 
@@ -807,14 +817,14 @@ public class Juego2niveln extends ActionBarActivity {
                 if (matrixHelper.compruebaMatrices_juego2(matrizJugada, matrizRespuesta, numFilas, numColumnas,figura_a_preguntar)) {
                     System.out.println("SUCESS");
 
-                    //Aumentamos el número de grids que el jugador a superado.
+                    //Aumentamos el nï¿½mero de grids que el jugador a superado.
                     numGridsJugados++;
 
                     barraProgreso.setProgress(100f);
 
                     puedeMostrarBarra=false;
 
-                    //Se calcula la puntuación obtenida
+                    //Se calcula la puntuaciï¿½n obtenida
                     calculaPuntuacion();
                     //Se pasa a la siguiente jugada
                     siguienteJugada();
