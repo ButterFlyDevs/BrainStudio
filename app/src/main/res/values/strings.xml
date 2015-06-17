@@ -39,5 +39,6 @@
     <string name="increase"><![CDATA[>]]></string>
     <string name="zero">0</string>
         <string name="title_activity_juegos">juegos</string>
+        <string name="title_activity_juego2_color_memo">Juego2ColorMemo</string>
 
 </resources>

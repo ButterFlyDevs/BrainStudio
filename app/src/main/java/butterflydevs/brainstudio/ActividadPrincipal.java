@@ -35,7 +35,7 @@ public class ActividadPrincipal extends Activity {
 
     private Runnable r;
 
-    private Button botonBrain;
+    private Button botonBrain, buttonUser;
 
     private TextView customFont, customFont2;
 
@@ -84,6 +84,7 @@ public class ActividadPrincipal extends Activity {
 
         colors = getResources().getStringArray(R.array.colors);
         botonBrain = (Button)findViewById(R.id.button);
+        buttonUser=(Button)findViewById(R.id.buttonUser);
 
         botonBrain.startAnimation(loopParpadeante);
 
@@ -95,6 +96,18 @@ public class ActividadPrincipal extends Activity {
                     public void onClick(View v) {
                         //Creamos el Intent
                         Intent intent = new Intent(ActividadPrincipal.this, juegos.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        buttonUser.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(ActividadPrincipal.this, Juego2ColorMemo.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

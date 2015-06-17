@@ -47,6 +47,10 @@
             android:name=".juegos"
             android:label="@string/title_activity_juegos" >
         </activity>
+        <activity
+            android:name=".Juego2ColorMemo"
+            android:label="@string/title_activity_juego2_color_memo" >
+        </activity>
     </application>
 
 </manifest>

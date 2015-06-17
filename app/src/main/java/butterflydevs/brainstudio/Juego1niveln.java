@@ -285,6 +285,8 @@ public class Juego1niveln extends ActionBarActivity {
 
         //filasLinearLayout es un vector de filas!
 
+
+        //Añadimos los botones a los layouts.
         int numBoton = 0;
         for (int i = 0; i < numFilas; i++) //i sera el numero de fila
             for (int j = 0; j < numColumnas; j++) {
