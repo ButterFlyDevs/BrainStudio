@@ -186,7 +186,7 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",1);
@@ -206,7 +206,7 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",2);
@@ -224,7 +224,7 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",3);
@@ -245,7 +245,7 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, juegos.class);
+                        Intent intent = new Intent(Juego2.this, juegos.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -296,7 +296,7 @@ public class Juego2 extends ActionBarActivity {
         //Si pulsamos el botón back nos devuelve a la pantalla principal!.
         if(keyCode==KeyEvent.KEYCODE_BACK){
 
-            Intent intent = new Intent(Juego1.this, ActividadPrincipal.class);
+            Intent intent = new Intent(Juego2.this, ActividadPrincipal.class);
             startActivity(intent);
 
             //Aplicacion de transicion animada entre activities:

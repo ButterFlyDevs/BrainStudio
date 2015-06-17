@@ -52,6 +52,14 @@ import butterflydevs.brainstudio.extras.matrixHelper;
 public class Juego2niveln extends ActionBarActivity {
 
 
+    //Codigos de las figuras
+    public static final int NOFIGURA=0;
+    public static final int CUADRADO=1;
+    public static final int TRIANGULO =2;
+    public static final int CIRCULO=3;
+    //Variable de la figura a preguntar al usuario
+    private int figura_a_preguntar;
+
     //Constantes que definen el tamano del grid
     private int numFilas = 6;
     private int numColumnas = 4;
@@ -69,7 +77,7 @@ public class Juego2niveln extends ActionBarActivity {
     //Matrices usadas en el juego:
 
     //Matriz aleatoria con el numero de celdas a adescubrir creada por el matrixHelper
-    private boolean matrizJugada[];
+    private int matrizJugada[];
     //Matriz que se inicializa a 0
     private int matrizRespuesta[];
 
@@ -163,8 +171,6 @@ public class Juego2niveln extends ActionBarActivity {
                 System.out.println("La animacion empieza");
                 barraProgreso.setProgress(100f);
                 updateProgressTwoColor(100f);
-
-
             }
 
             //Especificamos que ocurre cuando la animacion1 termina
@@ -186,8 +192,6 @@ public class Juego2niveln extends ActionBarActivity {
             public void onAnimationRepeat(Animation animation) {
 
             }
-
-
         });
 
         //Cargamos el fichero que define la animación 2, que se lanza al acabar la animación 1
@@ -455,7 +459,7 @@ public class Juego2niveln extends ActionBarActivity {
                         //TODO IMPLEMENTAR GRABAR DATOS BD
                         //grabarDatosBD();
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2niveln.this, Juego1.class);
+                        Intent intent = new Intent(Juego2niveln.this, Juego2.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 
@@ -505,6 +509,31 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        //1º Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
+        matrizJugada = matrixHelper.obtenerMatrizJugada_juego2(numCeldas, numFilas, numColumnas);
+
+        //2º Ponemos las figuras en los botones
+        for (int i = 0; i < numFilas * numColumnas; i++)
+            switch(matrizJugada[i]){
+                case TRIANGULO: botones[i].setBackgroundResource(R.drawable.triangulo); break;
+                case CIRCULO: botones[i].setBackgroundResource(R.drawable.circulo); break;
+                case CUADRADO: botones[i].setBackgroundResource(R.drawable.cuadrado);break;
+                default: botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
+            }
+
+        //3º Con los botones configurados como la matriz llamamos a animarGrid para que anime la visualización
+        animarGrid();
+
+        //4º Seleccionamos una figura aleatoria a preguntar al usuario, y la mostramos
+
+        obtenerYmostrarFigura();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -519,6 +548,32 @@ public class Juego2niveln extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Método que calcula una figura a preguntar aleatoriamente y la muestra al usuario.
+     */
+    public void obtenerYmostrarFigura(){
+        //Generamos la figura aleatoriamente
+        Random rnd = new Random();
+        figura_a_preguntar = rnd.nextInt(3) +1; // Nçumero aleatorio entre 1 y 3 inclusive
+
+        //Preguntamos al usuario por la figura escogida
+
+        String mensaje;
+        switch(figura_a_preguntar){
+            case CIRCULO: mensaje="Circulo";break;
+            case TRIANGULO: mensaje="Triangulo";break;
+            default: mensaje="Cuadrado";break;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("Figura")
+                .setMessage(mensaje)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
     /**
      * Método usado para calcular la puntuación de la jugada.
      * Tiene en cuenta el tiempo que quedaba restante para finalizar la partida (a más tiempo, más puntuación),y
@@ -635,7 +690,7 @@ public class Juego2niveln extends ActionBarActivity {
                         // continue with delete
                         grabarDatosBD();
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1niveln.this, Juego1.class);
+                        Intent intent = new Intent(Juego2niveln.this, Juego2.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -677,20 +732,22 @@ public class Juego2niveln extends ActionBarActivity {
         //Cuando se acierta se reinicia el proceso.
 
         for (int i = 0; i < numFilas * numColumnas; i++) {
-            matrizJugada[i] = false;
-            matrizRespuesta[i] = false;
+            matrizJugada[i] = 0;
+            matrizRespuesta[i] = 0;
         }
         numCeldasActivadas = 0;
 
         //Obtenemos la matriz de la jugada que el jugador debe resolver
-        matrizJugada = matrixHelper.obtenerMatrizJugada(numCeldas, numFilas, numColumnas);
+        matrizJugada = matrixHelper.obtenerMatrizJugada_juego2(numCeldas, numFilas, numColumnas);
 
         //Seteamos el grid visual con la matriz obtenida.
         for (int i = 0; i < numFilas * numColumnas; i++)
-            if (matrizJugada[i] == true)
-                botones[i].setBackgroundColor(Color.parseColor(colores[colorMarcado]));
-            else
-                botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
+            switch(matrizJugada[i]){
+                case TRIANGULO: botones[i].setBackgroundResource(R.drawable.triangulo); break;
+                case CIRCULO: botones[i].setBackgroundResource(R.drawable.circulo); break;
+                case CUADRADO: botones[i].setBackgroundResource(R.drawable.cuadrado);break;
+                default: botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
+            }
 
         //Ilumina el grid
         animarGrid();
@@ -719,14 +776,19 @@ public class Juego2niveln extends ActionBarActivity {
                 /*1º Cambiamos de color el boton en función de su estado y por consiguiente la matriz del jugador haciendo
                 true la celda en caso de que estuviera a false y viceversa.
                  */
-            if (matrizRespuesta[numBoton] == false) {
+            if (matrizRespuesta[numBoton] == 0) {
                 //botones[numBoton].setBackgroundColor(getResources().getColor(R.color.kiwi));
-                botones[numBoton].setBackgroundColor(Color.parseColor(colores[colorMarcado]));
-                matrizRespuesta[numBoton] = true;
+                switch(figura_a_preguntar){
+                    case TRIANGULO: botones[numBoton].setBackgroundResource(R.drawable.triangulo); break;
+                    case CIRCULO: botones[numBoton].setBackgroundResource(R.drawable.circulo); break;
+                    case CUADRADO: botones[numBoton].setBackgroundResource(R.drawable.cuadrado);break;
+                    default: botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
+                }
+                matrizRespuesta[numBoton] = figura_a_preguntar;
                 numCeldasActivadas++;
             } else {
                 botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));
-                matrizRespuesta[numBoton] = false;
+                matrizRespuesta[numBoton] = 0;
                 numCeldasActivadas--;
             }
 
@@ -742,7 +804,7 @@ public class Juego2niveln extends ActionBarActivity {
                 System.out.println("Hay que comparar matrices");
 
                 //Se ha completado el grid
-                if (matrixHelper.compruebaMatrices(matrizJugada, matrizRespuesta, numFilas, numColumnas)) {
+                if (matrixHelper.compruebaMatrices_juego2(matrizJugada, matrizRespuesta, numFilas, numColumnas,figura_a_preguntar)) {
                     System.out.println("SUCESS");
 
                     //Aumentamos el número de grids que el jugador a superado.

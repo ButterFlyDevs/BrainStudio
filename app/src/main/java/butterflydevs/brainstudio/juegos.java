@@ -48,7 +48,7 @@ public class juegos extends Activity {
                 else if(itemPosition==1)
                 {
                     //TODO IMPLEMENTAR JUEGO2
-                    intent = new Intent(juegos.this,Juego2niveln.class);
+                    intent = new Intent(juegos.this,Juego2.class);
                     startActivity(intent);
                 }
             }
