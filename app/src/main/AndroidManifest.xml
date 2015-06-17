@@ -28,16 +28,8 @@
             android:label="@string/title_activity_ranking" >
         </activity>
         <activity
-            android:name=".JuegoGrid12"
-            android:label="@string/title_activity_juego_grid12" >
-        </activity>
-        <activity
             android:name=".Juego1niveln"
             android:label="@string/title_activity_juego_grid24" >
-        </activity>
-        <activity
-            android:name=".JuegoGrid40"
-            android:label="@string/title_activity_prueba" >
         </activity>
         <activity
             android:name=".eliminame"
@@ -50,6 +42,29 @@
         <activity
             android:name=".Juego2ColorMemo"
             android:label="@string/title_activity_juego2_color_memo" >
+        </activity>
+        <activity
+            android:name=".PruebasFacebook"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/title_activity_pruebas_facebook"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="Login Facebook" >
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".Juego2niveln"
+            android:label="@string/title_activity_juego2niveln" >
+        </activity>
+        <activity
+            android:name=".Juego2"
+            android:label="@string/title_activity_juego2" >
         </activity>
     </application>
 

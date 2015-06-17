@@ -125,4 +125,131 @@ public class matrixHelper {
     }
 
 
+    /**
+     * ####### FUNCIÓN RE-ADAPTADA PARA EL JUEGO2
+     *
+     * Esta es la función que se copiará en el código de AndroidStudio
+     * @param numCeldas El número de celdas a con las que jugar.
+     * @param numFilas El número de filas que tiene el grid de la jugada.
+     * @param numColumnas El número de columnas que tiene el grid de la jugada.
+     * @return La matriz (construida de forma aleatoria) que tendrá que adivinar el jugador.
+     */
+    public static int[] obtenerMatrizJugada_juego2(int numCeldas, int numFilas, int numColumnas) {
+
+
+        int tamGrid = numFilas * numColumnas;
+        //Creamos el vector que vamos a devolver:
+        int[] matrizEnteros = new int[tamGrid];
+
+        //Inicializamos el vector:
+        for (int i = 0; i < tamGrid; i++)
+            matrizEnteros[i] = 0;
+
+        //Array de enteros para evitar que se repitan números aleatorios
+        List<Integer> enteros = new ArrayList<>();
+        for (int i = 0; i < tamGrid; i++)
+            enteros.add(i);
+
+        ArrayList<Integer> finales_cuadrado = new ArrayList<>();
+        ArrayList<Integer> finales_circulo = new ArrayList<>();
+        ArrayList<Integer> finales_triangulo = new ArrayList<>();
+        //Ahora rellenamos todas las celdas con figuras.
+        Random aleatorio = new Random();
+        int seleccion, indice_seleccionado;
+
+        for(int i=0; i< tamGrid;i++){
+            //****************** Seleccionar cuadrado
+            indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
+            seleccion = enteros.get(indice_seleccionado);
+
+            //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
+            enteros.remove(indice_seleccionado);
+            //Añadimos el numero seleccionado al array de cuadrados
+            finales_cuadrado.add(seleccion);
+
+            //****************** Seleccionar circulo
+            indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
+            seleccion = enteros.get(indice_seleccionado);
+
+            //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
+            enteros.remove(indice_seleccionado);
+            //Añadimos el numero seleccionado al array de cuadrados
+            finales_circulo.add(seleccion);
+
+            //**************** Seleccionar triangulo
+            indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
+            seleccion = enteros.get(indice_seleccionado);
+
+            //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
+            enteros.remove(indice_seleccionado);
+            //Añadimos el numero seleccionado al array de cuadrados
+            finales_triangulo.add(seleccion);
+
+        }
+
+        //Tenemos todos los aleatorios seleccionados. Ahora hay que rellenar la matriz
+        /*
+            Recordemos:
+            Boton vacío =>0
+            Cuadrado => 1
+            Triangulo => 2
+            Circulo => 3
+         */
+        for(int i=0; i<finales_cuadrado.size();i++){
+            int indice = finales_cuadrado.get(i);
+            matrizEnteros[indice]=1;
+        }
+
+        for(int i=0; i<finales_circulo.size();i++){
+            int indice = finales_circulo.get(i);
+            matrizEnteros[indice]=3;
+        }
+
+        for(int i=0; i<finales_triangulo.size();i++){
+            int indice = finales_triangulo.get(i);
+            matrizEnteros[indice]=2;
+        }
+
+        return matrizEnteros;
+    }
+
+
+
+    public static boolean compruebaMatrices_juego2(int matrizOriginal[], int matrizJugador[], int numFilas, int numColumnas, int figura){
+
+        /*
+        El objetivo es comparar si las posiciones dadas por el jugador son las correctas para la figura seleccionada
+        */
+
+
+        boolean resultado=true;
+        int tamGrid=numFilas*numColumnas;
+
+        //Primero, hay que encontrar en qué posicion del vector están las figuras solución, y añadirlas a un ArayList
+        ArrayList<Integer> indices_solucion = new ArrayList<>();
+        for(int i=0; i< tamGrid;i++){
+            if(matrizOriginal[i]==figura)
+                indices_solucion.add(i);
+        }
+
+        //Tenemos los indices solución. Debemos encontrar ahora los indices que ha contestado el usuario
+        ArrayList<Integer> indices_contestados = new ArrayList<>();
+        for (int i =0; i< tamGrid;i++){
+            if(matrizJugador[i]==figura)
+                indices_contestados.add(i);
+        }
+
+        //Con los dos arrays de indices, comprobamos si son iguales (el jugador habría superado el nivel) o si son distintos
+
+        if(indices_contestados.size() != indices_solucion.size())
+            resultado=false;
+        else{
+            for(int i=0; i<indices_contestados.size() && resultado;i++){
+                if(!indices_solucion.contains(indices_contestados.get(i)))
+                    resultado=false;
+            }
+        }
+
+        return resultado;
+    }
 }

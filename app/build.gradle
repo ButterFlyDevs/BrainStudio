@@ -28,5 +28,6 @@ dependencies {
     compile 'com.github.premnirmal:TextCounter:1.1.0'
     compile 'com.akexorcist:RoundCornerProgressBar:1.2.0'
     compile 'com.github.lecho:hellocharts-library:1.5.5@aar'
+    compile project(':facebook');
 
 }

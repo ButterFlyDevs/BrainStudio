@@ -675,7 +675,7 @@ public class Juego1niveln extends ActionBarActivity {
         mensajeFin();
     }
 
-    public void mensajeFin(){
+    public void mensajeFin() {
         new AlertDialog.Builder(this)
                 .setTitle("YOU ARE DEAD")
                 .setMessage("Se te acabó el tiempo!")
