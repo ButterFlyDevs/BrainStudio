@@ -165,6 +165,7 @@ public class Juego2niveln extends ActionBarActivity {
 
         //Cargamos el fichero que define la animacion 1
         animacion1 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
+        animacion1.setDuration(6000);
         //Especificamos el comportamiento al empezar y al finalizar
         animacion1.setAnimationListener(new Animation.AnimationListener() {
             @Override
