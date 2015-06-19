@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -164,37 +165,41 @@ public class Juego2niveln extends ActionBarActivity {
 
 
         //Cargamos el fichero que define la animacion 1
-        animacion1 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12);
-        animacion1.setDuration(6000);
-        //Especificamos el comportamiento al empezar y al finalizar
-        animacion1.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                System.out.println("La animacion empieza");
-                barraProgreso.setProgress(100f);
-                updateProgressTwoColor(100f);
-            }
 
-            //Especificamos que ocurre cuando la animacion1 termina
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                System.out.println("La animacion acaba");
-                //Cuando la animaci�n 1 termina volvemos todos los botones transparentes.
-                for (int i = 0; i < numFilas * numColumnas; i++)
-                    botones[i].setBackgroundColor(Color.TRANSPARENT);
+                animacion1 = AnimationUtils.loadAnimation(Juego2niveln.this, R.anim.animacionbotongrid12);
+                animacion1.setDuration(6000);
+                //Especificamos el comportamiento al empezar y al finalizar
+                animacion1.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        System.out.println("La animacion empieza");
+                        barraProgreso.setProgress(100f);
+                        updateProgressTwoColor(100f);
+                    }
 
-                //Cuando la animacion 1 acaba se encarga de lanzar la animacion 2
-                for (int i = 0; i < numFilas * numColumnas; i++)
-                    botones[i].startAnimation(animacion2);
+                    //Especificamos que ocurre cuando la animacion1 termina
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        System.out.println("La animacion acaba");
+                        //Cuando la animaci�n 1 termina volvemos todos los botones transparentes.
+                        for (int i = 0; i < numFilas * numColumnas; i++)
+                            botones[i].setBackgroundColor(Color.TRANSPARENT);
 
-                puedeMostrarBarra=true;
-            }
+                        //Cuando la animacion 1 acaba se encarga de lanzar la animacion 2
+                        for (int i = 0; i < numFilas * numColumnas; i++)
+                            botones[i].startAnimation(animacion2);
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                        puedeMostrarBarra=true;
+                    }
 
-            }
-        });
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
+
 
         //Cargamos el fichero que define la animaci�n 2, que se lanza al acabar la animaci�n 1
         animacion2 = AnimationUtils.loadAnimation(this, R.anim.animacionbotongrid12_2);
@@ -679,6 +684,7 @@ public class Juego2niveln extends ActionBarActivity {
      * Funci�n para animar el grid al entrar en la act�vity
      */
     public void animarGrid() {
+
         //Cargamos la animaci�n "animacion1" a cada uno de los botones que componen el grid.
         for (int i = 0; i < numFilas * numColumnas; i++)
             botones[i].startAnimation(animacion1);
@@ -841,4 +847,8 @@ public class Juego2niveln extends ActionBarActivity {
         }
 
     }
+/*
+    class Animaciones extends AsyncTask<String, void, AnimationUtils>{
+
+    }*/
 }
