@@ -186,7 +186,9 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
+
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
+
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",1);
@@ -206,7 +208,9 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
+
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
+
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",2);
@@ -224,7 +228,9 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
+
+                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
+
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",3);

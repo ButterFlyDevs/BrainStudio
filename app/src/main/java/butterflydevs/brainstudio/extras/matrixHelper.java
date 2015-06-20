@@ -155,9 +155,9 @@ public class matrixHelper {
         ArrayList<Integer> finales_triangulo = new ArrayList<>();
         //Ahora rellenamos todas las celdas con figuras.
         Random aleatorio = new Random();
-        int seleccion, indice_seleccionado;
+        int seleccion, indice_seleccionado, celdas_rellenadas=0;
 
-        for(int i=0; i< tamGrid;i++){
+        while(celdas_rellenadas<tamGrid){
             //****************** Seleccionar cuadrado
             indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
             seleccion = enteros.get(indice_seleccionado);
@@ -166,6 +166,7 @@ public class matrixHelper {
             enteros.remove(indice_seleccionado);
             //Añadimos el numero seleccionado al array de cuadrados
             finales_cuadrado.add(seleccion);
+            celdas_rellenadas++;
 
             //****************** Seleccionar circulo
             indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
@@ -175,6 +176,7 @@ public class matrixHelper {
             enteros.remove(indice_seleccionado);
             //Añadimos el numero seleccionado al array de cuadrados
             finales_circulo.add(seleccion);
+            celdas_rellenadas++;
 
             //**************** Seleccionar triangulo
             indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
@@ -184,7 +186,7 @@ public class matrixHelper {
             enteros.remove(indice_seleccionado);
             //Añadimos el numero seleccionado al array de cuadrados
             finales_triangulo.add(seleccion);
-
+            celdas_rellenadas++;
         }
 
         //Tenemos todos los aleatorios seleccionados. Ahora hay que rellenar la matriz
