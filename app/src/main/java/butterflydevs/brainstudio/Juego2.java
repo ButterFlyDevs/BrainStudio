@@ -46,7 +46,7 @@ public class Juego2 extends ActionBarActivity {
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
-        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        //Con esta hacemos que la barra de estado del telï¿½fono no se vea y la actividad sea a pantalla completa.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
@@ -80,8 +80,8 @@ public class Juego2 extends ActionBarActivity {
 
 
         /**
-         * Aquí podemos hacer dos cosas:
-         * A: procesar la lista nosotros para sacar lo que queremos (en este caso la jugada de mayor puntuación del usuario)
+         * Aquï¿½ podemos hacer dos cosas:
+         * A: procesar la lista nosotros para sacar lo que queremos (en este caso la jugada de mayor puntuaciï¿½n del usuario)
          * B: hacer un consulta especial que nos la devuelva
          */
 
@@ -186,12 +186,12 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",1);
 
-                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        //Introducimos la informacion en el intent para enviarsela a la actï¿½vity.
                         intent.putExtras(bundle);
 
                         //Iniciamos la nueva actividad
@@ -206,12 +206,12 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",2);
 
-                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        //Introducimos la informacion en el intent para enviarsela a la actï¿½vity.
                         intent.putExtras(bundle);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
@@ -224,12 +224,12 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, Juego1niveln.class);
+                        Intent intent = new Intent(Juego2.this, Juego1niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",3);
 
-                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        //Introducimos la informacion en el intent para enviarsela a la actï¿½vity.
                         intent.putExtras(bundle);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
@@ -245,7 +245,7 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego1.this, juegos.class);
+                        Intent intent = new Intent(Juego2.this, juegos.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -270,9 +270,9 @@ public class Juego2 extends ActionBarActivity {
     public int calculaPorcentaje(int nivel, int puntuacion){
 
         /*
-        Tanto el 1200 como el 4620 son las puntuaciones máximas que se podrían sacar en ambos niveles
-        si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podrá conseguir
-        tanta puntuación pero obviamente podrá acercarse si es muy rápido contestando y no se equivoca.
+        Tanto el 1200 como el 4620 son las puntuaciones mï¿½ximas que se podrï¿½an sacar en ambos niveles
+        si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podrï¿½ conseguir
+        tanta puntuaciï¿½n pero obviamente podrï¿½ acercarse si es muy rï¿½pido contestando y no se equivoca.
          */
 
         int resultado=0;
@@ -285,7 +285,7 @@ public class Juego2 extends ActionBarActivity {
 
 
     /**
-     * Sobrecarga para el control de los botones físicos del terminal.
+     * Sobrecarga para el control de los botones fï¿½sicos del terminal.
      * @param keyCode
      * @param event
      * @return
@@ -293,10 +293,10 @@ public class Juego2 extends ActionBarActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
 
-        //Si pulsamos el botón back nos devuelve a la pantalla principal!.
+        //Si pulsamos el botï¿½n back nos devuelve a la pantalla principal!.
         if(keyCode==KeyEvent.KEYCODE_BACK){
 
-            Intent intent = new Intent(Juego1.this, ActividadPrincipal.class);
+            Intent intent = new Intent(Juego2.this, ActividadPrincipal.class);
             startActivity(intent);
 
             //Aplicacion de transicion animada entre activities:

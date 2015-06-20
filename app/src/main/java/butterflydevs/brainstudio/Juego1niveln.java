@@ -1,3 +1,21 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. Fernández Sánchez
+*/
+
 package butterflydevs.brainstudio;
 
 import android.app.AlertDialog;
@@ -8,6 +26,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +49,9 @@ import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
-
+/**
+ * Clase para el Juego1 en todos sus niveles. Actualmente sólo 3.
+ */
 public class Juego1niveln extends ActionBarActivity {
 
     //Constantes que definen el tamaño del grid
@@ -67,11 +88,12 @@ public class Juego1niveln extends ActionBarActivity {
 
     private int numCeldas = 2;
 
+
     //Variables para el reloj:
-    private CountDownTimer countDownTimer;
-    private CounterView counterView;
-    private int time;
-    private float timeNow;
+        private CountDownTimer countDownTimer;
+        private CounterView counterView;
+        private int time;
+        private float timeNow;
 
     private int level;
 
@@ -202,9 +224,18 @@ public class Juego1niveln extends ActionBarActivity {
         });
 
 
+        /**
+         * Error grave para resolver:
+         *
+         * Cuando el temporizador arranca queda funcionando aunque nos salgamos de la actividad porque pulsemos atrás
+         * o porque nos salgamos por cualquier otro motivo. El problema está en que cuando el tiempo acaba (el
+         * tiempo está ejecutándose en otra hebra se intenta destruir y no puede porque ha perdido la referencia
+         * y devuelve un error muy feo.
+         */
+
 
         //Configuracion del temporizador.
-        //Le pasamos al constructor la variable tiempo
+        //Le pasamos al constructor la variable tiempo para ajustarlo a nuestro gusto.
         countDownTimer = new CountDownTimer(time*1000, 1000) {
 
             //Lo que hacemos en cada tick del reloj.
@@ -307,10 +338,16 @@ public class Juego1niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        //Para evitar errores con la variable de tiempo lo paramos:
+                        countDownTimer.cancel();
+
+
                         //Creamos el Intent
                         Intent intent = new Intent(Juego1niveln.this, Juego1.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
+
                     }
                 }
         );
@@ -485,28 +522,34 @@ public class Juego1niveln extends ActionBarActivity {
         animarGrid();
     }
 
+    /**
+     * Programación personalizada del comportamiento de los botones físicos del terminal.
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_prueba, menu);
-        return true;
-    }
+    public boolean onKeyDown(int keyCode, KeyEvent event){
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //Si pulsamos el botón back nos devuelve a la pantalla principal!:
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+
+            //Al pulsar sobre el botón atrás físico del terminal cancelamos el tiempo para evitar problemas
+            //De referencia después.
+            countDownTimer.cancel();
+
+            //Despues de parar el tiempo salimos a la pantalla aterior.
+            Intent intent = new Intent(Juego1niveln.this, Juego1.class);
+            //Iniciamos la nueva actividad
+            startActivity(intent);
+
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        return super.onKeyDown(keyCode, event);
 
+    }
 
     public void siguienteJugada() {
 

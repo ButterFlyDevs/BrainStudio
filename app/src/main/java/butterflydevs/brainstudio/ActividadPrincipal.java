@@ -20,11 +20,6 @@ import android.widget.TextView;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
 
-import java.util.List;
-
-import butterflydevs.brainstudio.extras.Jugada;
-import butterflydevs.brainstudio.extras.MySQLiteHelper;
-
 public class ActividadPrincipal extends Activity {
 
     private CircularCounter meter, meter2;
@@ -107,7 +102,7 @@ public class ActividadPrincipal extends Activity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, Juego2ColorMemo.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, Juego4.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

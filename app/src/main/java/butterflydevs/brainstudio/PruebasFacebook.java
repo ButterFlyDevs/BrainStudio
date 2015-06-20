@@ -345,7 +345,7 @@ public class PruebasFacebook extends FragmentActivity {
     }
 
     private void postPhoto() {
-        Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.icon);
+        Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.circulo);
         if (canPresentShareDialogWithPhotos) {
             FacebookDialog shareDialog = createShareDialogBuilderForPhoto(image).build();
             uiHelper.trackPendingDialogCall(shareDialog.present());

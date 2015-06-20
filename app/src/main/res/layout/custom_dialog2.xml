@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Acceso Restringido"
+        android:id="@+id/textoInfo"
+        android:textIsSelectable="false"
+        android:textSize="25dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="108dp"
+            android:layout_height="103dp"
+            android:id="@+id/imageMedalla"
+            android:src="@drawable/lock"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="205dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Aún no has conseguido suficientes puntos para abrir este nivel."
+                android:id="@+id/textView9"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:textSize="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="0.61" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/botonEntendido"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Entendido"
+        android:background="@color/bright_foreground_material_dark"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

@@ -2,10 +2,7 @@ package butterflydevs.brainstudio;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -14,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,7 +19,6 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Puede funcionar de dos maneras, tendrems que elegir una:
@@ -35,7 +30,7 @@ import java.util.Random;
  * En principio vamos a optar por la opción B.
  *
  */
-public class Juego2ColorMemo extends ActionBarActivity {
+public class Juego3ColorMemo extends ActionBarActivity {
 
 
 
@@ -74,7 +69,7 @@ public class Juego2ColorMemo extends ActionBarActivity {
     Animation animacion1;
 
 
-    public  Juego2ColorMemo(){
+    public Juego3ColorMemo(){
         //Numero de botones del grid, a cambiar de forma dinamica mas adelante.
         numButtons=2;
 
@@ -160,7 +155,7 @@ public class Juego2ColorMemo extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2ColorMemo.this, Juego1.class);
+                        Intent intent = new Intent(Juego3ColorMemo.this, Juego1.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

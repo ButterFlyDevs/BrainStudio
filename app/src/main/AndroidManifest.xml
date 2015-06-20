@@ -21,7 +21,8 @@
         </activity>
         <activity
             android:name=".Juego1"
-            android:label="@string/title_activity_niveles" >
+            android:label="@string/title_activity_niveles"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Ranking"
@@ -29,7 +30,8 @@
         </activity>
         <activity
             android:name=".Juego1niveln"
-            android:label="@string/title_activity_juego_grid24" >
+            android:label="@string/title_activity_juego_grid24"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".eliminame"
@@ -37,10 +39,11 @@
         </activity>
         <activity
             android:name=".juegos"
-            android:label="@string/title_activity_juegos" >
+            android:label="@string/title_activity_juegos"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Juego2ColorMemo"
+            android:name=".Juego3ColorMemo"
             android:label="@string/title_activity_juego2_color_memo" >
         </activity>
         <activity
@@ -65,6 +68,10 @@
         <activity
             android:name=".Juego2"
             android:label="@string/title_activity_juego2" >
+        </activity>
+        <activity
+            android:name=".Juego4"
+            android:label="@string/title_activity_juego4" >
         </activity>
     </application>
 
