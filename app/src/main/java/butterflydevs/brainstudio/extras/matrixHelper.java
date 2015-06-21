@@ -150,22 +150,22 @@ public class matrixHelper {
         for (int i = 0; i < tamGrid; i++)
             enteros.add(i);
 
-        ArrayList<Integer> finales_cuadrado = new ArrayList<>();
-        ArrayList<Integer> finales_circulo = new ArrayList<>();
-        ArrayList<Integer> finales_triangulo = new ArrayList<>();
+        ArrayList<Integer> finales_magenta = new ArrayList<>();
+        ArrayList<Integer> finales_verde = new ArrayList<>();
+        ArrayList<Integer> finales_rojo = new ArrayList<>();
         //Ahora rellenamos todas las celdas con figuras.
         Random aleatorio = new Random();
         int seleccion, indice_seleccionado, celdas_rellenadas=0;
 
-        while(celdas_rellenadas<tamGrid){
+        for(int i=0; i<numCeldas && celdas_rellenadas<tamGrid; i++){
             //****************** Seleccionar cuadrado
             indice_seleccionado = aleatorio.nextInt(enteros.size());  //Se escoge un número entre 0 y el tamaño del array enteros
             seleccion = enteros.get(indice_seleccionado);
 
             //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
             enteros.remove(indice_seleccionado);
-            //Añadimos el numero seleccionado al array de cuadrados
-            finales_cuadrado.add(seleccion);
+            //Añadimos el numero seleccionado al array de magentas
+            finales_magenta.add(seleccion);
             celdas_rellenadas++;
 
             //****************** Seleccionar circulo
@@ -174,8 +174,8 @@ public class matrixHelper {
 
             //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
             enteros.remove(indice_seleccionado);
-            //Añadimos el numero seleccionado al array de cuadrados
-            finales_circulo.add(seleccion);
+            //Añadimos el numero seleccionado al array de verdes
+            finales_verde.add(seleccion);
             celdas_rellenadas++;
 
             //**************** Seleccionar triangulo
@@ -184,8 +184,8 @@ public class matrixHelper {
 
             //Quitamos el elemento del ArrayList enteros para que no se vuelva a repetir el numero
             enteros.remove(indice_seleccionado);
-            //Añadimos el numero seleccionado al array de cuadrados
-            finales_triangulo.add(seleccion);
+            //Añadimos el numero seleccionado al array de rojo
+            finales_rojo.add(seleccion);
             celdas_rellenadas++;
         }
 
@@ -197,18 +197,18 @@ public class matrixHelper {
             Triangulo => 2
             Circulo => 3
          */
-        for(int i=0; i<finales_cuadrado.size();i++){
-            int indice = finales_cuadrado.get(i);
+        for(int i=0; i<finales_magenta.size();i++){
+            int indice = finales_magenta.get(i);
             matrizEnteros[indice]=1;
         }
 
-        for(int i=0; i<finales_circulo.size();i++){
-            int indice = finales_circulo.get(i);
+        for(int i=0; i<finales_rojo.size();i++){
+            int indice = finales_rojo.get(i);
             matrizEnteros[indice]=3;
         }
 
-        for(int i=0; i<finales_triangulo.size();i++){
-            int indice = finales_triangulo.get(i);
+        for(int i=0; i<finales_verde.size();i++){
+            int indice = finales_verde.get(i);
             matrizEnteros[indice]=2;
         }
 
@@ -217,7 +217,7 @@ public class matrixHelper {
 
 
 
-    public static boolean compruebaMatrices_juego2(int matrizOriginal[], int matrizJugador[], int numFilas, int numColumnas, int figura){
+    public static boolean compruebaMatrices_juego2(int matrizOriginal[], int matrizJugador[], int numFilas, int numColumnas, int color){
 
         /*
         El objetivo es comparar si las posiciones dadas por el jugador son las correctas para la figura seleccionada
@@ -230,14 +230,14 @@ public class matrixHelper {
         //Primero, hay que encontrar en qué posicion del vector están las figuras solución, y añadirlas a un ArayList
         ArrayList<Integer> indices_solucion = new ArrayList<>();
         for(int i=0; i< tamGrid;i++){
-            if(matrizOriginal[i]==figura)
+            if(matrizOriginal[i]==color)
                 indices_solucion.add(i);
         }
 
         //Tenemos los indices solución. Debemos encontrar ahora los indices que ha contestado el usuario
         ArrayList<Integer> indices_contestados = new ArrayList<>();
         for (int i =0; i< tamGrid;i++){
-            if(matrizJugador[i]==figura)
+            if(matrizJugador[i]==color)
                 indices_contestados.add(i);
         }
 

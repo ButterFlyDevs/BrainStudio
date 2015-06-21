@@ -1,11 +1,14 @@
 
 package butterflydevs.brainstudio;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +21,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -39,26 +43,26 @@ import butterflydevs.brainstudio.extras.matrixHelper;
  * #################### Clase del juego 2 ##########################
  * ___________________________________________________________
  *
- * En este juego, se usan figuras para rellenar la matriz. El usuario debe recordar las figuras, y la aplicacion
- * le preguntara por una de ellas, y debe de marcar todas las figuras del tipo marcado en la matriz.
+ * En este juego, se usan colores para rellenar la matriz. El usuario debe recordar los colores, y la aplicacion
+ * le preguntara por uno de ellos, y debe de marcar todas los colores del tipo marcado en la matriz.
  * En esencia, es muy parecido al juego 1, solo que ahora la matriz no debe ser de booleanos; debe ser una matriz
- * de enteros, y cada figura dentra un entero asociado a ella.
+ * de enteros, y cada color tendrá un entero asociado a ella.
  *
  *  La codificacion de las figuras es:
- *  0 ==> Esa celda no tiene figura
- *  1 ==> Esa celda tiene un cuadrado
- *  2 ==> Esa celda tiene un triangulo
- *  3 ==> Esa celda tiene un circulo
+ *  0 ==> Esa celda no tiene color
+ *  1 ==> Esa celda es morada
+ *  2 ==> Esa celda es verde
+ *  3 ==> Esa celda es rojo
  *
  */
 public class Juego2niveln extends ActionBarActivity {
 
 
     //Codigos de las figuras
-    public static final int NOFIGURA=0;
-    public static final int CUADRADO=1;
-    public static final int TRIANGULO =2;
-    public static final int CIRCULO=3;
+    public static final int NOCOLOR=0;
+    public static final int MAGENTA=1;
+    public static final int VERDE =2;
+    public static final int ROJO=3;
     //Variable de la figura a preguntar al usuario
     private int figura_a_preguntar;
 
@@ -118,7 +122,7 @@ public class Juego2niveln extends ActionBarActivity {
 
     //Vector de botones (solo uno, no habra un vector por fila, para el procesamiento posterior es mejor tenerlos todos en un solo vector)
     private Button[] botones;
-
+    Drawable icono_triangulo, icono_circulo, icono_cuadrado;
     Intent intent;
 
     //Colores
@@ -154,20 +158,23 @@ public class Juego2niveln extends ActionBarActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         colores= getResources().getStringArray(R.array.colores);
+        icono_triangulo = getResources().getDrawable(R.drawable.triangulo);
+        icono_circulo = getResources().getDrawable(R.drawable.circulo);
+        icono_cuadrado = getResources().getDrawable(R.drawable.cuadrado);
 
         //Obtenemos los datos que se le pasa a la actividad.
         intent=getIntent();
         //Obtenemos la informacion del intent que nos evia la actividad que nos crea.
         level=intent.getIntExtra("nivel",0);
 
-        System.out.println("recibiod de la actividad llamante: "+level);
+        System.out.println("recibiod de la actividad llamante: " + level);
         ajustarNivel(level);
 
 
         //Cargamos el fichero que define la animacion 1
 
                 animacion1 = AnimationUtils.loadAnimation(Juego2niveln.this, R.anim.animacionbotongrid12);
-                animacion1.setDuration(6000);
+                //animacion1.setDuration(6000);
                 //Especificamos el comportamiento al empezar y al finalizar
                 animacion1.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -275,7 +282,7 @@ public class Juego2niveln extends ActionBarActivity {
             botones[i] = new Button(this);
             //Establecemos parametros de layout a cada uno:
             botones[i].setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+            botones[i].setAnimation(animacion1);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tamButtons, tamButtons);
             params.setMargins(5, 5, 5, 5);
             botones[i].setLayoutParams(params);
@@ -347,9 +354,9 @@ public class Juego2niveln extends ActionBarActivity {
                     public void onClick(View v) {
                         String mensaje;
                         switch(figura_a_preguntar){
-                            case CIRCULO: mensaje="Circulo";break;
-                            case TRIANGULO: mensaje="Triangulo";break;
-                            default: mensaje="Cuadrado";break;
+                            case MAGENTA: mensaje="Magenta";break;
+                            case VERDE: mensaje="Verde";break;
+                            default: mensaje="Rojo";break;
                         }
                         //Creamos el Intent
                         // Intent intent = new Intent(JuegoGrid12.this, Help.class);
@@ -539,6 +546,7 @@ public class Juego2niveln extends ActionBarActivity {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onStart() {
         super.onStart();
@@ -550,9 +558,9 @@ public class Juego2niveln extends ActionBarActivity {
         //2� Ponemos las figuras en los botones
         for (int i = 0; i < numFilas * numColumnas; i++)
             switch(matrizJugada[i]){
-                case TRIANGULO: botones[i].setBackgroundResource(R.drawable.triangulo); break;
-                case CIRCULO: botones[i].setBackgroundResource(R.drawable.circulo); break;
-                case CUADRADO: botones[i].setBackgroundResource(R.drawable.cuadrado);break;
+                case MAGENTA: botones[i].setBackgroundColor(Color.MAGENTA);break;
+                case VERDE: botones[i].setBackgroundColor(Color.GREEN); break;
+                case ROJO: botones[i].setBackgroundColor(Color.RED); break;
                 default: botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
             }
 
@@ -686,8 +694,14 @@ public class Juego2niveln extends ActionBarActivity {
     public void animarGrid() {
 
         //Cargamos la animaci�n "animacion1" a cada uno de los botones que componen el grid.
-        for (int i = 0; i < numFilas * numColumnas; i++)
-            botones[i].startAnimation(animacion1);
+        new Thread() {
+            @Override
+            public void run(){
+                for(int i = 0;i<numFilas*numColumnas;i++)
+
+                    botones[i].startAnimation(animacion1);
+            }
+        };
     }
 
     /**
@@ -760,9 +774,9 @@ public class Juego2niveln extends ActionBarActivity {
         //Seteamos el grid visual con la matriz obtenida.
         for (int i = 0; i < numFilas * numColumnas; i++)
             switch(matrizJugada[i]){
-                case TRIANGULO: botones[i].setBackgroundResource(R.drawable.triangulo); break;
-                case CIRCULO: botones[i].setBackgroundResource(R.drawable.circulo); break;
-                case CUADRADO: botones[i].setBackgroundResource(R.drawable.cuadrado);break;
+                case MAGENTA: botones[i].setBackgroundColor(Color.MAGENTA);break;
+                case VERDE: botones[i].setBackgroundColor(Color.GREEN); break;
+                case ROJO: botones[i].setBackgroundColor(Color.RED); break;
                 default: botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
             }
 
@@ -794,13 +808,13 @@ public class Juego2niveln extends ActionBarActivity {
                 true la celda en caso de que estuviera a false y viceversa.
                  */
             if (matrizRespuesta[numBoton] == 0) {
-                //botones[numBoton].setBackgroundColor(getResources().getColor(R.color.kiwi));
                 switch(figura_a_preguntar){
-                    case TRIANGULO: botones[numBoton].setBackgroundResource(R.drawable.triangulo); break;
-                    case CIRCULO: botones[numBoton].setBackgroundResource(R.drawable.circulo); break;
-                    case CUADRADO: botones[numBoton].setBackgroundResource(R.drawable.cuadrado);break;
+                    case MAGENTA: botones[numBoton].setBackgroundColor(Color.MAGENTA);break;
+                    case VERDE: botones[numBoton].setBackgroundColor(Color.GREEN); break;
+                    case ROJO: botones[numBoton].setBackgroundColor(Color.RED); break;
                     default: botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));break;
                 }
+
                 matrizRespuesta[numBoton] = figura_a_preguntar;
                 numCeldasActivadas++;
             } else {
@@ -847,8 +861,13 @@ public class Juego2niveln extends ActionBarActivity {
         }
 
     }
-/*
-    class Animaciones extends AsyncTask<String, void, AnimationUtils>{
+
+    /**
+     * Creación de la clase Animaciones (Extiende de AsyncTask)
+     * Se debe encargar de hacer la animación en segundo plano.
+     */
+
+    /*class Animaciones extends AsyncTask<String, void, AnimationUtils>{
 
     }*/
 }
