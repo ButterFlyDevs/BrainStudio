@@ -710,7 +710,7 @@ public class Juego1niveln extends ActionBarActivity {
          */
 
         //System.out.println("GRabando "+(int)puntuacion+" puntos "+calculaPorcentaje()+"%");
-        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level);
+        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level,1);
     }
 
     public void finalizarPartida(){
