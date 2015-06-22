@@ -101,8 +101,14 @@ public class ActividadPrincipal extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Creamos el Intent
-                        Intent intent = new Intent(ActividadPrincipal.this, Juego4.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, PruebasAnimaciones.class);
+
+                    //    Bundle bundle = new Bundle();
+                    //    bundle.putInt("nivel",3);
+
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                    //    intent.putExtras(bundle);
+
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }

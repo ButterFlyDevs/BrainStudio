@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -23,7 +23,7 @@
         <activity
             android:name=".Juego1"
             android:label="@string/title_activity_niveles"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Ranking"
@@ -32,7 +32,7 @@
         <activity
             android:name=".Juego1niveln"
             android:label="@string/title_activity_juego_grid24"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".eliminame"
@@ -41,7 +41,7 @@
         <activity
             android:name=".juegos"
             android:label="@string/title_activity_juegos"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego3ColorMemo"
@@ -73,6 +73,14 @@
         <activity
             android:name=".Juego4"
             android:label="@string/title_activity_juego4" >
+        </activity>
+        <activity
+            android:name=".Juego4niveln"
+            android:label="@string/title_activity_juego4niveln" >
+        </activity>
+        <activity
+            android:name=".PruebasAnimaciones"
+            android:label="@string/title_activity_pruebas_animaciones" >
         </activity>
     </application>
 

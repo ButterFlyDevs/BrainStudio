@@ -16,7 +16,7 @@ import java.util.Random;
 public class AlgoritmosBrainStudio {
 
     //Por si queremos obtener depuración de los algoritmos por terminal.
-    static boolean depuracion =false;
+    static boolean depuracion =false;        
     
     /**
      * Esta es la función que se copiará en el código de AndroidStudio
@@ -149,30 +149,158 @@ public class AlgoritmosBrainStudio {
         return resultado;
     }
     
+    /**
+     * Función para obtener una matriz que tenga parejas dentro de ella.
+     * Tendrá tanatas parejas (de números) como la mitad del número de celdas.
+     * @param numFilas Numero de filas de la matriz que queremos generar
+     * @param numColumnas Numero de columnas de l matriz que queremos generar
+     * @return Un vector que simula la matriz.
+     */
+    static public int[] obtenerMatrizParejas(int numFilas, int numColumnas){
+        
+        int tamMatriz=numFilas*numColumnas;
+        int numParejas=tamMatriz/2;
+        
+        int [] matrizResultado = new int[tamMatriz];       
+        
+        
+        
+        //Montamos esto con dos arrayList ya que es mas facil para no entrar en bucles del random
+        
+                //Creamos una lista con los número que tendremos que hacer las parejas
+                List<Integer> numeros = new ArrayList<>();
+                System.out.println("## NUMEROS ##");
+                for(int i=0; i<numParejas; i++){
+                    numeros.add(i);
+                    System.out.print(numeros.get(i)+" ");
+                }
+                System.out.println("");
+
+
+                //Creamos una lista con las posiciones que se puede tener dentro de la matriz:        
+                List<Integer> posiciones = new ArrayList<>();
+                System.out.println("## POSICIONES ##");
+                for(int i=0; i<tamMatriz; i++){
+                    posiciones.add(i);
+                    System.out.print(posiciones.get(i)+" ");
+                }
+                System.out.println("");
+        
+        
+        //  ### ALGORITMO ### 
+
+        Random rnd = new Random(); 
+        int elegido, posA, posB;
+                
+        for(int i=0; i<numParejas; i++){
+            
+            //1º. Sacamos un numero al azar del array de numeros. El numero dejara de estar en el array. 
+      
+                //Lo sacamos mediante un random con los indices del vector.
+                elegido = numeros.remove((int)(rnd.nextDouble() * numeros.size()));
+                //System.out.print(elegido+" ");
+      
+            //2º Sacamos dos numeros de array de posiciones, que sera donde ira en la matriz resultado el numero elegido.
+                posA = posiciones.remove((int)(rnd.nextDouble()*posiciones.size()));
+                posB = posiciones.remove((int)(rnd.nextDouble()*posiciones.size()));
+                //System.out.print("A:"+posA+"  B:"+posB);
+
+                
+            //3º Introducimos esos valores en la matriz resultado
+                matrizResultado[posA]=elegido;
+                matrizResultado[posB]=elegido;
+                
+                
+                //System.out.println("");
+
+            
+        }                                                
+        return matrizResultado;
+    
+    }
+    
+    static public void leerMatriz(int []valores, int filas, int columnas){
+        
+        System.out.println("## Matriz de parejas ##");
+        
+        int col=1;
+        
+        for(int i=0; i<filas*columnas; i++){
+                System.out.print(valores[i]+" ");
+                if(col==columnas){
+                        System.out.print("\n");
+                        col=1;
+                    }else
+                        col++;
+        }
+                    
+    }
+    
+    static public int[] generaColores(int numColoresBase, int numColoresNecesarios){
+        
+        int [] coloresDevueltos = new int[numColoresNecesarios];       
+        
+        //Creamos un array con los numeros.
+        List<Integer> numeros = new ArrayList<>();
+                System.out.println("## "+numColoresBase+" colores base ##");
+                for(int i=0; i<numColoresBase; i++){
+                    numeros.add(i);
+                    System.out.print(numeros.get(i)+" ");
+                }
+                System.out.println("");
+        
+        //Rellenamos el vector a devolver con números extraidos de este:
+        
+         //Inicializamos la semilla
+         Random rnd = new Random(); 
+         
+         for(int i=0; i<numColoresNecesarios; i++){         
+            coloresDevueltos[i]=numeros.remove((int)(rnd.nextDouble() * numeros.size()));        
+         }
+        return coloresDevueltos;
+        
+    }
+    
+    static public void leeColores(int[] colores){
+        System.out.println("## "+colores.length+" colores elegidos ##");
+        for(int i=0; i<colores.length; i++)
+            System.out.print(colores[i]+" ");
+    }
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         
-        int numFilas=4;
-        int numColumnas=3;
-        int numCeldas=6;
+        int colores[] = generaColores(20, 6);
+        leeColores(colores);
         
-        //num de celdas a obtener, numFilas, numColumnas (de la matriz)
-        boolean matriz[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
-       // leerMatriz(matriz, numFilas, numColumnas);
+     //   int matrizResultado[] = obtenerMatrizParejas(4,3);
         
-        boolean matrizJugadorA[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
-        boolean matrizJugadorB[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
+      //  leerMatriz(matrizResultado, 4, 3 );
         
-        leerMatriz(matrizJugadorA, numFilas, numColumnas);
-        leerMatriz(matrizJugadorB, numFilas, numColumnas);
+        /* PRUEBAS A
+                int numFilas=4;
+                int numColumnas=3;
+                int numCeldas=6;
+
+                //num de celdas a obtener, numFilas, numColumnas (de la matriz)
+                boolean matriz[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
+               // leerMatriz(matriz, numFilas, numColumnas);
+
+                boolean matrizJugadorA[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
+                boolean matrizJugadorB[] = obtenerMatrizJugada(numCeldas,numFilas,numColumnas);
+
+                leerMatriz(matrizJugadorA, numFilas, numColumnas);
+                leerMatriz(matrizJugadorB, numFilas, numColumnas);
+
+                if(compruebaMatrices(matrizJugadorA, matrizJugadorB, numFilas, numColumnas))
+                    System.out.println("Matrices iguales");
+                else
+                    System.out.println("Matrices distintas");
+        */
         
-        if(compruebaMatrices(matrizJugadorA, matrizJugadorB, numFilas, numColumnas))
-            System.out.println("Matrices iguales");
-        else
-            System.out.println("Matrices distintas");
+        
         
     }
     
