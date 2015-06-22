@@ -322,6 +322,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         if(nivel==3)
             tabla=J1N3;
 
+
         String query = "SELECT * FROM "+ tabla;
 
 

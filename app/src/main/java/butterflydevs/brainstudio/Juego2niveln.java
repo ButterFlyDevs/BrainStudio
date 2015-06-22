@@ -227,13 +227,14 @@ public class Juego2niveln extends ActionBarActivity {
                 System.out.println("La animacion acaba");
                 //Cuando la segunda animaci�n termina el tiempo comienza a correr.
                 String texto_dialogo = "";
+                DialogoJuego dialogo = new DialogoJuego();
+
                 switch (figura_a_preguntar){
-                    case MAGENTA: texto_dialogo = " ¿Celdas de color Magenta?";break;
-                    case ROJO: texto_dialogo = " ¿Celdas de color Rojo?";break;
-                    case VERDE: texto_dialogo = " ¿Celdas de color Verde?";break;
+                    case MAGENTA: texto_dialogo = "¿Celdas de color Magenta?"; dialogo.establecerColorFondo(Color.MAGENTA);break;
+                    case ROJO: texto_dialogo = "¿Celdas de color Rojo?"; dialogo.establecerColorFondo(Color.RED);break;
+                    case VERDE: texto_dialogo = "¿Celdas de color Verde?";dialogo.establecerColorFondo(Color.GREEN); break;
                     default: break;
                 }
-                DialogoJuego dialogo = new DialogoJuego();
                 dialogo.establecerInformacionDialogo(texto_dialogo,"Color seleccionado",2);
                 dialogo.show(getFragmentManager(), "");
                 //countDownTimer.
@@ -364,34 +365,17 @@ public class Juego2niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String mensaje;
-                        switch(figura_a_preguntar){
-                            case MAGENTA: mensaje="Magenta";break;
-                            case VERDE: mensaje="Verde";break;
-                            default: mensaje="Rojo";break;
+                        String texto_dialogo = "";
+                        DialogoJuego dialogo = new DialogoJuego();
+
+                        switch (figura_a_preguntar){
+                            case MAGENTA: texto_dialogo = "¿Celdas de color Magenta?"; dialogo.establecerColorFondo(Color.MAGENTA);break;
+                            case ROJO: texto_dialogo = "¿Celdas de color Rojo?"; dialogo.establecerColorFondo(Color.RED);break;
+                            case VERDE: texto_dialogo = "¿Celdas de color Verde?";dialogo.establecerColorFondo(Color.GREEN); break;
+                            default: break;
                         }
-                        //Creamos el Intent
-                        // Intent intent = new Intent(JuegoGrid12.this, Help.class);
-                        //Iniciamos la nueva actividad
-                        // startActivity(intent);
-                        /*
-                        String mensaje;
-                        switch(figura_a_preguntar){
-                            case CIRCULO: mensaje="Circulo";break;
-                            case TRIANGULO: mensaje="Triangulo";break;
-                            default: mensaje="Cuadrado";break;
-                        }
-                        new AlertDialog.Builder(this)
-                                .setTitle("Figura")
-                                .setMessage(mensaje)
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();*/
-                        Toast.makeText(getApplicationContext(), mensaje,
-                                Toast.LENGTH_LONG).show();
+                        dialogo.establecerInformacionDialogo(texto_dialogo,"Color seleccionado",2);
+                        dialogo.show(getFragmentManager(), "");
                     }
                 }
         );
@@ -798,8 +782,6 @@ public class Juego2niveln extends ActionBarActivity {
         //Aumentamos el valor de repeticion actual:
         numRepeticionActual++;
 
-       //Iniciamos el contador
-        countDownTimer.start();
 
     }
     class MyListener implements Button.OnClickListener {
@@ -814,9 +796,6 @@ public class Juego2niveln extends ActionBarActivity {
         @Override
         public void onClick(View v) {
             //Acciones a realizar al pulsar sobre un bot�n:
-
-
-
                 /*1� Cambiamos de color el boton en funci�n de su estado y por consiguiente la matriz del jugador haciendo
                 true la celda en caso de que estuviera a false y viceversa.
                  */
@@ -850,7 +829,6 @@ public class Juego2niveln extends ActionBarActivity {
                 //Se ha completado el grid
                 if (matrixHelper.compruebaMatrices_juego2(matrizJugada, matrizRespuesta, numFilas, numColumnas,figura_a_preguntar)) {
                     System.out.println("SUCESS");
-
                     //Aumentamos el n�mero de grids que el jugador a superado.
                     numGridsJugados++;
 
@@ -866,8 +844,6 @@ public class Juego2niveln extends ActionBarActivity {
 
                 } else
                     System.out.println("FAIL");
-
-
             }
 
 
