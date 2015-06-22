@@ -33,6 +33,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Random;
 
+import butterflydevs.brainstudio.extras.DialogoJuego;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
@@ -225,14 +226,16 @@ public class Juego2niveln extends ActionBarActivity {
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
                 //Cuando la segunda animaci�n termina el tiempo comienza a correr.
-                MyCustomDialog dialogoMedalla = new MyCustomDialog();
-                // fragment1.mListener = MainActivity.this;
-                dialogoMedalla.text = "nombre";
-                dialogoMedalla.juego = 2;
-                dialogoMedalla.jugando=true;
-                dialogoMedalla.nivel = 1;
-                dialogoMedalla.show(getFragmentManager(), "");
-
+                String texto_dialogo = "";
+                switch (figura_a_preguntar){
+                    case MAGENTA: texto_dialogo = " ¿Celdas de color Magenta?";break;
+                    case ROJO: texto_dialogo = " ¿Celdas de color Rojo?";break;
+                    case VERDE: texto_dialogo = " ¿Celdas de color Verde?";break;
+                    default: break;
+                }
+                DialogoJuego dialogo = new DialogoJuego();
+                dialogo.establecerInformacionDialogo(texto_dialogo,"Color seleccionado",2);
+                dialogo.show(getFragmentManager(), "");
                 //countDownTimer.
             }
 
