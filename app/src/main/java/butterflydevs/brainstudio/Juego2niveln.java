@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import butterflydevs.brainstudio.extras.Jugada;
+import butterflydevs.brainstudio.extras.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
@@ -101,7 +102,7 @@ public class Juego2niveln extends ActionBarActivity {
     private int numCeldas = 2;
 
     //Variables para el reloj:
-    private CountDownTimer countDownTimer;
+    private static CountDownTimer countDownTimer;
     private CounterView counterView;
     private int time;
     private float timeNow;
@@ -189,8 +190,8 @@ public class Juego2niveln extends ActionBarActivity {
                     public void onAnimationEnd(Animation animation) {
                         System.out.println("La animacion acaba");
                         //Cuando la animaci�n 1 termina volvemos todos los botones transparentes.
-                        for (int i = 0; i < numFilas * numColumnas; i++)
-                            botones[i].setBackgroundColor(Color.TRANSPARENT);
+                       /* for (int i = 0; i < numFilas * numColumnas; i++)
+                            botones[i].setBackgroundColor(Color.TRANSPARENT);*/
 
                         //Cuando la animacion 1 acaba se encarga de lanzar la animacion 2
                         for (int i = 0; i < numFilas * numColumnas; i++)
@@ -224,7 +225,14 @@ public class Juego2niveln extends ActionBarActivity {
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
                 //Cuando la segunda animaci�n termina el tiempo comienza a correr.
-                countDownTimer.start();
+                MyCustomDialog dialogoMedalla = new MyCustomDialog();
+                // fragment1.mListener = MainActivity.this;
+                dialogoMedalla.text = "nombre";
+                dialogoMedalla.juego = 2;
+                dialogoMedalla.jugando=true;
+                dialogoMedalla.nivel = 1;
+                dialogoMedalla.show(getFragmentManager(), "");
+
                 //countDownTimer.
             }
 
@@ -248,7 +256,7 @@ public class Juego2niveln extends ActionBarActivity {
                 if(puedeMostrarBarra) //Evita mostrar la barra corriendo cuando no debe
                     barraProgreso.setProgress(reglaTres((int)millisUntilFinished / 1000));
 
-                updateProgressTwoColor((int)millisUntilFinished / 1000);
+                updateProgressTwoColor((int) millisUntilFinished / 1000);
 
                 System.out.println("reloj:" + (int)millisUntilFinished / 1000);
                 timeNow= millisUntilFinished;
@@ -340,6 +348,7 @@ public class Juego2niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        countDownTimer.cancel();
                         //Creamos el Intent
                         Intent intent = new Intent(Juego2niveln.this, Juego2.class);
                         //Iniciamos la nueva actividad
@@ -387,6 +396,9 @@ public class Juego2niveln extends ActionBarActivity {
         barraProgreso.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    public static void IniciarTemporizador(){
+        countDownTimer.start();
+    }
     /**
      * M�todo usado para ajustar el nivel del juego. Recibe un nivel como par�metro (1,2, o 3) y ajusta
      * las matrices del tablero y el tama�o de los botones para ese nivel
@@ -569,7 +581,7 @@ public class Juego2niveln extends ActionBarActivity {
 
         //4� Seleccionamos una figura aleatoria a preguntar al usuario, y la mostramos
 
-        obtenerYmostrarFigura();
+        obtenerFigura();
     }
 
     @Override
@@ -590,7 +602,7 @@ public class Juego2niveln extends ActionBarActivity {
     /**
      * M�todo que calcula una figura a preguntar aleatoriamente y la muestra al usuario.
      */
-    public void obtenerYmostrarFigura(){
+    public void obtenerFigura(){
         //Generamos la figura aleatoriamente
         Random rnd = new Random();
         figura_a_preguntar = rnd.nextInt(3) +1; // N�umero aleatorio entre 1 y 3 inclusive
@@ -694,14 +706,8 @@ public class Juego2niveln extends ActionBarActivity {
     public void animarGrid() {
 
         //Cargamos la animaci�n "animacion1" a cada uno de los botones que componen el grid.
-        new Thread() {
-            @Override
-            public void run(){
-                for(int i = 0;i<numFilas*numColumnas;i++)
-
-                    botones[i].startAnimation(animacion1);
-            }
-        };
+        for(int i = 0;i<numFilas*numColumnas;i++)
+            botones[i].startAnimation(animacion1);
     }
 
     /**
@@ -735,8 +741,8 @@ public class Juego2niveln extends ActionBarActivity {
      */
     public void siguienteJugada() {
 
-        nuevosColores();
-
+        //nuevosColores();
+        countDownTimer.cancel();
         /*
         *Dependiendo del estado de nivel se configura el grid de una manera u otra
         */
@@ -771,6 +777,9 @@ public class Juego2niveln extends ActionBarActivity {
         //Obtenemos la matriz de la jugada que el jugador debe resolver
         matrizJugada = matrixHelper.obtenerMatrizJugada_juego2(numCeldas, numFilas, numColumnas);
 
+        //Obtenemos la figura a preguntar
+        obtenerFigura();
+
         //Seteamos el grid visual con la matriz obtenida.
         for (int i = 0; i < numFilas * numColumnas; i++)
             switch(matrizJugada[i]){
@@ -786,7 +795,8 @@ public class Juego2niveln extends ActionBarActivity {
         //Aumentamos el valor de repeticion actual:
         numRepeticionActual++;
 
-        //Calculamos los siguiente colores:
+       //Iniciamos el contador
+        countDownTimer.start();
 
     }
     class MyListener implements Button.OnClickListener {
