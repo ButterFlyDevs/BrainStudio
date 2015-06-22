@@ -494,7 +494,7 @@ public class Juego2niveln extends ActionBarActivity {
                         // continue with delete
 
                         //TODO IMPLEMENTAR GRABAR DATOS BD
-                        //grabarDatosBD();
+                        grabarDatosBD();
                         //Creamos el Intent
                         Intent intent = new Intent(Juego2niveln.this, Juego2.class);
                         //Iniciamos la nueva actividad

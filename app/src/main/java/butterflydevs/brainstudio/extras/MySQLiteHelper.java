@@ -49,6 +49,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String J1N1="juego1nivel1";
     private static final String J1N2="juego1nivel2";
     private static final String J1N3="juego1nivel3";
+    private static final String J2N1="juego2nivel1";
+    private static final String J2N2="juego2nivel2";
+    private static final String J2N3="juego2nivel3";
 
     private static final String MEDALLAS="medallas";
 
@@ -113,6 +116,39 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LEVEL_TABLE_JUEGO1_NIVEL3);
 
 
+        //Tabla de Juego 1 nivel 1
+
+        //Especificación
+        String CREATE_TABLE_JUEGO2_NIVEL1 = "CREATE TABLE juego2nivel1 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL1);
+
+        //Tabla de Juego 1 nivel 1
+
+        //Especificación
+        String CREATE_TABLE_JUEGO2_NIVEL2 = "CREATE TABLE juego2nivel2 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL2);
+
+        //Tabla de Juego 1 nivel 1
+
+        //Especificación
+        String CREATE_TABLE_JUEGO2_NIVEL3 = "CREATE TABLE juego2nivel3 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL3);
+
 
         //Tabla de información de medallas
 
@@ -161,7 +197,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      * @param jugada
      * @param nivel
      */
-    public void addJugada(Jugada jugada, int nivel){
+    public void addJugada(Jugada jugada, int nivel, int juego){
 
         //Para depuracion
         System.out.println("AñadiendoJugada " + jugada.toString());
@@ -176,13 +212,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 
         //3. Inserccion en la tabla que corresponda
-
-            if(nivel==1)
-                db.insert(J1N1, null, values);
-            else if(nivel==2)
-                db.insert(J1N2, null, values);
-            else if(nivel==3)
-                db.insert(J1N3, null, values);
+        switch (juego) {
+            case 1:     //Se inserta en las tablas del Juego 1
+                    if (nivel == 1)
+                        db.insert(J1N1, null, values);
+                    else if (nivel == 2)
+                        db.insert(J1N2, null, values);
+                    else if (nivel == 3)
+                        db.insert(J1N3, null, values);
+                    break;
+            case 2:     //Se inserta en las tablas del Juego 2
+                    if (nivel == 1)
+                        db.insert(J2N1, null, values);
+                    else if (nivel == 2)
+                        db.insert(J2N2, null, values);
+                    else if (nivel == 3)
+                        db.insert(J2N3, null, values);
+                    break;
+            default: break;
+        }
 
 
 
@@ -255,17 +303,30 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      * @param id Identificador de la jugada
      * @return Un objeto de tipo Juagada
      */
-    public Jugada getJugada(int id, int nivel){
+    public Jugada getJugada(int id, int nivel, int juego){
         //Referencia a la base de datos;
         SQLiteDatabase db = this.getReadableDatabase();
 
         String tabla="";
-        if(nivel==1)
-            tabla="J1N1";
-        if(nivel==2)
-            tabla="J1N2";
-        if(nivel==3)
-            tabla="J1N3";
+        switch (juego) {
+            case 1:
+                    if (nivel == 1)
+                        tabla = "J1N1";
+                    if (nivel == 2)
+                        tabla = "J1N2";
+                    if (nivel == 3)
+                        tabla = "J1N3";
+                    break;
+            case 2:
+                    if (nivel == 1)
+                        tabla = "J2N1";
+                    if (nivel == 2)
+                        tabla = "J2N2";
+                    if (nivel == 3)
+                        tabla = "J2N3";
+                    break;
+            default: break;
+        }
 
 
 
@@ -306,7 +367,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      *
      * @return Una lista con las jugadas rescatadas de la base de datos
      */
-    public List<Jugada> getAllJugadas(int nivel){
+    public List<Jugada> getAllJugadas(int nivel, int juego){
 
         //Creamos la lista de jugadas.
         List<Jugada>jugadas = new LinkedList<Jugada>();
@@ -314,14 +375,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         //Construimos la consulta (esto cambiará cuando tenamos más tablas)
 
         String tabla="";
-
-        if(nivel==1)
-            tabla=J1N1;
-        if(nivel==2)
-            tabla=J1N2;
-        if(nivel==3)
-            tabla=J1N3;
-
+        switch (juego) {
+            case 1:
+                    if (nivel == 1)
+                        tabla = J1N1;
+                    if (nivel == 2)
+                        tabla = J1N2;
+                    if (nivel == 3)
+                        tabla = J1N3;
+                    break;
+            case 2:
+                    if (nivel == 1)
+                tabla = J1N1;
+                if (nivel == 2)
+                    tabla = J1N2;
+                if (nivel == 3)
+                    tabla = J1N3;
+                break;
+            default:break;
+        }
 
         String query = "SELECT * FROM "+ tabla;
 
