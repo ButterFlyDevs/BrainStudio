@@ -42,8 +42,11 @@ public class Juego2 extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego_1);
+        setContentView(R.layout.activity_juego2);
 
+        maxJugadaNivel1= new Jugada(0,0);
+        maxJugadaNivel2 = new Jugada(0,0);
+        maxJugadaNivel3 = new Jugada(0,0);
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
         //Con esta hacemos que la barra de estado del tel�fono no se vea y la actividad sea a pantalla completa.
@@ -65,8 +68,9 @@ public class Juego2 extends ActionBarActivity {
         System.out.println("datos"+jugadasNivel1.size()+jugadasNivel1.toString());
 
         maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
-        puntosNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
-
+        System.out.println(maxJugadaNivel1.toString());
+        puntosNivel1.setText("Puntuacion 0");
+        //puntosNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
         porcentajePuntosNivel1=calculaPorcentaje(1, maxJugadaNivel1.getPuntuacion());
 
         maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
