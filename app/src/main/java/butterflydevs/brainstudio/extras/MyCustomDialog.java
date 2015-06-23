@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterflydevs.brainstudio.Juego2niveln;
 import butterflydevs.brainstudio.Juego4;
 import butterflydevs.brainstudio.R;
 
@@ -81,6 +82,21 @@ public class MyCustomDialog extends DialogFragment {
                 textoAcceso.setText("Completada Zona A");
             }
 
+        } else if(juego==2){
+            switch (nivel) {
+                case 1:
+                    imagenMedalla.setImageResource(R.drawable.oro);
+                    textoAcceso.setText("Nivel 2 desbloqueado!");
+                    break;
+                case 2:
+                    imagenMedalla.setImageResource(R.drawable.plata);
+                    textoAcceso.setText("Nivel 3 desbloqueado!");
+                    break;
+                default:
+                    imagenMedalla.setImageResource(R.drawable.oro);
+                    textoAcceso.setText("Completada Zona B");
+            }
+
         }
 
 
@@ -92,7 +108,9 @@ public class MyCustomDialog extends DialogFragment {
                 //Podemos hacer algo aqui o llamar a un metodo de la clase que nos llama.
                 //((Juego4)getActivity()).submitButtonClick();
 
-                Toast.makeText(getActivity(), "Yeeaahhh", Toast.LENGTH_SHORT).show();
+                if(juego==2){
+                    Juego2niveln.IniciarTemporizador();
+                }
 
 
                 dismiss();

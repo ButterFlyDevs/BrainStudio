@@ -1,7 +1,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <alpha
         android:startOffset="300"
-        android:duration="5000"
+        android:duration="300"
         android:fromAlpha="0.0"
         android:toAlpha="1"
         android:repeatMode="reverse"
@@ -9,6 +9,6 @@
         android:repeatCount="0"
         android:interpolator="@android:anim/accelerate_interpolator"
 
-    />
+        />
 
 </set>

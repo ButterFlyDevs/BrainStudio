@@ -144,10 +144,10 @@ public class juegos extends Activity {
 
         MySQLiteHelper db = new MySQLiteHelper(this);
 
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1);
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,1);
         Jugada maxJugadaNivel1= Jugada.obtenMaximaJugada(jugadasNivel1);
 
-        List<Jugada> jugadasNivel2=db.getAllJugadas(2);
+        List<Jugada> jugadasNivel2=db.getAllJugadas(2,1);
         Jugada maxJugadaNivel2= Jugada.obtenMaximaJugada(jugadasNivel2);
 
 
@@ -161,7 +161,19 @@ public class juegos extends Activity {
     // TODO POR HACER IMPLEMENTACION DE ESTA FUNCION
 
     public int puntuacionJuego2(){
-        return 5;
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        List<Jugada> jugadasNive21=db.getAllJugadas(1,2);
+        Jugada maxJugadaNive21= Jugada.obtenMaximaJugada(jugadasNive21);
+
+        List<Jugada> jugadasNive22=db.getAllJugadas(2,2);
+        Jugada maxJugadaNive22= Jugada.obtenMaximaJugada(jugadasNive22);
+
+
+        int maxPuntuacion1 = maxJugadaNive21.getPuntuacion();
+        int maxPuntuacion2 = maxJugadaNive22.getPuntuacion();
+
+        return maxPuntuacion1+maxPuntuacion2;
     }
     public int porcentajeJuego1(){
 

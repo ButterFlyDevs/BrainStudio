@@ -9,11 +9,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterflydevs.brainstudio.extras.AccesoRestringidoDialog;
 import butterflydevs.brainstudio.extras.Jugada;
+import butterflydevs.brainstudio.extras.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 
@@ -25,24 +29,75 @@ public class Juego2 extends ActionBarActivity {
     private Runnable r;
     private String[] colors;
 
-    private Jugada maxJugadaNivel1;
-    private Jugada maxJugadaNivel2;
-    private Jugada maxJugadaNivel3;
+    private Jugada maxJugadaNivel_1;
+    private Jugada maxJugadaNivel_2;
+    private Jugada maxJugadaNivel_3;
 
-    private int porcentajePuntosNivel1;
-    private int porcentajePuntosNivel2;
-    private int porcentajePuntosNivel3;
+    private int porcentajePuntosNivel_1;
+    private int porcentajePuntosNivel_2;
+    private int porcentajePuntosNivel_3;
 
     private Button botonBack;
     private Button botonHelp;
 
-    private TextView puntosNivel1;
-    private TextView puntosNivel2;
+    //Textos que compañan a los CircularCounter
+    private TextView textNivel_1;
+    private TextView textNivel_2;
+    private TextView textNivel_3;
 
+    //################### TAMAÑOS ############################
+
+    private int tamTextoNiveles;     //Tamaño del texto para los TextView
+    private float tamTextoInCircles;    //Tamaño de los circulos que se rellenan de forma animada con las puntuaciones
+    private int tamMedallas;    //Tamaño del icono de medallas
+    private int tamCandado;     //Tamaño del icono del candado cuando un nivel está bloqueado
+
+    // Valores de apertura para los niveles.
+    private int llaveNivel_2;
+    private int llaveNivel_3;
+    private int llaveFinal;
+
+    private LinearLayout.LayoutParams llp;
+    private LinearLayout layoutNivel_1, layoutNivel_2, layoutNivel_3;
+    private LinearLayout layoutMedallas;
+
+    //Variable para e manejo de la base de datos.
+    MySQLiteHelper db;
+
+    //Variables para el control y el bloqueo de niveles.
+    boolean puedeJugar2=false;
+    boolean puedeJugar3=false;
+
+    /**
+     * Constructor de la clase Juego2
+     */
+    public Juego2(){
+        tamTextoInCircles=30f;
+        tamMedallas=100;
+        tamCandado=70;
+
+        //En % de juego pasado.
+        llaveNivel_2=10; //Consiguiendo este valor en el nivel 1 se abre el nivel 2.
+        llaveNivel_3=10; //Consiguiendo este valor en el nivel 2 se abre l nivel 3.
+
+        //Media de todos los niveles superados en porcentaje para obtener la medalla de plata
+        llaveFinal=20;
+
+        tamTextoNiveles=20;
+        llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(50, 0, 0, 0);
+
+
+        //Inicialización de las variables jugadas:
+        maxJugadaNivel_1 = new Jugada(0,0);
+        maxJugadaNivel_2 = new Jugada(0,0);
+        maxJugadaNivel_3 = new Jugada(0,0);
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego_1);
+        setContentView(R.layout.activity_juego2);
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
@@ -52,48 +107,110 @@ public class Juego2 extends ActionBarActivity {
 
         botonBack=(Button)findViewById(R.id.botonBack);
         botonHelp=(Button)findViewById(R.id.botonHelp);
-        puntosNivel1=(TextView)findViewById(R.id.puntosNivel1);
-        puntosNivel2=(TextView)findViewById(R.id.puntosNivel2);
 
-        //Lo primero que hacemos es recuperar los datos que necesitamos
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        layoutNivel_1=(LinearLayout)findViewById(R.id.layoutNivel1);
+        layoutNivel_2=(LinearLayout)findViewById(R.id.layoutNivel2);
+        layoutNivel_3=(LinearLayout)findViewById(R.id.layoutNivel3);
+
+        layoutMedallas=(LinearLayout)findViewById(R.id.layoutImagenes);
+
+        //El primer nivel está disponible siempre por lo que habrá que cargar sus datos.
+
+        //Instanciamos la base de datos.
+        db = new MySQLiteHelper(this);
 
         //Obtener todas la jugadas
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1);
-        List<Jugada> jugadasNivel2=db.getAllJugadas(2);
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,2);
 
-        System.out.println("datos"+jugadasNivel1.size()+jugadasNivel1.toString());
+        maxJugadaNivel_1=Jugada.obtenMaximaJugada(jugadasNivel1);
 
-        maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
-        puntosNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
-
-        porcentajePuntosNivel1=calculaPorcentaje(1, maxJugadaNivel1.getPuntuacion());
-
-        maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
-        puntosNivel2.setText(Integer.toString(maxJugadaNivel2.getPuntuacion())+" puntos");
-
-        porcentajePuntosNivel2=calculaPorcentaje(2, maxJugadaNivel2.getPuntuacion());
-
-        System.out.println("max:"+maxJugadaNivel1.toString());
+        textNivel_1=new TextView(this);
 
 
+
+        textNivel_1.setLayoutParams(llp);
+        textNivel_1.setTextSize(tamTextoNiveles);
+
+        //Escribimos el pantalla la máxima jugada
+        textNivel_1.setText(Integer.toString(maxJugadaNivel_1.getPuntuacion())+" puntos");
+
+        //Añadimos el texto al layout:
+        layoutNivel_1.addView(textNivel_1);
+
+        //Sacamos el porcentaje de puntos, el porcentaje de juego lo tiene dentro la jugada.
+        porcentajePuntosNivel_1=calculaPorcentaje(1, maxJugadaNivel_1.getPuntuacion());
 
 
         /**
-         * Aqu� podemos hacer dos cosas:
-         * A: procesar la lista nosotros para sacar lo que queremos (en este caso la jugada de mayor puntuaci�n del usuario)
+         * Si se consigue superar el umbral de llaveNivel2 se nos abre el nivel 2 para poder jugar
+         * y entonces lo notificamos mediante el fragment y añadimos la medalla al layout.
+         * Además de eso añadimos la medalla a la base de datos.
+         */
+        //Hemos superado los minimos del nivel 1 para obtener la medalla y abrir el siguiente nivel
+        if(maxJugadaNivel_1.getPorcentaje()>llaveNivel_2) {
+
+            //Abrimos el nivel:
+
+            this.puedeJugar2 = true;
+
+            //Informamos de ello:
+
+                    /*
+                    Para evitar que la notificacion de la obtencion de medalla se realice una y otra vez
+                    vamos a comprobar si esta existe en la base de datos de medallas. Si existe querra decir que
+                    ya fue mostrada en su dia cuando se consiguio y que no debe ser mostrada otra vez.
+                     */
+
+            //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
+            if(!db.compruebaMedala(2,1)) {
+                MyCustomDialog dialogoMedalla = new MyCustomDialog();
+                // fragment1.mListener = MainActivity.this;
+                dialogoMedalla.text = "nombre";
+                dialogoMedalla.juego = 2;
+                dialogoMedalla.nivel = 1;
+                dialogoMedalla.show(getFragmentManager(), "");
+            }
+
+
+            //Añadimos la medalla de bronce al layout de medallas:
+
+            ImageView medallaBronce = new ImageView(this);
+            //Añadimos la imagen
+            medallaBronce.setImageResource(R.drawable.bronce);
+            //Creamos unos parámetros para su layout.
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
+            //Aplicamos el layout.
+            medallaBronce.setLayoutParams(layoutParams);
+
+            //Añadimos la imagen al layout.
+            layoutMedallas.addView(medallaBronce);
+
+            //Añadimos la medalla a la base de datos:
+
+
+            //Instanciamos la base de datos
+            db = new MySQLiteHelper(this);
+            //Añadimos la medalla de bronce: Juego1 , conseguida al superar el Nivel 1
+            db.addMedalla(2,1);
+
+        }
+
+        /**
+         * Para que ajuste el aspecto del layout al acceso que el usuario tiene a los niveles.
+         */
+        ajusteRestoNiveles();
+
+        /**
+         * Aquí podemos hacer dos cosas:
+         * A: procesar la lista nosotros para sacar lo que queremos (en este caso la jugada de mayor puntuación del usuario)
          * B: hacer un consulta especial que nos la devuelva
          */
-
-
-
 
         colors = getResources().getStringArray(R.array.colors);
 
         meterA=(CircularCounter)findViewById(R.id.meter1);
         meterB=(CircularCounter)findViewById(R.id.meter2);
         meterC=(CircularCounter)findViewById(R.id.meter3);
-
 
         meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
                 .setFirstColor(Color.parseColor(colors[0]))
@@ -109,7 +226,7 @@ public class Juego2 extends ActionBarActivity {
         //meter.setMetricSize(30.f);
         meterA.setRange(100);
         meterA.setTextColor(Color.GRAY);
-        meterA.setTextSize(30.f);
+        meterA.setTextSize(tamTextoInCircles);
 
 
         meterB.setFirstWidth(getResources().getDimension(R.dimen.first))
@@ -128,15 +245,14 @@ public class Juego2 extends ActionBarActivity {
         //meter.setMetricSize(30.f);
         meterB.setRange(100);
         meterB.setTextColor(Color.GRAY);
-        meterB.setTextSize(30.f);
+        meterB.setTextSize(tamTextoInCircles);
 
         meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
-
                 .setFirstColor(Color.parseColor(colors[0]))
-
-                        //.setSecondWidth(getResources().getDimension(R.dimen.second))
-                        //.setSecondColor(Color.parseColor(colors[1]))
+                .setSecondWidth(getResources().getDimension(R.dimen.second))
+                .setSecondColor(Color.parseColor(colors[1]))
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
+
                         //.setThirdColor(Color.parseColor(colors[2]))
                 .setBackgroundColor(Color.TRANSPARENT);
         //.setBackgroundColor(-14606047);
@@ -145,7 +261,11 @@ public class Juego2 extends ActionBarActivity {
         //meter.setMetricSize(30.f);
         meterC.setRange(100);
         meterC.setTextColor(Color.GRAY);
-        meterC.setTextSize(40.f);
+        meterC.setTextSize(tamTextoInCircles);
+
+        //No podemos hacer esto directamente porque hace internamente una llamada al manejador y tendríamos
+        //que añadir algun método nuevo a CircularCounter.java si quisieramos cambiar su aspecto fuera del un
+        //manejador Handler.
 
         handler = new Handler();
 
@@ -153,47 +273,66 @@ public class Juego2 extends ActionBarActivity {
 
             int level1 = 0;
             int level11=0;
+
             int level2 =0;
             int level22=0;
+
+            int level3=0;
+            int level33=0;
 
             boolean go = true;
 
             public void run(){
 
-                if(level1<maxJugadaNivel1.getPorcentaje())
+                if(level1<maxJugadaNivel_1.getPorcentaje())
                     level1++;
-                if(level11<porcentajePuntosNivel1)
+                if(level11<porcentajePuntosNivel_1)
                     level11++;
-                if(level22<porcentajePuntosNivel2)
-                    level22++;
-                if(level2<maxJugadaNivel2.getPorcentaje())
-                    level2++;
+
+                if(puedeJugar2) { //Si puede jugar en el nivel 2 entonces se trendran datos de las partidas.
+                    if (level22 < porcentajePuntosNivel_2)
+                        level22++;
+                    if (level2 < maxJugadaNivel_2.getPorcentaje())
+                        level2++;
+                }
+
+                if(puedeJugar3) { //Si puede jugar en el nivel 3 entonces se trendran datos de las partidas.
+                    if (level33 < porcentajePuntosNivel_3)
+                        level33++;
+                    if (level3 < maxJugadaNivel_3.getPorcentaje())
+                        level3++;
+                }
+
 
                 meterA.setValues(level1, level11, 0);
                 meterB.setValues(level2, level22, 0);
+                meterC.setValues(level3, level33, 0);
 
-
+                //Lo activaremos cuando ese nivel esté operativo.
                 //meterC.setValues(currV, 0, 0);
+
+
                 //  meter2.setValues(currV, currV*2, currV*3);
 
                 handler.postDelayed(this, 30);
             }
         };
 
+        // La implementacion del listener del boton dependera de si el jugador puede o no puede acceder a ese nivel.
         meterA.setOnClickListener(
+
+                //En este caso el nivel 1 siempre esta abierto y no hay restricciones.
 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-
                         Intent intent = new Intent(Juego2.this, Juego2niveln.class);
-
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",1);
 
-                        //Introducimos la informacion en el intent para enviarsela a la act�vity.
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
                         intent.putExtras(bundle);
 
                         //Iniciamos la nueva actividad
@@ -202,48 +341,79 @@ public class Juego2 extends ActionBarActivity {
                 }
         );
 
+        // La implementacion del listener del boton dependera de si el jugador puede o no puede acceder a ese nivel.
         meterB.setOnClickListener(
 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Creamos el Intent
+                        /**
+                         * Si tiene permiso para poder jugar tendra acceso al juego.
+                         */
+                        if(puedeJugar2) {
 
-                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
+                            //Creamos el Intent
+                            Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("nivel",2);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("nivel", 2);
 
-                        //Introducimos la informacion en el intent para enviarsela a la act�vity.
-                        intent.putExtras(bundle);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
+                            //Introducimos la informacion en el intent para enviarsela a la actívity.
+                            intent.putExtras(bundle);
+                            //Iniciamos la nueva actividad
+                            startActivity(intent);
+
+                            /**
+                             * En caso de no tener acceso se le mostrara un fragment dialog avisandole de esto.
+                             */
+
+                        }else{
+                            AccesoRestringidoDialog fragmentAccesoRestringido = new AccesoRestringidoDialog();
+                            fragmentAccesoRestringido.show(getFragmentManager(), "");
+                        }
                     }
+
                 }
         );
+
+
+
+        // La implementacion del listener del boton dependera de si el jugador puede o no puede acceder a ese nivel.
+
         meterC.setOnClickListener(
 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Creamos el Intent
 
-                        Intent intent = new Intent(Juego2.this, Juego2niveln.class);
+                        /**
+                         * Si tiene permiso para poder jugar tendra acceso al juego.
+                         */
+                        if(puedeJugar3) {
 
 
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("nivel",3);
+                            //Creamos el Intent
+                            Intent intent = new Intent(Juego2.this, Juego2niveln.class);
 
-                        //Introducimos la informacion en el intent para enviarsela a la act�vity.
-                        intent.putExtras(bundle);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("nivel", 3);
+
+                            //Introducimos la informacion en el intent para enviarsela a la actívity.
+                            intent.putExtras(bundle);
+                            //Iniciamos la nueva actividad
+                            startActivity(intent);
+
+                            /**
+                             * En caso de no tener acceso se le mostrara un fragment dialog avisandole de esto.
+                             */
+                        }else{
+                            AccesoRestringidoDialog fragmentAccesoRestringido = new AccesoRestringidoDialog();
+                            fragmentAccesoRestringido.show(getFragmentManager(), "");
+                        }
                     }
                 }
         );
-
-
 
         botonBack.setOnClickListener(
 
@@ -270,7 +440,215 @@ public class Juego2 extends ActionBarActivity {
                 }
         );
 
+    }
 
+    /**
+     * Con esta funcion ajustaremos el aspecto de los layout de acceso a los juegos.
+     * Cuando un nivel este activo se mostrara la puntuacion y la palabra puntos ademas el
+     * listener del CircularProgress enlazara a el juego mientras que cuando no este activo el enlace
+     * cargara un fragment con informacion y se vera la imagen de un candado y la palabra bloqueado.
+     *
+     * Ademas de esto se hacen comprobacion del estado del juego y se añaden medallas a la base de datos.
+     *
+     */
+    public void ajusteRestoNiveles(){
+
+
+        if(this.puedeJugar2){
+
+            //Creamos una variable:
+            textNivel_2 = new TextView(this);
+
+            textNivel_2.setLayoutParams(llp);
+            textNivel_2.setTextSize(tamTextoNiveles);
+
+            db = new MySQLiteHelper(this);
+            //Conseguimos las jugadas:
+            List<Jugada> jugadasNivel_2=db.getAllJugadas(2,2);
+
+            //Obtenemos la máxima jugada de estas jugadas:
+            maxJugadaNivel_2=Jugada.obtenMaximaJugada(jugadasNivel_2);
+
+            //Obtenida la máxima jugada del nivel 2 vemos si puede acceder al nivel 3:
+            if(maxJugadaNivel_2.getPorcentaje()>llaveNivel_3) {
+                puedeJugar3 = true;
+
+                //Informamos de ello:
+                //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
+                if(!db.compruebaMedala(2,2)) {
+                    MyCustomDialog dialogoMedalla = new MyCustomDialog();
+                    // fragment1.mListener = MainActivity.this;
+                    dialogoMedalla.text = "nombre";
+                    dialogoMedalla.juego = 2;
+                    dialogoMedalla.nivel = 2;
+                    dialogoMedalla.show(getFragmentManager(), "");
+
+                }
+
+
+                //Añadimos la medalla de bronce al layout de medallas:
+
+
+                ImageView medallaPlata = new ImageView(this);
+                //Añadimos la imagen
+                medallaPlata.setImageResource(R.drawable.plata);
+                //Creamos unos parámetros para su layout.
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
+                //Aplicamos el layout.
+                medallaPlata.setLayoutParams(layoutParams);
+
+                //Añadimos la imagen al layout.
+                layoutMedallas.addView(medallaPlata);
+
+
+
+                //Añadimos la medalla de plata a la base de datos:
+
+
+                //Instanciamos la base de datos
+                db = new MySQLiteHelper(this);
+                //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 2
+                db.addMedalla(2,2);
+
+            }
+
+            textNivel_2.setText(Integer.toString(maxJugadaNivel_2.getPuntuacion())+" puntos");
+
+
+            layoutNivel_2.addView(textNivel_2);
+
+            porcentajePuntosNivel_2=calculaPorcentaje(2,maxJugadaNivel_2.getPuntuacion());
+
+
+        }else{
+            //Cambiamos el enlace que da el circular counter, pero eso se hace en el
+            //listener y no aquí.
+
+            //Añadimos al layout del nivel 3 la imagen de un candado.
+
+            //Creamos la variable
+            ImageView candado = new ImageView(this);
+            //Añadimos la imagen
+            candado.setImageResource(R.drawable.lock);
+            //Creamos unos parámetros para su layout.
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamCandado, tamCandado);
+            //Aplicamos el layout.
+            candado.setLayoutParams(layoutParams);
+
+            //Añadimos la imagen al layout.
+            layoutNivel_2.addView(candado);
+
+            //Añadimos un texto con el contenido: BLOQUEADO
+
+            //Creamos la variables:
+            TextView textBloqueado = new TextView(this);
+            //Añadimos el texto
+            textBloqueado.setText("Bloqueado");
+            layoutNivel_2.addView(textBloqueado);
+
+        }
+
+
+
+        if(this.puedeJugar3){ //Si se puede jugar en el nivel 3
+
+
+            //Creamos una variable:
+            textNivel_3 = new TextView(this);
+
+            textNivel_3.setLayoutParams(llp);
+            textNivel_3.setTextSize(tamTextoNiveles);
+
+
+            db = new MySQLiteHelper(this);
+            //Conseguimos las jugadas:
+            List<Jugada> jugadasNivel3=db.getAllJugadas(3,2);
+
+            //Obtenemos la máxima jugada de estas jugadas:
+            maxJugadaNivel_3=Jugada.obtenMaximaJugada(jugadasNivel3);
+
+
+            textNivel_3.setText(Integer.toString(maxJugadaNivel_3.getPuntuacion())+" puntos");
+
+
+            layoutNivel_3.addView(textNivel_3);
+
+
+            porcentajePuntosNivel_3=calculaPorcentaje(3, maxJugadaNivel_3.getPuntuacion());
+
+        }else{ //Si no se puede jugar
+
+            //Cambiamos el enlace que da el circular counter, pero eso se hace en el
+            //listener y no aquí.
+
+            //Añadimos al layout del nivel 3 la imagen de un candado.
+
+            //Creamos la variable
+            ImageView candado = new ImageView(this);
+            //Añadimos la imagen
+            candado.setImageResource(R.drawable.lock);
+            //Creamos unos parámetros para su layout.
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamCandado, tamCandado);
+            //Aplicamos el layout.
+            candado.setLayoutParams(layoutParams);
+
+            //Añadimos la imagen al layout.
+            layoutNivel_3.addView(candado);
+
+            //Añadimos un texto con el contenido: BLOQUEADO
+
+            //Creamos la variables:
+            TextView textBloqueado = new TextView(this);
+            //Añadimos el texto
+            textBloqueado.setText("Bloqueado");
+            layoutNivel_3.addView(textBloqueado);
+
+
+
+        }
+
+
+        // ### OBTENCIÓN DE LA MEDALLA DE ORO ###
+
+
+        int media=((maxJugadaNivel_3.getPorcentaje()+maxJugadaNivel_2.getPorcentaje()+maxJugadaNivel_1.getPorcentaje())/3);
+        System.out.println("media: "+media);
+        if(media>llaveFinal) {
+            puedeJugar3 = true;
+
+            //Notificamos si no existe ya que se va a añadir:
+            if(!db.compruebaMedala(2,3)) {
+                //Informamos de ello:
+                MyCustomDialog dialogoMedalla = new MyCustomDialog();
+                // fragment1.mListener = MainActivity.this;
+                dialogoMedalla.text = "nombre";
+                dialogoMedalla.juego = 2;
+                dialogoMedalla.nivel = 3;
+                dialogoMedalla.show(getFragmentManager(), "");
+            }
+
+            //Añadimos la medalla de bronce al layout de medallas:
+
+            ImageView medallaOro = new ImageView(this);
+            //Añadimos la imagen
+            medallaOro.setImageResource(R.drawable.oro);
+            //Creamos unos parámetros para su layout.
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
+            //Aplicamos el layout.
+            medallaOro.setLayoutParams(layoutParams);
+
+            //Añadimos la imagen al layout.
+            layoutMedallas.addView(medallaOro);
+
+
+            //Añadimos la medalla de plata a la base de datos:
+
+
+            //Instanciamos la base de datos
+            db = new MySQLiteHelper(this);
+            //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 3 y media con los otros.
+            db.addMedalla(2,3);
+        }
     }
 
     public int calculaPorcentaje(int nivel, int puntuacion){
