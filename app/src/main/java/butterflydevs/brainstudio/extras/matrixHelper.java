@@ -224,10 +224,6 @@ public class matrixHelper {
         return matrizEnteros;
     }
 
-
-    public static boolean compruebaMatrices_juego2(int matrizOriginal[], int matrizJugador[], int numFilas, int numColumnas, int figura) {
-
-
     public static boolean compruebaMatrices_juego2(int matrizOriginal[], int matrizJugador[], int numFilas, int numColumnas, int color){
 
 
