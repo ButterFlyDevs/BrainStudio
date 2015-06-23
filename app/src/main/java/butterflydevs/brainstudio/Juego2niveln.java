@@ -409,7 +409,7 @@ public class Juego2niveln extends ActionBarActivity {
 
             //2� Establecemos el n�mero m�ximo de celdas a preguntar
 
-            numMaximoCeldas=6;
+            numMaximoCeldas=3;
 
             //3� Ajustar el tama�o de los botones
             tamButtons = 150;
@@ -693,8 +693,11 @@ public class Juego2niveln extends ActionBarActivity {
     public void animarGrid() {
 
         //Cargamos la animaci�n "animacion1" a cada uno de los botones que componen el grid.
-        for(int i = 0;i<numFilas*numColumnas;i++)
+        for(int i = 0;i<numFilas*numColumnas;i++) {
+            //botones[i].getAnimation().setDuration(5500 - (this.numRepeticionActual*500) ); //La animación dura medio segundo menos en cada repetición. Va desde 5 seg hasta 3.
+            animacion1.setDuration(5500 - (this.numRepeticionActual*500));
             botones[i].startAnimation(animacion1);
+        }
     }
 
     /**
