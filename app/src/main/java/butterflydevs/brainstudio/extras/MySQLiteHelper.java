@@ -385,12 +385,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                         tabla = J1N3;
                     break;
             case 2:
-                    if (nivel == 1)
-                tabla = J1N1;
+                if (nivel == 1)
+                    tabla = J2N1;
                 if (nivel == 2)
-                    tabla = J1N2;
+                    tabla = J2N2;
                 if (nivel == 3)
-                    tabla = J1N3;
+                    tabla = J2N3;
                 break;
             default:break;
         }

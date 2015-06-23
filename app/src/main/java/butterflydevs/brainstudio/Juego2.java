@@ -62,8 +62,8 @@ public class Juego2 extends ActionBarActivity {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         //Obtener todas la jugadas
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1);
-        List<Jugada> jugadasNivel2=db.getAllJugadas(2);
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,2);
+        List<Jugada> jugadasNivel2=db.getAllJugadas(2,2);
 
         System.out.println("datos"+jugadasNivel1.size()+jugadasNivel1.toString());
 

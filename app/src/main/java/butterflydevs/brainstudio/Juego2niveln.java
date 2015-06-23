@@ -374,7 +374,7 @@ public class Juego2niveln extends ActionBarActivity {
                             case VERDE: texto_dialogo = "¿Celdas de color Verde?";dialogo.establecerColorFondo(Color.GREEN); break;
                             default: break;
                         }
-                        dialogo.establecerInformacionDialogo(texto_dialogo,"Color seleccionado",2);
+                        dialogo.establecerInformacionDialogo(texto_dialogo,"Color seleccionado",-1);
                         dialogo.show(getFragmentManager(), "");
                     }
                 }
@@ -685,7 +685,7 @@ public class Juego2niveln extends ActionBarActivity {
          */
 
         //System.out.println("GRabando "+(int)puntuacion+" puntos "+calculaPorcentaje()+"%");
-        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level);
+        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level,2);
     }
     /**
      * Funci�n para animar el grid al entrar en la act�vity
