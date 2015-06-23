@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Zona D"
+                android:text="Zona C"
                 android:id="@+id/textView2"
                 android:textStyle="bold"
                 android:textSize="30dp" />
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Asociacion de elementos"
+                android:text="Memoria Visual"
                 android:id="@+id/textView6" />
         </LinearLayout>
 

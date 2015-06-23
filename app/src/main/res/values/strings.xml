@@ -64,5 +64,7 @@
         <string name="title_activity_juego4">Juego4</string>
         <string name="title_activity_juego4niveln">Juego4niveln</string>
         <string name="title_activity_pruebas_animaciones">PruebasAnimaciones</string>
+        <string name="title_activity_juego3">Juego3</string>
+        <string name="title_activity_juego5">Juego5</string>
 
 </resources>

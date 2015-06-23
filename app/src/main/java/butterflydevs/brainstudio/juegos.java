@@ -21,12 +21,44 @@ import butterflydevs.brainstudio.extras.Nivel;
 
 public class juegos extends Activity {
 
-    private Button juego1;
+    private Button botonAtras, botonHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juegos);
+
+        botonAtras=(Button)findViewById(R.id.buttonBack);
+        botonHelp=(Button)findViewById(R.id.buttonHelp);
+
+        botonAtras.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(juegos.this, ActividadPrincipal.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        botonHelp.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        // Intent intent = new Intent(JuegoGrid12.this, Help.class);
+                        //Iniciamos la nueva actividad
+                        // startActivity(intent);
+                    }
+                }
+        );
+
+
+
+
 
         MyAdapter adapter = new MyAdapter(this,generateData());
 
@@ -40,17 +72,39 @@ public class juegos extends Activity {
                 Intent intent;
 
                 //Dependiendo de la posición pulsada vamos a una activity u a otra.
-                if(itemPosition==0) {
-                    intent = new Intent(juegos.this, Juego1.class);
-                    //Iniciamos la actividad
-                    startActivity(intent);
-                }
-                else if(itemPosition==1)
-                {
-                    //TODO IMPLEMENTAR JUEGO2
-                    intent = new Intent(juegos.this,Juego2.class);
-                    startActivity(intent);
-                }
+
+                    //Posición 0 del list: Juego 1
+                    if(itemPosition==0) {
+                        intent = new Intent(juegos.this, Juego1.class);
+                        //Iniciamos la actividad
+                        startActivity(intent);
+                    }
+
+
+                    //Posición 1 del list: Juego 2
+                    else if(itemPosition==1){
+                        //TODO IMPLEMENTAR JUEGO2
+                        intent = new Intent(juegos.this,Juego2.class);
+                        startActivity(intent);
+                    }
+
+
+                    //Posición 2 del list: Juego 3
+                    else if(itemPosition==2){
+                        intent = new Intent(juegos.this,Juego3.class);
+                        startActivity(intent);
+                    }
+
+                    //Posicion 3 del list: Juego 4
+                    else if(itemPosition==3){
+                        intent = new Intent(juegos.this, Juego4.class);
+                        startActivity(intent);
+                    }
+
+                    else if(itemPosition==4){
+                        intent = new Intent(juegos.this, Juego5.class);
+                        startActivity(intent);
+                    }
             }
         });
     }
@@ -65,9 +119,22 @@ public class juegos extends Activity {
     private ArrayList<Nivel> generateData(){
 
         ArrayList<Nivel> items = new ArrayList<Nivel>();
+
+        //Juego 1
         items.add(new Nivel(25, puntuacionJuego1()));
-        //items.add(new Nivel(60,3387894));
+
+        //Juego 2
         items.add(new Nivel(25,puntuacionJuego2()));
+
+        //Juego 3
+        items.add(new Nivel(25, puntuacionJuego2()));
+
+        //Juego 4
+        items.add(new Nivel(25, puntuacionJuego2()));
+
+        //Juego 5
+        items.add(new Nivel(25, puntuacionJuego2()));
+
 
         return items;
     }
@@ -100,6 +167,9 @@ public class juegos extends Activity {
 
         return 2;
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

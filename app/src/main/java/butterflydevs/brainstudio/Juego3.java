@@ -41,7 +41,7 @@ import butterflydevs.brainstudio.extras.MySQLiteHelper;
  *
  *
  */
-public class Juego4 extends ActionBarActivity {
+public class Juego3 extends ActionBarActivity {
 
 
     private CircularCounter meterA, meterB, meterC;
@@ -99,7 +99,7 @@ public class Juego4 extends ActionBarActivity {
     private LinearLayout.LayoutParams llp;
 
 
-    public Juego4(){
+    public Juego3(){
         tamTextoInCircles=30f;
         tamMedallas=150;
         tamCandado=70;
@@ -130,7 +130,7 @@ public class Juego4 extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego4);
+        setContentView(R.layout.activity_juego3);
 
         //Con esta orden conseguimos hacer que no se muestre la ActionBar.
         getSupportActionBar().hide();
@@ -370,7 +370,7 @@ public class Juego4 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego4.this, Juego4niveln.class);
+                        Intent intent = new Intent(Juego3.this, Juego3niveln.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("nivel",1);
@@ -397,7 +397,7 @@ public class Juego4 extends ActionBarActivity {
 
 
                             //Creamos el Intent
-                            Intent intent = new Intent(Juego4.this, Juego4niveln.class);
+                            Intent intent = new Intent(Juego3.this, Juego3niveln.class);
 
                             Bundle bundle = new Bundle();
                             bundle.putInt("nivel", 2);
@@ -437,7 +437,7 @@ public class Juego4 extends ActionBarActivity {
 
 
                             //Creamos el Intent
-                            Intent intent = new Intent(Juego4.this, Juego4niveln.class);
+                            Intent intent = new Intent(Juego3.this, Juego3niveln.class);
 
                             Bundle bundle = new Bundle();
                             bundle.putInt("nivel", 3);
@@ -467,7 +467,7 @@ public class Juego4 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego4.this, juegos.class);
+                        Intent intent = new Intent(Juego3.this, juegos.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
                     }
@@ -753,7 +753,7 @@ public class Juego4 extends ActionBarActivity {
         //Si pulsamos el botón back nos devuelve a la pantalla principal!.
         if(keyCode==KeyEvent.KEYCODE_BACK){
 
-            Intent intent = new Intent(Juego4.this, ActividadPrincipal.class);
+            Intent intent = new Intent(Juego3.this, ActividadPrincipal.class);
             startActivity(intent);
 
             //Aplicacion de transicion animada entre activities:

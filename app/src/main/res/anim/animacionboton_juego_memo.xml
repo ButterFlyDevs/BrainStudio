@@ -3,7 +3,7 @@
         android:startOffset="0"
         android:duration="200"
         android:fromAlpha="1"
-        android:toAlpha="0"
+        android:toAlpha="1"
         android:fillAfter="false"
     />
 

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -44,8 +45,9 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Juego3ColorMemo"
-            android:label="@string/title_activity_juego2_color_memo" >
+            android:name=".Juego3niveln"
+            android:label="@string/title_activity_juego2_color_memo"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".PruebasFacebook"
@@ -81,6 +83,14 @@
         <activity
             android:name=".PruebasAnimaciones"
             android:label="@string/title_activity_pruebas_animaciones" >
+        </activity>
+        <activity
+            android:name=".Juego3"
+            android:label="@string/title_activity_juego3" >
+        </activity>
+        <activity
+            android:name=".Juego5"
+            android:label="@string/title_activity_juego5" >
         </activity>
     </application>
 

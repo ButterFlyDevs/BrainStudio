@@ -17,6 +17,24 @@
         <item name="amarillo">#fffffb6b</item>
     </string-array>
 
+    <string-array name="colores_base">
+        <item name="kiwi">#ffb94e4a</item>
+        <item name="violeta">#ffaa66cc</item>
+        <item name="azul">#ff0099cc</item>
+        <item name="naranja">#ff52ba48</item>
+        <item name="rojo">#ffcabf31</item>
+        <item name="amarillo">#ffffcacc</item>
+    </string-array>
+
+    <string-array name="colores_enfasis">
+        <item name="kiwi">#ffff3b2f</item>
+        <item name="violeta">#ffd800ff</item>
+        <item name="azul">#6b00c7ff</item>
+        <item name="naranja">#ff4bff57</item>
+        <item name="rojo">#ffffeb25</item>
+        <item name="amarillo">#ffff3ab5</item>
+    </string-array>
+
 
     <string-array name="colores_parejas2">
         <item name="1">#9AB900</item>

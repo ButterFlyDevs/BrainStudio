@@ -355,7 +355,7 @@ public class Juego4niveln extends ActionBarActivity {
 
 
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego4niveln.this, Juego1.class);
+                        Intent intent = new Intent(Juego4niveln.this, Jueg41.class);
                         //Iniciamos la nueva actividad
                         startActivity(intent);
 
