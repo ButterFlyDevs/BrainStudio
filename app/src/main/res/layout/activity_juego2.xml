@@ -41,7 +41,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:id="@+id/layoutNivel1">
 
             <butterflydevs.brainstudio.CircularCounter
                 xmlns:meter="http://schemas.android.com/apk/res-auto"
@@ -55,16 +56,9 @@
                 meter:textColor="#2a2b2b"
                 meter:metricSize="10sp"
                 meter:metricText="metric"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="puntos"
-                android:id="@+id/puntosNivel1"
-                android:layout_marginLeft="30dp"
-                android:textSize="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,7 +66,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:id="@+id/layoutNivel2">
 
             <butterflydevs.brainstudio.CircularCounter
                 xmlns:meter="http://schemas.android.com/apk/res-auto"
@@ -86,16 +81,9 @@
                 meter:textColor="#2a2b2b"
                 meter:metricSize="10sp"
                 meter:metricText="metric"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="puntos"
-                android:id="@+id/puntosNivel2"
-                android:layout_marginLeft="30dp"
-                android:textSize="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +91,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:id="@+id/layoutNivel3">
 
             <butterflydevs.brainstudio.CircularCounter
                 xmlns:meter="http://schemas.android.com/apk/res-auto"
@@ -117,22 +106,26 @@
                 meter:textColor="#2a2b2b"
                 meter:metricSize="10sp"
                 meter:metricText="metric"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp" />
 
-            <ImageView
-                android:layout_width="73dp"
-                android:layout_height="53dp"
-                android:id="@+id/imageView2"
-                android:src="@drawable/lock" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="BLOQUEADO"
-                android:id="@+id/textView7" />
         </LinearLayout>
 
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutImagenesR"
+            android:gravity="center"
+            android:layout_marginTop="30dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutImagenes"
+                android:gravity="clip_horizontal"></LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
