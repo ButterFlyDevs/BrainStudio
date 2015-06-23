@@ -92,6 +92,10 @@
             android:name=".Juego5"
             android:label="@string/title_activity_juego5" >
         </activity>
+        <activity
+            android:name=".Juego5niveln"
+            android:label="@string/title_activity_juego5niveln" >
+        </activity>
     </application>
 
 </manifest>
