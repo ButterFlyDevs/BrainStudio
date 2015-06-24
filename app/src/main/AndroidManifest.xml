@@ -67,22 +67,22 @@
         <activity
             android:name=".Juego2niveln"
             android:label="@string/title_activity_juego2niveln"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego2"
             android:label="@string/title_activity_juego2"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego4"
             android:label="@string/title_activity_juego4"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego4niveln"
             android:label="@string/title_activity_juego4niveln"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".PruebasAnimaciones"
@@ -91,17 +91,21 @@
         <activity
             android:name=".Juego3"
             android:label="@string/title_activity_juego3"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego5"
             android:label="@string/title_activity_juego5"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Juego5niveln"
             android:label="@string/title_activity_juego5niveln"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Help"
+            android:label="@string/title_activity_help" >
         </activity>
     </application>
 
