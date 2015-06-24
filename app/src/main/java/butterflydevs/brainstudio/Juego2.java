@@ -654,16 +654,16 @@ public class Juego2 extends ActionBarActivity {
     public int calculaPorcentaje(int nivel, int puntuacion){
 
         /*
-        Tanto el 1200 como el 4620 son las puntuaciones m�ximas que se podr�an sacar en ambos niveles
+        Tanto el 300 como el 540 son las puntuaciones m�ximas que se podr�an sacar en ambos niveles
         si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podr� conseguir
         tanta puntuaci�n pero obviamente podr� acercarse si es muy r�pido contestando y no se equivoca.
          */
 
         int resultado=0;
         if(nivel==1)
-            resultado=(100*puntuacion)/1200;
+            resultado=(100*puntuacion)/300;
         if(nivel==2)
-            resultado=(100*puntuacion)/4620;
+            resultado=(100*puntuacion)/540;
         return resultado;
     }
 
