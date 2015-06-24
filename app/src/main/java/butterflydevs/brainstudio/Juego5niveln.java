@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import butterflydevs.brainstudio.extras.Dialogos.DialogoFinJuego5;
+import butterflydevs.brainstudio.extras.Jugada;
+import butterflydevs.brainstudio.extras.MyCustomDialog;
+import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
 /**
@@ -44,10 +48,7 @@ public class Juego5niveln extends ActionBarActivity {
     static Boton []botones;
 
     //Colores base
-    static String[] coloresBase;
-
-    //Colores enfasis
-    static String[] coloresEnfasis;
+    static String[] colores;
 
     //Variables necesarias para construir el grid de forma dinámica:
 
@@ -58,12 +59,29 @@ public class Juego5niveln extends ActionBarActivity {
     private LinearLayout[] filasLinearLayout; //Cada fila de botones es un linearLayout
 
 
-    private int numFilas;
-    private int numColumnas;
-    private int tamButtons;
+    // ### VARIABLES DE JUEGO ### //
 
+        //Número de filas del grid
+        private int numFilas;
+        //Número de columnas del grid
+        private int numColumnas;
+        //Tamaño de los botones
+        private int tamButtons;
 
-    private int maxRandom;
+        //Número de números con los que jugaremos la jugada
+        private int numNumeros;
+
+        //Rango min-max de valores entre los que podrán estar los números que obtengamos.
+        private int rangoMin;
+        private int rangoMax;
+
+        //Número de veces que se repite un panel sin cambiar de dificultad.
+        private int numRepeticiones;
+        //Contador de la repetición actual
+        private int repeticionActual;
+
+        private int porcentaje=0;
+
 
     private Button buttonBack, buttonHelp;
 
@@ -77,9 +95,7 @@ public class Juego5niveln extends ActionBarActivity {
 
     List<Integer> secuenciaJugador = new ArrayList();
 
-    private int numNumeros=5;
-    private int rangoMin=0;
-    private int rangoMax=9;
+    int level;
 
     private boolean mostrar=true;
 
@@ -102,7 +118,7 @@ public class Juego5niveln extends ActionBarActivity {
 
                 try {
                     //Tiempo de entrada
-                    Thread.sleep(1500);
+                    Thread.sleep(1000);
                     //La hebra se inicializa a dos pasos
                     for (int i = 0; i <2; i++) {
 
@@ -179,15 +195,14 @@ public class Juego5niveln extends ActionBarActivity {
         asociarElementosVista();
 
         //Cargar los colores que vamos a usar:
-        coloresBase = getResources().getStringArray(R.array.colores_base);
-        coloresEnfasis = getResources().getStringArray(R.array.colores_enfasis);
+        colores = getResources().getStringArray(R.array.colores_base);
 
 
         //2º Obtenemos los datos que se le pasa a la actividad.
 
         Intent intent=getIntent();
         //Obtenemos la información del intent que nos evía la actividad que nos crea.
-        int level=intent.getIntExtra("nivel",0);
+        level=intent.getIntExtra("nivel",0);
 
         System.out.println("recibiod de la actividad llamante: "+level);
 
@@ -267,30 +282,53 @@ public class Juego5niveln extends ActionBarActivity {
         //Ajustes para el nivel 1
         if(level==1){
 
+            //Se empieza jungando con 2 numeros
+            numNumeros=2;
+            //Que puede estar entre 0 y 3 (inclusives)
+            rangoMin=0;
+            rangoMax=3;
+
+            //El número de repeticiones por nivel de dificultad
+            numRepeticiones=4;
+            //Iniciamos el contador a 1 por la primera
+         //   repeticionActual=1;
+
             Toast.makeText(this, "Level1", Toast.LENGTH_SHORT).show();
 
             //1º Establecemos el tamaño del grid:
-            numFilas=5;
-            numColumnas=3;
+            numFilas=3;
+            numColumnas=2;
 
             //2º Establecemos el tamaño de los botones:
-            tamButtons=150;
+            tamButtons=200;
 
-            maxRandom=numFilas*numColumnas;
+        //    rangoMax=numFilas*numColumnas;
 
 
         }else
             //Ajustes para el nivel 2
             if(level==2){
 
-                Toast.makeText(this, "Level2", Toast.LENGTH_SHORT).show();
 
-                numFilas=2;
-                numColumnas=2;
+                //Se empieza jungando con 9 numeros
+                numNumeros=4;
+                //Que puede estar entre 0 y 9 (inclusives)
+                rangoMin=0;
+                rangoMax=9;
 
-                tamButtons=250;
+                //El número de repeticiones por nivel de dificultad
+                numRepeticiones=4;
 
-                maxRandom=numFilas*numColumnas;
+                Toast.makeText(this, "Level1", Toast.LENGTH_SHORT).show();
+
+                //1º Establecemos el tamaño del grid:
+                numFilas=5;
+                numColumnas=3;
+
+                //2º Establecemos el tamaño de los botones:
+                tamButtons=150;
+
+             //   rangoMax=numFilas*numColumnas;
 
             }else
                 //Ajustes para el nivel 3
@@ -298,12 +336,12 @@ public class Juego5niveln extends ActionBarActivity {
 
                     Toast.makeText(this, "Level3", Toast.LENGTH_SHORT).show();
 
-                    numFilas=3;
-                    numColumnas=2;
+                    numFilas=6;
+                    numColumnas=4;
 
-                    tamButtons=200;
+                    tamButtons=125;
 
-                    maxRandom=numFilas*numColumnas;
+                //    rangoMax=numFilas*numColumnas;
                 }
 
 
@@ -420,9 +458,12 @@ public class Juego5niveln extends ActionBarActivity {
 
         //Ocultamos los númos y convertimos sus posicones en cuadrados de colores
 
+        int colorElegido = randInt(0,(colores.length-1));
+
+
         for(int i=0; i<numNumeros; i++){
             botones[matrizValores[0][i]].boton.setText("");
-            botones[matrizValores[0][i]].boton.setBackgroundColor(Color.MAGENTA);
+            botones[matrizValores[0][i]].boton.setBackgroundColor(Color.parseColor(colores[colorElegido]));
 
         }
 
@@ -431,6 +472,7 @@ public class Juego5niveln extends ActionBarActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
 
 
         //Inicializamos la hebra:
@@ -488,6 +530,8 @@ public class Juego5niveln extends ActionBarActivity {
     public void terminarJugada(){
 
 
+        porcentaje+=5;
+
         //Acemos que vibre:
         Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
 
@@ -508,8 +552,45 @@ public class Juego5niveln extends ActionBarActivity {
         secuenciaJugador.clear();
 
 
+        // ### AJUSTES DE LAS VARIABLES DE JUEGO PARA AVANZAR ### //
+
+
+            boolean puedeSeguir=true;
+
+            //Aumentamos el contador de repeticiones porque hemos jugado otra pantalla.
+            repeticionActual++;
+
+            //Si se ha llegado al máximo de repeticiones establecidas por el nivel se aumenta la dificultad.
+            if(repeticionActual==numRepeticiones) {
+                //Se aumenta el número de valores con los que jugamos
+                this.numNumeros++;
+
+                //CUando se llegue al final del juego se sale
+                if(numNumeros>numFilas*numColumnas) {
+                    this.finPartida();
+                    //Cuando se llega al máximo no se puede seguir o se provocarán errores.
+                    puedeSeguir=false;
+                }
+
+                //Se aumenta el rango de valores que se pueden generar:
+                this.rangoMax+=2;
+
+                //Se reinicia la variable número de repeticiones:
+                repeticionActual=0;
+            }
+
+
+
         //Lanzar nuevo panel
-        reiniciaSecuencia();
+        if(puedeSeguir)
+            reiniciaSecuencia();
+
+
+
+
+
+
+
 
     }
 
@@ -533,8 +614,20 @@ public class Juego5niveln extends ActionBarActivity {
 
 
     public void finPartida(){
-        Toast.makeText(this, "FIN DE PARTIDA", Toast.LENGTH_SHORT).show();
-        System.out.println("Se acabo la partida");
+
+        //Informamos de ello:
+        DialogoFinJuego5 dialogoMedalla = new DialogoFinJuego5();
+        dialogoMedalla.setDatos(secuencia, secuenciaJugador, porcentaje);
+
+        //Mostramos el diálogo
+        dialogoMedalla.show(getFragmentManager(), "");
+
+        //Grabar datos de partida!
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        db.addJugada(new Jugada(0, porcentaje), level,5);
+
     }
 
     public void reiniciaSecuencia(){
@@ -574,6 +667,8 @@ public class Juego5niveln extends ActionBarActivity {
             //botones[numBoton].boton.startAnimation(animacion);
 
             secuenciaJugador.add(botones[numBoton].numero);
+
+            botones[numBoton].boton.setBackgroundColor(Color.TRANSPARENT);
 
             if(secuenciaCorrecta()) {
                 System.out.println("secuenciaCorrecta: "+secuenciaCorrecta());

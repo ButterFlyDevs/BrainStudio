@@ -156,9 +156,10 @@ public class Juego5 extends ActionBarActivity {
         db = new MySQLiteHelper(this);
 
         //Obtener todas la jugadas
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1,1);
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,5);
 
-        maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
+        //Usamos la 2ª ya que aquí solo trabajamos con porcentajes y la primera implementación sólo lo hace con puntuación.
+        maxJugadaNivel1=Jugada.obtenMaximaJugada2(jugadasNivel1);
 
         textNivel1=new TextView(this);
 
@@ -168,7 +169,7 @@ public class Juego5 extends ActionBarActivity {
         textNivel1.setTextSize(tamTextoNiveles);
 
         //Escribimos el pantalla la máxima jugada
-        textNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
+        textNivel1.setText(Integer.toString(maxJugadaNivel1.getPorcentaje())+"% completado");
 
         //Añadimos el texto al layout:
         layoutNivel1.addView(textNivel1);
@@ -211,7 +212,7 @@ public class Juego5 extends ActionBarActivity {
 
             ImageView medallaBronce = new ImageView(this);
             //Añadimos la imagen
-            medallaBronce.setImageResource(R.drawable.juego33);
+            medallaBronce.setImageResource(R.drawable.juego51);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.
@@ -510,8 +511,8 @@ public class Juego5 extends ActionBarActivity {
             textNivel2.setTextSize(tamTextoNiveles);
 
             db = new MySQLiteHelper(this);
-            //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel2=db.getAllJugadas(2,1);
+            //Conseguimos las jugadas del nivel 2 del juego 5
+            List<Jugada> jugadasNivel2=db.getAllJugadas(2,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
@@ -538,7 +539,7 @@ public class Juego5 extends ActionBarActivity {
 
                 ImageView medallaPlata = new ImageView(this);
                 //Añadimos la imagen
-                medallaPlata.setImageResource(R.drawable.juego32);
+                medallaPlata.setImageResource(R.drawable.juego52);
                 //Creamos unos parámetros para su layout.
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
                 //Aplicamos el layout.
@@ -609,7 +610,7 @@ public class Juego5 extends ActionBarActivity {
 
             db = new MySQLiteHelper(this);
             //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel3=db.getAllJugadas(3,1);
+            List<Jugada> jugadasNivel3=db.getAllJugadas(3,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel3=Jugada.obtenMaximaJugada(jugadasNivel3);
@@ -678,7 +679,7 @@ public class Juego5 extends ActionBarActivity {
 
             ImageView medallaOro = new ImageView(this);
             //Añadimos la imagen
-            medallaOro.setImageResource(R.drawable.juego31);
+            medallaOro.setImageResource(R.drawable.juego53);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.

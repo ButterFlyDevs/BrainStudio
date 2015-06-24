@@ -104,4 +104,23 @@ public class Jugada {
         return new Jugada(puntuacion,porcentaje);
     }
 
+    static public Jugada obtenMaximaJugada2(List<Jugada> jugadas){
+
+        /**
+         * Con esta iniciación de variables si no existe jugada maxima porque aún no
+         * hay ninguna jugada se devuelve una jugada con 0, 0 para que pueda mostrar algo .
+         */
+        int puntuacion = 0;
+        int porcentaje = 0;
+
+        for(Jugada jugada: jugadas)
+            //El parámetro decisivo es la puntuación.
+            if(jugada.getPorcentaje()>porcentaje) {
+                puntuacion = jugada.getPuntuacion();
+                porcentaje = jugada.getPorcentaje();
+            }
+        return new Jugada(puntuacion,porcentaje);
+    }
+
+
 }

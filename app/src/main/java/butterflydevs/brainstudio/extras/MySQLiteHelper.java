@@ -49,9 +49,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String J1N1="juego1nivel1";
     private static final String J1N2="juego1nivel2";
     private static final String J1N3="juego1nivel3";
+
     private static final String J2N1="juego2nivel1";
     private static final String J2N2="juego2nivel2";
     private static final String J2N3="juego2nivel3";
+
+    private static final String J5N1="juego5nivel1";
+    private static final String J5N2="juego5nivel2";
+    private static final String J5N3="juego5nivel3";
 
     private static final String MEDALLAS="medallas";
 
@@ -80,6 +85,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
 
 
+        // ### JUEGO 1 ### //
+
         //Tabla de Juego 1 nivel 1
 
             //Especificación
@@ -106,48 +113,93 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         //Tabla de Juego 1 nivel 3
 
-        //Especificación
-        String CREATE_LEVEL_TABLE_JUEGO1_NIVEL3 = "CREATE TABLE juego1nivel3 ( "+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                "puntuacion INTEGER, "+
-                "porcentaje INTEGER )";
+            //Especificación
+            String CREATE_LEVEL_TABLE_JUEGO1_NIVEL3 = "CREATE TABLE juego1nivel3 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
 
-        //Ejecución de la creación
-        db.execSQL(CREATE_LEVEL_TABLE_JUEGO1_NIVEL3);
+            //Ejecución de la creación
+            db.execSQL(CREATE_LEVEL_TABLE_JUEGO1_NIVEL3);
 
 
-        //Tabla de Juego 1 nivel 1
+        // ### JUEGO 2 ### //
 
-        //Especificación
-        String CREATE_TABLE_JUEGO2_NIVEL1 = "CREATE TABLE juego2nivel1 ( "+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                "puntuacion INTEGER, "+
-                "porcentaje INTEGER )";
+        //Tabla de Juego 2 nivel 1
 
-        //Ejecución de la creación
-        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL1);
+            //Especificación
+            String CREATE_TABLE_JUEGO2_NIVEL1 = "CREATE TABLE juego2nivel1 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
 
-        //Tabla de Juego 1 nivel 1
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO2_NIVEL1);
 
-        //Especificación
-        String CREATE_TABLE_JUEGO2_NIVEL2 = "CREATE TABLE juego2nivel2 ( "+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                "puntuacion INTEGER, "+
-                "porcentaje INTEGER )";
 
-        //Ejecución de la creación
-        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL2);
+        //Tabla de Juego 2 nivel 2
 
-        //Tabla de Juego 1 nivel 1
+            //Especificación
+            String CREATE_TABLE_JUEGO2_NIVEL2 = "CREATE TABLE juego2nivel2 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
 
-        //Especificación
-        String CREATE_TABLE_JUEGO2_NIVEL3 = "CREATE TABLE juego2nivel3 ( "+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                "puntuacion INTEGER, "+
-                "porcentaje INTEGER )";
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO2_NIVEL2);
 
-        //Ejecución de la creación
-        db.execSQL(CREATE_TABLE_JUEGO2_NIVEL3);
+
+        //Tabla de Juego 2 nivel 3
+
+            //Especificación
+            String CREATE_TABLE_JUEGO2_NIVEL3 = "CREATE TABLE juego2nivel3 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
+
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO2_NIVEL3);
+
+
+
+        // ### JUEGO 5 ### //
+
+        //Tabla de Juego 5 nivel 1
+
+            //Especificación
+            String CREATE_TABLE_JUEGO5_NIVEL1 = "CREATE TABLE juego5nivel1 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
+
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO5_NIVEL1);
+
+        //Tabla de Juego 5 nivel 2
+
+            //Especificación
+            String CREATE_TABLE_JUEGO5_NIVEL2 = "CREATE TABLE juego5nivel2 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
+
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO5_NIVEL2);
+
+
+        //Tabla de Juego 5 nivel 3
+
+            //Especificación
+            String CREATE_TABLE_JUEGO5_NIVEL3 = "CREATE TABLE juego5nivel3 ( "+
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    "puntuacion INTEGER, "+
+                    "porcentaje INTEGER )";
+
+            //Ejecución de la creación
+            db.execSQL(CREATE_TABLE_JUEGO5_NIVEL3);
+
+
+
 
 
         //Tabla de información de medallas
@@ -175,12 +227,33 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+
+
         //Elimina si exisitera alguna versión anterior
-        db.execSQL("DROP TABLE IF EXISTS juego1nivel1");
 
-        db.execSQL("DROP TABLE IF EXISTS juego1nivel2");
 
-        db.execSQL("DROP TALBE IF EXISTS juego1nivel3");
+        // JUEGO1
+            db.execSQL("DROP TABLE IF EXISTS juego1nivel1");
+            db.execSQL("DROP TABLE IF EXISTS juego1nivel2");
+            db.execSQL("DROP TALBE IF EXISTS juego1nivel3");
+
+        // JUEGO2
+
+            db.execSQL("DROP TABLE IF EXISTS juego2nivel1");
+            db.execSQL("DROP TABLE IF EXISTS juego2nivel2");
+            db.execSQL("DROP TALBE IF EXISTS juego2nivel3");
+
+
+        // JUEGO5
+
+            db.execSQL("DROP TABLE IF EXISTS juego5nivel1");
+            db.execSQL("DROP TABLE IF EXISTS juego5nivel2");
+            db.execSQL("DROP TALBE IF EXISTS juego5nivel3");
+
+
+
+
+
 
         db.execSQL("DROP TABLE IF EXISTS medallas");
 
@@ -229,6 +302,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     else if (nivel == 3)
                         db.insert(J2N3, null, values);
                     break;
+
+            case 5:
+                    if (nivel == 1)
+                        db.insert(J5N1, null, values);
+                    else if (nivel == 2)
+                        db.insert(J5N2, null, values);
+                    else if (nivel == 3)
+                        db.insert(J5N3, null, values);
+                    break;
+
+
             default: break;
         }
 
@@ -377,13 +461,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String tabla="";
         switch (juego) {
             case 1:
-                    if (nivel == 1)
-                        tabla = J1N1;
-                    if (nivel == 2)
-                        tabla = J1N2;
-                    if (nivel == 3)
-                        tabla = J1N3;
-                    break;
+                if (nivel == 1)
+                    tabla = J1N1;
+                if (nivel == 2)
+                    tabla = J1N2;
+                if (nivel == 3)
+                    tabla = J1N3;
+                break;
             case 2:
                 if (nivel == 1)
                     tabla = J2N1;
@@ -392,6 +476,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 if (nivel == 3)
                     tabla = J2N3;
                 break;
+            case 5:
+                if (nivel == 1)
+                    tabla = J5N1;
+                if (nivel == 2)
+                    tabla = J5N2;
+                if (nivel == 3)
+                    tabla = J5N3;
+                break;
+
+
             default:break;
         }
 
