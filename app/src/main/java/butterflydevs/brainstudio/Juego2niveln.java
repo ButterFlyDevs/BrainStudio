@@ -455,6 +455,7 @@ public class Juego2niveln extends ActionBarActivity {
             tamButtons = 80;
 
 
+
         }
     }
 
