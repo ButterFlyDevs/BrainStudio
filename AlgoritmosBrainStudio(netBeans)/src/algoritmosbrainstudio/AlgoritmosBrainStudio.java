@@ -346,17 +346,43 @@ public class AlgoritmosBrainStudio {
             
             //2º La ordenación del vector por los números (esto nos vendrá bien para aliviar de procesamiento al juego)
         
-        
+            
+             leeSecuencia(valores, numElems);
+             burbuja(valores, numElems);
+             leeSecuencia(valores, 5);
             
             
             
         return valores;
         
     }
-    
+    /**
+     * Adaptación del algoritmo de ordenación burbuja para matriz de dos filas donde se ordena por la fila 1.
+     * @param matriz Matriz a ordenar por la segunda fila
+     * @param size Tamaño de la matriz.
+     */
+    public static void burbuja(int [][] matriz, int size){
+                 
+        
+        int i, j, aux, aux2;
+         
+         for(i=0;i<size-1;i++)            
+              for(j=0;j<size-i-1;j++)                  
+                   if(matriz[1][j+1]<matriz[1][j]){
+                      
+                      aux=matriz[1][j+1];                      
+                      matriz[1][j+1]=matriz[1][j];                      
+                      matriz[1][j]=aux; 
+                       
+                      aux2=matriz[0][j+1];
+                      matriz[0][j+1]=matriz[0][j];          
+                      matriz[0][j]=aux2;
+                   }
+         
+    }
     static public void leeSecuencia(int[][] paresPosicionValor, int numElementos){
         
-        System.out.println(" ### Secuencia generada ### ");
+        System.out.println(" ### Secuencia  ### ");
         for(int i=0; i<numElementos; i++){                        
             System.out.print("["+paresPosicionValor[0][i]+"]");                       
         }
@@ -364,7 +390,7 @@ public class AlgoritmosBrainStudio {
         for(int i=0; i<numElementos; i++){
             System.out.print("["+paresPosicionValor[1][i]+"]");
         }
-        System.out.print("");
+        System.out.println("");
         
     }
     
@@ -379,10 +405,15 @@ public class AlgoritmosBrainStudio {
        // int colores[] = generaColores(20, 6);
        // leeColores(colores);
         
-        int prueba[][] = generaSecuencia(5,15,1,9);
-        leeSecuencia(prueba, 5);
+        int prueba[][] = generaSecuencia(5,9,1,9);
         
         
+        /*
+        int elements[] = {50,26,7,9,15,27};
+        burbuja(elements);
+        for(int a: elements)
+            System.out.print(a+" ");
+        */
         
      //   int matrizResultado[] = obtenerMatrizParejas(4,3);
         
