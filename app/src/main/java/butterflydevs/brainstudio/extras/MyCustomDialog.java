@@ -85,15 +85,15 @@ public class MyCustomDialog extends DialogFragment {
         } else if(juego==2){
             switch (nivel) {
                 case 1:
-                    imagenMedalla.setImageResource(R.drawable.oro);
+                    imagenMedalla.setImageResource(R.drawable.bronce_juego2);
                     textoAcceso.setText("Nivel 2 desbloqueado!");
                     break;
                 case 2:
-                    imagenMedalla.setImageResource(R.drawable.plata);
+                    imagenMedalla.setImageResource(R.drawable.plata_juego2);
                     textoAcceso.setText("Nivel 3 desbloqueado!");
                     break;
                 default:
-                    imagenMedalla.setImageResource(R.drawable.oro);
+                    imagenMedalla.setImageResource(R.drawable.oro_juego2);
                     textoAcceso.setText("Completada Zona B");
             }
 

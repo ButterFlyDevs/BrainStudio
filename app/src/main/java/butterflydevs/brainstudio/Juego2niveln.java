@@ -453,9 +453,6 @@ public class Juego2niveln extends ActionBarActivity {
 
             //3� Ajustar el tama�o de los botones
             tamButtons = 80;
-
-
-
         }
     }
 

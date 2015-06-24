@@ -176,7 +176,7 @@ public class Juego2 extends ActionBarActivity {
 
             ImageView medallaBronce = new ImageView(this);
             //Añadimos la imagen
-            medallaBronce.setImageResource(R.drawable.bronce);
+            medallaBronce.setImageResource(R.drawable.bronce_juego2);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.
@@ -491,7 +491,7 @@ public class Juego2 extends ActionBarActivity {
 
                 ImageView medallaPlata = new ImageView(this);
                 //Añadimos la imagen
-                medallaPlata.setImageResource(R.drawable.plata);
+                medallaPlata.setImageResource(R.drawable.plata_juego2);
                 //Creamos unos parámetros para su layout.
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
                 //Aplicamos el layout.
@@ -631,7 +631,7 @@ public class Juego2 extends ActionBarActivity {
 
             ImageView medallaOro = new ImageView(this);
             //Añadimos la imagen
-            medallaOro.setImageResource(R.drawable.oro);
+            medallaOro.setImageResource(R.drawable.oro_juego2);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.
