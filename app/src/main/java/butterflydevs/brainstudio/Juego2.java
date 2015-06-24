@@ -176,7 +176,7 @@ public class Juego2 extends ActionBarActivity {
 
             ImageView medallaBronce = new ImageView(this);
             //Añadimos la imagen
-            medallaBronce.setImageResource(R.drawable.bronce);
+            medallaBronce.setImageResource(R.drawable.bronce_juego2);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.
@@ -433,9 +433,13 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        // Intent intent = new Intent(JuegoGrid12.this, Help.class);
+                        Intent intent = new Intent(Juego2.this, Help.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Juegos","Juego2");
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
                         //Iniciamos la nueva actividad
-                        // startActivity(intent);
+                        startActivity(intent);
                     }
                 }
         );
@@ -491,7 +495,7 @@ public class Juego2 extends ActionBarActivity {
 
                 ImageView medallaPlata = new ImageView(this);
                 //Añadimos la imagen
-                medallaPlata.setImageResource(R.drawable.plata);
+                medallaPlata.setImageResource(R.drawable.plata_juego2);
                 //Creamos unos parámetros para su layout.
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
                 //Aplicamos el layout.
@@ -616,54 +620,57 @@ public class Juego2 extends ActionBarActivity {
         if(media>llaveFinal) {
             puedeJugar3 = true;
 
-            //Notificamos si no existe ya que se va a añadir:
-            if(!db.compruebaMedala(2,3)) {
-                //Informamos de ello:
-                MyCustomDialog dialogoMedalla = new MyCustomDialog();
-                // fragment1.mListener = MainActivity.this;
-                dialogoMedalla.text = "nombre";
-                dialogoMedalla.juego = 2;
-                dialogoMedalla.nivel = 3;
-                dialogoMedalla.show(getFragmentManager(), "");
+            //Añadimos la medalla de Oro SOLO si se ha jugado en todos los niveles y se ha superado la media.
+            if(maxJugadaNivel_3.getPorcentaje()!=0 && maxJugadaNivel_2.getPorcentaje()!=0 &&maxJugadaNivel_1.getPorcentaje() !=0) {
+                //Notificamos si no existe ya que se va a añadir:
+                if (!db.compruebaMedala(2, 3)) {
+                    //Informamos de ello:
+                    MyCustomDialog dialogoMedalla = new MyCustomDialog();
+                    // fragment1.mListener = MainActivity.this;
+                    dialogoMedalla.text = "nombre";
+                    dialogoMedalla.juego = 2;
+                    dialogoMedalla.nivel = 3;
+                    dialogoMedalla.show(getFragmentManager(), "");
+                }
+
+                //Añadimos la medalla de bronce al layout de medallas:
+
+                ImageView medallaOro = new ImageView(this);
+                //Añadimos la imagen
+                medallaOro.setImageResource(R.drawable.oro_juego2);
+                //Creamos unos parámetros para su layout.
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
+                //Aplicamos el layout.
+                medallaOro.setLayoutParams(layoutParams);
+
+                //Añadimos la imagen al layout.
+                layoutMedallas.addView(medallaOro);
+
+
+                //Añadimos la medalla de plata a la base de datos:
+
+
+                //Instanciamos la base de datos
+                db = new MySQLiteHelper(this);
+                //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 3 y media con los otros.
+                db.addMedalla(2, 3);
             }
-
-            //Añadimos la medalla de bronce al layout de medallas:
-
-            ImageView medallaOro = new ImageView(this);
-            //Añadimos la imagen
-            medallaOro.setImageResource(R.drawable.oro);
-            //Creamos unos parámetros para su layout.
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
-            //Aplicamos el layout.
-            medallaOro.setLayoutParams(layoutParams);
-
-            //Añadimos la imagen al layout.
-            layoutMedallas.addView(medallaOro);
-
-
-            //Añadimos la medalla de plata a la base de datos:
-
-
-            //Instanciamos la base de datos
-            db = new MySQLiteHelper(this);
-            //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 3 y media con los otros.
-            db.addMedalla(2,3);
         }
     }
 
     public int calculaPorcentaje(int nivel, int puntuacion){
 
         /*
-        Tanto el 1200 como el 4620 son las puntuaciones m�ximas que se podr�an sacar en ambos niveles
+        Tanto el 300 como el 540 son las puntuaciones m�ximas que se podr�an sacar en ambos niveles
         si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podr� conseguir
         tanta puntuaci�n pero obviamente podr� acercarse si es muy r�pido contestando y no se equivoca.
          */
 
         int resultado=0;
         if(nivel==1)
-            resultado=(100*puntuacion)/1200;
+            resultado=(100*puntuacion)/300;
         if(nivel==2)
-            resultado=(100*puntuacion)/4620;
+            resultado=(100*puntuacion)/540;
         return resultado;
     }
 

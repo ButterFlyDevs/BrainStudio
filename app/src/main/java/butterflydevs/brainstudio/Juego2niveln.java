@@ -430,7 +430,7 @@ public class Juego2niveln extends ActionBarActivity {
 
             //2� Establecemos el n�mero m�ximo de celdas a preguntar
 
-            numMaximoCeldas=12;
+            numMaximoCeldas=4;
 
             //3� Ajustar el tama�o de los botones
             tamButtons = 110;
@@ -449,12 +449,10 @@ public class Juego2niveln extends ActionBarActivity {
                 matrizRespuesta[i]=0;
 
             //2� Establecemos el n�mero m�ximo de celdas a preguntar
-            numMaximoCeldas=20;
+            numMaximoCeldas=5;
 
             //3� Ajustar el tama�o de los botones
             tamButtons = 80;
-
-
         }
     }
 
@@ -634,23 +632,6 @@ public class Juego2niveln extends ActionBarActivity {
     }
 
     /**
-     * M�todo usado para definir nuevos colores de celdas marcadas y de
-     */
-    public void nuevosColores(){
-
-
-
-        /**
-         * Para que funcione tienen que existir al menos dos colores en el array xml en colors.xml
-         */
-        Random rnd = new Random();
-        colorMarcado=(int)(rnd.nextDouble() * 3 + 0);
-        System.out.println("Color seleccionado "+colorMarcado);
-
-        //this.colorFondo=Color.DKGRAY;
-    }
-
-    /**
      * M�todo para calcular el porcentaje superado
      *
      * @return porcentaje superado del nivel
@@ -694,8 +675,8 @@ public class Juego2niveln extends ActionBarActivity {
 
         //Cargamos la animaci�n "animacion1" a cada uno de los botones que componen el grid.
         for(int i = 0;i<numFilas*numColumnas;i++) {
-            //botones[i].getAnimation().setDuration(5500 - (this.numRepeticionActual*500) ); //La animación dura medio segundo menos en cada repetición. Va desde 5 seg hasta 3.
-            animacion1.setDuration(5500 - (this.numRepeticionActual*500));
+            //La animación dura 6 decimas de segundo menos cada repeticion. Desde 4.9 segundos hasta 3.1 seg
+            animacion1.setDuration(5500 - (this.numRepeticionActual*600));
             botones[i].startAnimation(animacion1);
         }
     }

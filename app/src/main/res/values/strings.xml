@@ -67,5 +67,6 @@
         <string name="title_activity_juego3">Juego3</string>
         <string name="title_activity_juego5">Juego5</string>
         <string name="title_activity_juego5niveln">Juego5niveln</string>
+    <string name="title_activity_help">Help</string>
 
 </resources>
