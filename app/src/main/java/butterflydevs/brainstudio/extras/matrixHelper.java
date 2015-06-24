@@ -387,4 +387,115 @@ public class matrixHelper {
         for(int i=0; i<colores.length; i++)
             System.out.print(colores[i]+" ");
     }
+
+
+     // ### JUEGO 5 ### //
+
+
+    /**
+     * Para generar de forma simple un número aleatorio entre dos valores inclusives.
+     * @param min Cota inferior
+     * @param max Cota superior
+     * @return  Un valor aleatorio entre las cotas inclusives.
+     */
+    static int randInt(int min, int max) {
+
+        // NOTE: Usually this should be a field rather than a method
+        // variable so that it is not re-seeded every call.
+        Random rand = new Random();
+
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
+    /**
+     * Generadora de secuencia de números aleatorios en posiciones aleatorias.
+     * Esta función genera una matriz (doble vector) con posiciones aleatorias y valores aleatorios
+     * para el 5º Juego.
+     * @param numElems Numero de elementos queremos generar (pareja posicion y valor)
+     * @param tamMatriz Tamaño de la matriz (para calcular posiciones de esta)
+     * @param rangoMin //Rango minimo de valores a generar.
+     * @param rangoMax //Rango máximo de valores a generar.
+     * @return El doble vector (matriz) con la información del valor en la posición que corresponde.
+     */
+    static public int[][] generaSecuencia(int numElems, int tamMatriz, int rangoMin, int rangoMax){
+
+        final int numFilas=2;
+
+        /*
+        Creamos una matriz siempre de dos filas con tantas columnas como numElementos queramos rellenar.
+        Ojo!: No podremos construir un resultado con más elementos que el propio tamaño de la matriz, controlamos
+        esto y lanzamos una excepción abortando el proceso antes de nada. Por ahora no lo hacemos.
+
+        if(numElems>tamMatriz)
+            deten programa y lanza excepción
+        */
+        int valores[][]= new int[numFilas][numElems];
+
+
+        // ## Algoritmo ## //
+
+
+        //Creamos y rellenamos un array con las posicones de la matriz:
+        List<Integer> posiciones = new ArrayList();
+        for(int i=0; i<tamMatriz; i++)
+            posiciones.add(i);
+
+        //Creamos y rellenamos un array con los posible valores:
+        List<Integer> numeros = new ArrayList();
+        for(int i=rangoMin; i<=rangoMax; i++) //Queremos que ambos valores estén dentro
+            numeros.add(i);
+
+
+
+
+        //1º Un bucle de tantos pasos como elementos queramos generar:
+
+        for(int i=0; i<numElems; i++){
+
+            //En la primera fila introducimos la POSICION en la matriz
+            //A la vez que introducimos sacamos ese valor de los posibles.
+            valores[0][i]=posiciones.remove(randInt(0,posiciones.size()-1));
+
+            //En la segunda fila introducimos el VALOR en esa posición de la matriz.
+            valores[1][i]=numeros.remove(randInt(0,numeros.size()-1));
+
+        }
+
+        //2º La ordenación del vector por los números (esto nos vendrá bien para aliviar de procesamiento al juego)
+
+            burbuja(valores, numElems);
+
+        return valores;
+
+    }
+    /**
+     * Adaptación del algoritmo de ordenación burbuja para matriz de dos filas donde se ordena por la fila 1.
+     * @param matriz Matriz a ordenar por la segunda fila
+     * @param size Tamaño de la matriz.
+     */
+    public static void burbuja(int [][] matriz, int size){
+
+
+        int i, j, aux, aux2;
+
+        for(i=0;i<size-1;i++)
+            for(j=0;j<size-i-1;j++)
+                if(matriz[1][j+1]<matriz[1][j]){
+
+                    aux=matriz[1][j+1];
+                    matriz[1][j+1]=matriz[1][j];
+                    matriz[1][j]=aux;
+
+                    aux2=matriz[0][j+1];
+                    matriz[0][j+1]=matriz[0][j];
+                    matriz[0][j]=aux2;
+                }
+
+    }
+
 }

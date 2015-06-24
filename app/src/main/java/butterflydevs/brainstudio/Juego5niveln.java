@@ -77,7 +77,13 @@ public class Juego5niveln extends ActionBarActivity {
 
     List<Integer> secuenciaJugador = new ArrayList();
 
+    private int numNumeros=5;
+    private int rangoMin=0;
+    private int rangoMax=9;
 
+    private boolean mostrar=true;
+
+    private int[][] matrizValores;
 
 
     public Juego5niveln(){
@@ -94,18 +100,19 @@ public class Juego5niveln extends ActionBarActivity {
             public void run() {
 
 
-
-
                 try {
-
+                    //Tiempo de entrada
                     Thread.sleep(1500);
-                    for (int i = 0; i <= secuencia.size(); i++) {
+                    //La hebra se inicializa a dos pasos
+                    for (int i = 0; i <2; i++) {
 
                         Message message = handler.obtainMessage();
                         message.what = 1;
 //                        Thread.sleep(1000);
                         handler.sendMessage(message);
-                        Thread.sleep(600);
+
+                        //Tiempo de memorización.
+                        Thread.sleep(1500);
                     }
 
                 } catch (InterruptedException e) {
@@ -119,20 +126,31 @@ public class Juego5niveln extends ActionBarActivity {
         public void handleMessage(Message msg){
             //Recibimos un mensaje desde la hebra del tiempo:
             // System.out.println("yeah"+msg.what);
+
+
+
             secuencia();
         }
 
     };
-    //SEcuencia tiene que recorrer toda la secuencia de botones sin tener nada más a su disposicion que una llamada.
+
+    //La secuencia en este caso es mostrar los numeros y después mostrar los cuadrados.
     public void secuencia(){
-        if(pos!=secuencia.size()) {
-            //botones[pos].setBackgroundColor(Color.YELLOW);
-            coloreaElegido( secuencia.get(pos) );
-            pos++;
-            //Al final se apagan todos los botones.
+
+        System.out.println("Llamada secuencia");
+
+
+        //En la primera llamada se muestra la matriz con los números:
+        if(mostrar){
+            rellenarMatriz();
+            mostrar=false;
+
         }else{
-            resetearBotones();
+            ocultarMatriz();
+            mostrar=true;
         }
+
+
     }
 
     public void coloreaElegido(int elegido){
@@ -256,7 +274,7 @@ public class Juego5niveln extends ActionBarActivity {
             numColumnas=3;
 
             //2º Establecemos el tamaño de los botones:
-            tamButtons=350;
+            tamButtons=150;
 
             maxRandom=numFilas*numColumnas;
 
@@ -305,21 +323,27 @@ public class Juego5niveln extends ActionBarActivity {
             botones[i] = new Boton();
 
             //Inicializamos cada uno de los elementos del vector
-            botones[i].boton = new Button(this);
+                botones[i].boton = new Button(this);
+
             //Establecemos parametros de layout a cada uno:
-            botones[i].boton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tamButtons, tamButtons);
-            params.setMargins(20, 20, 5, 5);
-            botones[i].boton.setLayoutParams(params);
-            //    botones[i].boton.setBackgroundColor(getResources().getColor(Color.parseColor(coloresBase[i])));
+                botones[i].boton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tamButtons, tamButtons);
+                params.setMargins(5, 5, 5, 5);
+                botones[i].boton.setLayoutParams(params);
+
+            //Tamaño del texto de los botones:
+                botones[i].boton.setTextSize(40);
+
+            //Color del botón:
+                botones[i].boton.setBackgroundColor(Color.TRANSPARENT);
 
             //Inicializamos los colores de los botones:
 
             //Ahora mismo solo para dos botones:
-            botones[i].color=Color.parseColor(coloresBase[i]);
-            botones[i].colorEnfasis=Color.parseColor(coloresEnfasis[i]);
+     //       botones[i].color=Color.parseColor(coloresBase[i]);
+//            botones[i].colorEnfasis=Color.parseColor(coloresEnfasis[i]);
 
-            botones[i].boton.setBackgroundColor(botones[i].color);
+     //       botones[i].boton.setBackgroundColor(botones[i].color);
         }
 
         //Asociamos a cada boton un listener.
@@ -352,7 +376,7 @@ public class Juego5niveln extends ActionBarActivity {
 
 
 
-        //3º Asociación de los elementos:
+        //3º Introducción de los botones a los layouts:
 
         //Añadimos los botones a los layouts.
         int numBoton = 0;
@@ -370,14 +394,44 @@ public class Juego5niveln extends ActionBarActivity {
 
     }
 
+    public void rellenarMatriz(){
+
+        //0. REseteamos
+        for(int i=0; i<botones.length; i++){
+            botones[i].boton.setText("");
+        }
+
+        //1º. Generamos una secuencia:
+
+        matrizValores = matrixHelper.generaSecuencia(numNumeros, numFilas*numColumnas, rangoMin, rangoMax);
+
+        //2º. Aplicamos esa secuencia al grid y pasamos los valores a secuencia
+
+        for(int i=0; i<numNumeros; i++){
+            botones[matrizValores[0][i]].boton.setText(Integer.toString(matrizValores[1][i]));
+            botones[matrizValores[0][i]].numero=matrizValores[1][i];
+            secuencia.add(matrizValores[1][i]);
+        }
+        System.out.println("Secuencia rellenada con "+secuencia.size()+" valores");
+
+    }
+
+    public void ocultarMatriz(){
+
+        //Ocultamos los númos y convertimos sus posicones en cuadrados de colores
+
+        for(int i=0; i<numNumeros; i++){
+            botones[matrizValores[0][i]].boton.setText("");
+            botones[matrizValores[0][i]].boton.setBackgroundColor(Color.MAGENTA);
+
+        }
+
+    }
+
     @Override
     protected void onStart(){
         super.onStart();
 
-
-
-        //Añadimos el primer elemento:
-        secuencia.add(randInt(0,maxRandom));
 
         //Inicializamos la hebra:
         inicializarHebra();
@@ -427,27 +481,40 @@ public class Juego5niveln extends ActionBarActivity {
                 return false;
         }
 
-        if(secuenciaJugador.size()==secuencia.size()) {
-            avance();
-            //Reiniciamos la secuencia del Jugador
-            secuenciaJugador.clear();
-            //Acemos que vibre:
-            Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
-
-            // Vibrar durante 3 segundos
-            v.vibrate(200);
-        }
-
-
 
         return salida;
     }
 
-    public void avance(){
+    public void terminarJugada(){
+
+
+        //Acemos que vibre:
+        Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
+
+        // Vibrar durante 3 segundos
+        v.vibrate(200);
+
+
+
+        //Reiniciamos la matriz:
+        for(int i=0; i<botones.length; i++)
+            botones[i].boton.setBackgroundColor(Color.TRANSPARENT);
+
         System.out.println("Avance");
-        secuencia.add(randInt(0,maxRandom));
+
+        //secuencia.add(randInt(0,maxRandom));
+
+        secuencia.clear();
+        secuenciaJugador.clear();
+
+
+        //Lanzar nuevo panel
         reiniciaSecuencia();
+
     }
+
+
+
 
     public static int randInt(int min, int max) {
 
@@ -462,6 +529,8 @@ public class Juego5niveln extends ActionBarActivity {
 
         return randomNum;
     }
+
+
 
     public void finPartida(){
         Toast.makeText(this, "FIN DE PARTIDA", Toast.LENGTH_SHORT).show();
@@ -484,6 +553,7 @@ public class Juego5niveln extends ActionBarActivity {
         public Button boton;
         public int color;
         public int colorEnfasis;
+        public int numero;
 
     };
 
@@ -499,16 +569,26 @@ public class Juego5niveln extends ActionBarActivity {
         @Override
         public void onClick(View v) {
 
-            botones[numBoton].boton.setBackgroundColor(botones[numBoton].colorEnfasis);
+           // botones[numBoton].boton.setBackgroundColor(botones[numBoton].colorEnfasis);
 
-            botones[numBoton].boton.startAnimation(animacion);
+            //botones[numBoton].boton.startAnimation(animacion);
 
-            secuenciaJugador.add(numBoton);
+            secuenciaJugador.add(botones[numBoton].numero);
 
-            if(secuenciaCorrecta())
-                System.out.println("Correcto");
-            else
+            if(secuenciaCorrecta()) {
+                System.out.println("secuenciaCorrecta: "+secuenciaCorrecta());
+
+                //Si se ha llegado al último valor:
+                if (secuenciaJugador.size() == secuencia.size()) {
+
+                    terminarJugada();
+
+                }
+
+            //Si la secuencia deja de ser correcta
+            }else {
                 finPartida();
+            }
 
         }
 
