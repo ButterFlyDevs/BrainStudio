@@ -4,25 +4,45 @@
     android:layout_height="fill_parent"
     tools:context="butterflydevs.brainstudio.Help">
 
-    <TextView
-        android:text="Titulo"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/titulo_ayuda"
-        />
-    <TextView
+        android:layout_weight="1"
+        >
+        <TextView
+            android:text="Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/titulo_ayuda"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descripcion_peque_ayuda"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imagen_ayuda"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descripcion_larga_ayuda"
+            />
+    </ScrollView>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/descripcion_peque_ayuda"
-        />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imagen_ayuda"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/descripcion_larga_ayuda"
-        />
+        android:layout_weight="4"
+        >
+        <Button
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/boton_atras_ayuda"
+            android:background="@drawable/back"
+            android:layout_marginRight="50dp"
+            />
+
+    </LinearLayout>
 </LinearLayout>
