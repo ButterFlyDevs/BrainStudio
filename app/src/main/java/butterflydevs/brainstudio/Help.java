@@ -5,7 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class Help extends ActionBarActivity {
 
     private TextView titulo, descripcion_peque, descripcion_larga;
     private ImageView imagen_ayuda;
+    private Button boton_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,22 @@ public class Help extends ActionBarActivity {
         titulo = (TextView) findViewById(R.id.titulo_ayuda);
         descripcion_larga = (TextView) findViewById(R.id.descripcion_larga_ayuda);
         descripcion_peque = (TextView) findViewById(R.id.descripcion_peque_ayuda);
-        imagen_ayuda = (ImageView) findViewById(R.id.imagen_ayuda);
+        //imagen_ayuda = (ImageView) findViewById(R.id.imagen_ayuda);
+        boton_back = (Button) findViewById(R.id.boton_atras_ayuda);
 
+        titulo.setText(getString(R.string.titulo_juego1));
+        descripcion_larga.setText(getString(R.string.desc_larga_juego1));
+        descripcion_peque.setText(getString(R.string.desc_peque_juego1));
 
+        boton_back.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }
+        );
+        //imagen_ayuda.setImageDrawable(getDrawable(R.drawable.profile));
     }
 
     @Override

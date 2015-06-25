@@ -485,6 +485,8 @@ public class Juego1 extends ActionBarActivity {
                         // Intent intent = new Intent(JuegoGrid12.this, Help.class);
                         //Iniciamos la nueva actividad
                         // startActivity(intent);
+                        Intent intent = new Intent(Juego1.this, Help.class);
+                        startActivityForResult(intent,1);
                     }
                 }
         );

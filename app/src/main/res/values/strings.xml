@@ -69,4 +69,30 @@
         <string name="title_activity_juego5niveln">Juego5niveln</string>
     <string name="title_activity_help">Help</string>
 
+
+    <!-- ############### STRINGS UTILIZADOS PARA LA AYUDA #######################-->
+    <string name="titulo_juegos"> Lista de juegos</string>
+    <string name="desc_peque_juegos">¡Prueba los distintos juegos de BrainStudio!</string>
+    <string name="desc_larga_juegos"> Desde esta pantalla puedes ver los distintos juegos disponibles
+    en BrainStudio. Para entrar a un juego, pulsa sobre su icono de la izquierda, y pasarás directamente
+    a la pantalla de selección de nivel, y también a la información de medallas conseguidas y puntuaciones.
+    ¡Sólo unos pocos son capaces de conseguir superar todos los juegos en todos los niveles al 100 por cien!</string>
+
+    <string name="titulo_juego1"> Memoria Visual - Vision general</string>
+    <string name="desc_peque_juego1"> Juego con un solo color, sin orden.</string>
+    <string name="desc_larga_juego1">Juego con 3 niveles distintos: \n
+    - Nivel 1: Tablero de 12 celdas, teniendo que recordar de 2 a 6 celdas para completar el nivel. El máximo de puntuación es 1.200 puntos.\n
+    - Nivel 2: Tablero de 24 celdas, teniendo que recordar un máximo de 12 celdas. El máximo de puntuación es4.620. \n
+    - Nivel 3: Tablero de 40 celdas, teniendo que recordar hast aun máximo de 20 celdas.\n\n
+
+    <u><b>Medallas</b></u>
+        \n
+        -La medalla de Bronce se desbloquea superando al menos el 10 por cientode la puntuación máxima alcanzble en el nivel 1.\n
+        -La medalla de Plata se desbloquea superando al menos el 10 de la puntuación máxima alcanzable en el nivel 2.\n
+        -La medalla de Oro se desbloquea superando la media de porcentaje superado en los 3 niveles. La media es un 20por ciento de la puntuación máxima superada.\n\n
+    <u><b>Niveles</b></u>
+        \n
+        Cada nivel se desbloquea superando al menos el 10por ciento de la puntuación máxima alcanzable en el nivel previo (es decir, en el nivel 1 consiguiendo 120 puntos se desbloquea el nivel
+        2, y el nivel 3 se desbloquea consiguiendo al menos 462 puntos en el nivel 2).
+    </string>
 </resources>
