@@ -111,8 +111,9 @@ public class juegos extends Activity {
 
 
     /**
-     * Función que se encarga de generar los datos que se cargan en el listView, ahora son datos estáticos
-     * pero tendrán que sustituirse por datos obtenidos de nuestra base de datos.
+     * Función que se encarga de generar los datos que se cargan en el listView
+     * Usamos funciones que declaramos en esta clase para obtener los datos en el formatoq eu nos
+     * interese.
      *
      * @return El array con los items del ListView.
      */
@@ -133,7 +134,7 @@ public class juegos extends Activity {
         items.add(new Nivel(25, puntuacionJuego2()));
 
         //Juego 5
-        items.add(new Nivel(25, puntuacionJuego2()));
+        items.add(new Nivel(porcentajeJuego5(), 0));
 
 
         return items;
@@ -180,28 +181,27 @@ public class juegos extends Activity {
         return 2;
     }
 
+    public int porcentajeJuego5(){
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,5);
+        Jugada maxJugadaNivel1=Jugada.obtenMaximaJugada2(jugadasNivel1);
+
+        List<Jugada> jugadasNivel2=db.getAllJugadas(2,5);
+        Jugada maxJugadaNivel2=Jugada.obtenMaximaJugada2(jugadasNivel2);
+
+        List<Jugada> jugadasNivel3=db.getAllJugadas(3,5);
+        Jugada maxJugadaNivel3=Jugada.obtenMaximaJugada2(jugadasNivel3);
 
 
+        int maxPorcentaje1=maxJugadaNivel1.getPorcentaje();
+        int maxPorcentaje2=maxJugadaNivel2.getPorcentaje();
+        int maxPorcentaje3=maxJugadaNivel3.getPorcentaje();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_juegos, menu);
-        return true;
+
+        return (maxPorcentaje1+maxPorcentaje2+maxPorcentaje3)/3;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 }

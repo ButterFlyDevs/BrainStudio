@@ -292,7 +292,7 @@ public class Juego5 extends ActionBarActivity {
         meterB.setTextSize(tamTextoInCircles);
 
         meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.rgb(25,218,221))
+                .setFirstColor(Color.rgb(136,4,4))
                 .setSecondWidth(getResources().getDimension(R.dimen.second))
                 .setSecondColor(Color.parseColor(colors[1]))
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))

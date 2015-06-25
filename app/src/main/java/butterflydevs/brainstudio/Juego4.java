@@ -211,7 +211,7 @@ public class Juego4 extends ActionBarActivity {
 
             ImageView medallaBronce = new ImageView(this);
             //Añadimos la imagen
-            medallaBronce.setImageResource(R.drawable.juego33);
+            medallaBronce.setImageResource(R.drawable.juego41);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.
@@ -255,10 +255,10 @@ public class Juego4 extends ActionBarActivity {
 
 
         meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.rgb(175,128,208))
+                .setFirstColor(Color.rgb(93,162,71))
 
                 .setSecondWidth(getResources().getDimension(R.dimen.first))
-                .setSecondColor(Color.parseColor(colors[1]))
+                .setSecondColor(Color.rgb(136,133,133))
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
                         //.setThirdColor(Color.parseColor(colors[2]))
                 .setBackgroundColor(Color.TRANSPARENT);
@@ -272,9 +272,9 @@ public class Juego4 extends ActionBarActivity {
 
 
         meterB.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.parseColor(colors[0]))
+                .setFirstColor(Color.rgb(207,85,69))
                 .setSecondWidth(getResources().getDimension(R.dimen.first))
-                .setSecondColor(Color.parseColor(colors[1]))
+                .setSecondColor(Color.rgb(172,164,164))
 
                         //.setSecondWidth(getResources().getDimension(R.dimen.second))
                         //.setSecondColor(Color.parseColor(colors[1]))
@@ -290,9 +290,9 @@ public class Juego4 extends ActionBarActivity {
         meterB.setTextSize(tamTextoInCircles);
 
         meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.parseColor(colors[0]))
+                .setFirstColor(Color.rgb(159,60,196))
                 .setSecondWidth(getResources().getDimension(R.dimen.second))
-                .setSecondColor(Color.parseColor(colors[1]))
+                .setSecondColor(Color.rgb(172,164,164))
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
 
                         //.setThirdColor(Color.parseColor(colors[2]))
@@ -538,7 +538,7 @@ public class Juego4 extends ActionBarActivity {
 
                 ImageView medallaPlata = new ImageView(this);
                 //Añadimos la imagen
-                medallaPlata.setImageResource(R.drawable.juego32);
+                medallaPlata.setImageResource(R.drawable.juego42);
                 //Creamos unos parámetros para su layout.
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
                 //Aplicamos el layout.
@@ -678,7 +678,7 @@ public class Juego4 extends ActionBarActivity {
 
             ImageView medallaOro = new ImageView(this);
             //Añadimos la imagen
-            medallaOro.setImageResource(R.drawable.juego31);
+            medallaOro.setImageResource(R.drawable.juego43);
             //Creamos unos parámetros para su layout.
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
             //Aplicamos el layout.

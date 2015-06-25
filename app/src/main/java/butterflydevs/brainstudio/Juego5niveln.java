@@ -289,7 +289,7 @@ public class Juego5niveln extends ActionBarActivity {
             //Iniciamos el contador a 1 por la primera
          //   repeticionActual=1;
 
-            Toast.makeText(this, "Level1", Toast.LENGTH_SHORT).show();
+
 
             //1º Establecemos el tamaño del grid:
             numFilas=3;
@@ -306,7 +306,7 @@ public class Juego5niveln extends ActionBarActivity {
             if(level==2){
 
 
-                //Se empieza jungando con 9 numeros
+                //Se empieza jungando con 4 numeros
                 numNumeros=4;
                 //Que puede estar entre 0 y 9 (inclusives)
                 rangoMin=0;
@@ -315,7 +315,7 @@ public class Juego5niveln extends ActionBarActivity {
                 //El número de repeticiones por nivel de dificultad
                 numRepeticiones=4;
 
-                Toast.makeText(this, "Level1", Toast.LENGTH_SHORT).show();
+
 
                 //1º Establecemos el tamaño del grid:
                 numFilas=5;
@@ -324,20 +324,30 @@ public class Juego5niveln extends ActionBarActivity {
                 //2º Establecemos el tamaño de los botones:
                 tamButtons=150;
 
-             //   rangoMax=numFilas*numColumnas;
+
 
             }else
                 //Ajustes para el nivel 3
                 if(level==3){
 
-                    Toast.makeText(this, "Level3", Toast.LENGTH_SHORT).show();
+                    //Se empieza jungando con 4 numeros
+                    numNumeros=5;
+                    //Que puede estar entre 0 y 9 (inclusives)
+                    rangoMin=0;
+                    rangoMax=9;
 
+                    //El número de repeticiones por nivel de dificultad
+                    numRepeticiones=4;
+
+
+
+                    //1º Establecemos el tamaño del grid:
                     numFilas=6;
                     numColumnas=4;
 
-                    tamButtons=125;
+                    //2º Establecemos el tamaño de los botones:
+                    tamButtons=130;
 
-                //    rangoMax=numFilas*numColumnas;
                 }
 
 
@@ -513,7 +523,7 @@ public class Juego5niveln extends ActionBarActivity {
             System.out.print(a+" ");
         System.out.println("");
 
-
+        //Comprobación de secuencia en level 1
         if(level==1) {
             //Comprobacion de secuencia ordinaria
             for (int i = 0; i < secuenciaJugador.size(); i++) {
@@ -521,6 +531,7 @@ public class Juego5niveln extends ActionBarActivity {
                     return false;
             }
         }
+        //Comprobación de secuencia en level 2
         if(level==2){
 
             //En algunos sectores del nivel 2 se hace una comprobacion inversa de la jugada:
@@ -546,6 +557,14 @@ public class Juego5niveln extends ActionBarActivity {
                 }
             }
         }
+        //Comprobación de secuencia en level 3
+        if(level==3){
+            //Se realiza una comprobacion de secuencia ordinaria.
+            for (int i = 0; i < secuenciaJugador.size(); i++) {
+                if (secuenciaJugador.get(i) != secuencia.get(i))
+                    return false;
+            }
+        }
 
 
         return salida;
@@ -553,12 +572,16 @@ public class Juego5niveln extends ActionBarActivity {
 
     public void terminarJugada(){
 
-        if(level==1)
-            porcentaje+=5;
-        if(level==2)
-            porcentaje+=2;
 
-        //Acemos que vibre:
+        //Dependiendo del nivel en el que estemos sumamos un porcentaje u otro por cada jugada completa.
+            if(level==1)
+                porcentaje+=5;
+            if(level==2)
+                porcentaje+=2;
+            if(level==3)
+                porcentaje+=1;
+
+        //Hacemos que vibre:
         Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
 
         // Vibrar durante 3 segundos
@@ -680,6 +703,77 @@ public class Juego5niveln extends ActionBarActivity {
                 //CUando se llega al sector 13 se reduce a 2 hasta el final del juego.
                 if(sector==13)
                     numRepeticiones=2;
+
+            }
+
+        }
+
+        if(level==3){
+
+            //Si se ha llegado al máximo de repeticiones establecidas por el SECTOR del nivel se aumenta la dificultad.
+            if (repeticionActual == numRepeticiones) {
+
+                //Estamos pasando de sector:
+                sector++;
+
+                //Se avisa al usuario de paso al sector REVERSE (aplicable a sectores 5, 6 y 7.
+                if(sector==5){
+                    //Avisamos de que ahora la secuencia debe ser introducia al revés de como se muestra.
+
+                    //Informamos de ello:
+                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
+                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+
+                    dialogoCambioSector.setPadre(this);
+
+                    dialogoCambioSector.setDatos("REVERSO","Introduce los valores al reves","De mayor a menor", porcentaje);
+
+                    //Mostramos el diálogo
+                    dialogoCambioSector.show(getFragmentManager(), "");
+
+                    puedeSeguir=false;
+
+
+                }
+
+                //Se avisa al usuario de que se vuelve al modo de juego normal.
+                if(sector==10){
+
+                    //Informamos de ello:
+                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
+                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+
+                    dialogoCambioSector.setPadre(this);
+
+                    dialogoCambioSector.setDatos("NORMAL","Vuelve al modo normal","De menor a mayor", porcentaje);
+
+                    //Mostramos el diálogo
+                    dialogoCambioSector.show(getFragmentManager(), "");
+
+                    puedeSeguir=false;
+
+
+
+                }
+
+
+                //Se aumenta el número de valores con los que jugamos
+                this.numNumeros++;
+
+                //CUando se llegue al final del juego se sale
+                if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
+                    this.finPartida();
+                    //Cuando se llega al máximo no se puede seguir o se provocarán errores.
+                    puedeSeguir = false;
+                }
+
+                //En el nivel 2 la cota superior de los números que se pueden generar aumenta de tres en tres valores.
+                this.rangoMax += 3;
+
+                //Se reinicia la variable número de repeticiones:
+                repeticionActual = 0;
+
+                //En el nivel 3 el número de repeticiones es constante : 4
 
             }
 

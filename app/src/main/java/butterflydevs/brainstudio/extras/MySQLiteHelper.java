@@ -54,6 +54,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String J2N2="juego2nivel2";
     private static final String J2N3="juego2nivel3";
 
+    private static final String J3N1="juego3nivel1";
+    private static final String J3N2="juego3nivel2";
+    private static final String J3N3="juego3nivel3";
+
+    private static final String J4N1="juego4nivel1";
+    private static final String J4N2="juego4nivel2";
+    private static final String J4N3="juego4nivel3";
+
     private static final String J5N1="juego5nivel1";
     private static final String J5N2="juego5nivel2";
     private static final String J5N3="juego5nivel3";
@@ -161,6 +169,80 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_JUEGO2_NIVEL3);
 
 
+        // ### JUEGO 3 ### //
+
+        //Tabla de Juego 3 nivel 1
+
+        //Especificación
+        String CREATE_TABLE_JUEGO3_NIVEL1 = "CREATE TABLE juego3nivel1 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO3_NIVEL1);
+
+        //Tabla de Juego 3 nivel 2
+
+        //Especificación
+        String CREATE_TABLE_JUEGO3_NIVEL2 = "CREATE TABLE juego3nivel2 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO3_NIVEL2);
+
+
+        //Tabla de Juego 3 nivel 3
+
+        //Especificación
+        String CREATE_TABLE_JUEGO3_NIVEL3 = "CREATE TABLE juego3nivel3 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO3_NIVEL3);
+
+
+
+        // ### JUEGO 4 ### //
+
+        //Tabla de Juego 4 nivel 1
+
+        //Especificación
+        String CREATE_TABLE_JUEGO4_NIVEL1 = "CREATE TABLE juego4nivel1 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO4_NIVEL1);
+
+        //Tabla de Juego 4 nivel 2
+
+        //Especificación
+        String CREATE_TABLE_JUEGO4_NIVEL2 = "CREATE TABLE juego4nivel2 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO4_NIVEL2);
+
+
+        //Tabla de Juego 4 nivel 3
+
+        //Especificación
+        String CREATE_TABLE_JUEGO4_NIVEL3 = "CREATE TABLE juego4nivel3 ( "+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "puntuacion INTEGER, "+
+                "porcentaje INTEGER )";
+
+        //Ejecución de la creación
+        db.execSQL(CREATE_TABLE_JUEGO4_NIVEL3);
+
 
         // ### JUEGO 5 ### //
 
@@ -244,18 +326,28 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TALBE IF EXISTS juego2nivel3");
 
 
+        // JUEGO3
+
+            db.execSQL("DROP TABLE IF EXISTS juego3nivel1");
+            db.execSQL("DROP TABLE IF EXISTS juego3nivel2");
+            db.execSQL("DROP TALBE IF EXISTS juego3nivel3");
+
+        // JUEGO4
+
+            db.execSQL("DROP TABLE IF EXISTS juego4nivel1");
+            db.execSQL("DROP TABLE IF EXISTS juego4nivel2");
+            db.execSQL("DROP TALBE IF EXISTS juego4nivel3");
+
+
         // JUEGO5
 
             db.execSQL("DROP TABLE IF EXISTS juego5nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego5nivel2");
             db.execSQL("DROP TALBE IF EXISTS juego5nivel3");
 
+        // MEDALLAS
 
-
-
-
-
-        db.execSQL("DROP TABLE IF EXISTS medallas");
+            db.execSQL("DROP TABLE IF EXISTS medallas");
 
         //Crear la nueva tabla en la base de datos
         this.onCreate(db);
@@ -302,6 +394,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     else if (nivel == 3)
                         db.insert(J2N3, null, values);
                     break;
+
+            case 3:     //Se inserta en las tablas del Juego 2
+                if (nivel == 1)
+                    db.insert(J3N1, null, values);
+                else if (nivel == 2)
+                    db.insert(J3N2, null, values);
+                else if (nivel == 3)
+                    db.insert(J3N3, null, values);
+                break;
+
+            case 4:     //Se inserta en las tablas del Juego 2
+                if (nivel == 1)
+                    db.insert(J4N1, null, values);
+                else if (nivel == 2)
+                    db.insert(J4N2, null, values);
+                else if (nivel == 3)
+                    db.insert(J4N3, null, values);
+                break;
+
 
             case 5:
                     if (nivel == 1)
@@ -476,6 +587,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 if (nivel == 3)
                     tabla = J2N3;
                 break;
+
+            case 3:
+                if (nivel == 1)
+                    tabla = J3N1;
+                if (nivel == 2)
+                    tabla = J3N2;
+                if (nivel == 3)
+                    tabla = J3N3;
+                break;
+            case 4:
+                if (nivel == 1)
+                    tabla = J4N1;
+                if (nivel == 2)
+                    tabla = J4N2;
+                if (nivel == 3)
+                    tabla = J4N3;
+                break;
+
             case 5:
                 if (nivel == 1)
                     tabla = J5N1;
@@ -484,6 +613,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 if (nivel == 3)
                     tabla = J5N3;
                 break;
+
 
 
             default:break;
@@ -560,6 +690,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
 
         System.out.println("Número de elmentos en juego1nivel3: "+count);
+
+
 
 
 
