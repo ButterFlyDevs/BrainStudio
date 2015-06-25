@@ -256,7 +256,8 @@ public class Juego5 extends ActionBarActivity {
 
 
         meterA.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.rgb(175,128,208))
+                //Color del fondo de la medalla
+                .setFirstColor(Color.rgb(152,123,45))
 
                 .setSecondWidth(getResources().getDimension(R.dimen.first))
                 .setSecondColor(Color.parseColor(colors[1]))
@@ -273,7 +274,7 @@ public class Juego5 extends ActionBarActivity {
 
 
         meterB.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.parseColor(colors[0]))
+                .setFirstColor(Color.rgb(25,218,221))
                 .setSecondWidth(getResources().getDimension(R.dimen.first))
                 .setSecondColor(Color.parseColor(colors[1]))
 
@@ -291,7 +292,7 @@ public class Juego5 extends ActionBarActivity {
         meterB.setTextSize(tamTextoInCircles);
 
         meterC.setFirstWidth(getResources().getDimension(R.dimen.first))
-                .setFirstColor(Color.parseColor(colors[0]))
+                .setFirstColor(Color.rgb(25,218,221))
                 .setSecondWidth(getResources().getDimension(R.dimen.second))
                 .setSecondColor(Color.parseColor(colors[1]))
                         //.setThirdWidth(getResources().getDimension(R.dimen.third))
@@ -515,7 +516,7 @@ public class Juego5 extends ActionBarActivity {
             List<Jugada> jugadasNivel2=db.getAllJugadas(2,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
-            maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
+            maxJugadaNivel2=Jugada.obtenMaximaJugada2(jugadasNivel2);
 
             //Obtenida la máxima jugada del nivel 2 vemos si puede acceder al nivel 3:
             if(maxJugadaNivel2.getPorcentaje()>llaveNivel3) {
@@ -560,7 +561,7 @@ public class Juego5 extends ActionBarActivity {
 
             }
 
-            textNivel2.setText(Integer.toString(maxJugadaNivel2.getPuntuacion())+" puntos");
+            textNivel2.setText(Integer.toString(maxJugadaNivel2.getPorcentaje())+"% completado");
 
 
             layoutNivel2.addView(textNivel2);
@@ -613,10 +614,10 @@ public class Juego5 extends ActionBarActivity {
             List<Jugada> jugadasNivel3=db.getAllJugadas(3,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
-            maxJugadaNivel3=Jugada.obtenMaximaJugada(jugadasNivel3);
+            maxJugadaNivel3=Jugada.obtenMaximaJugada2(jugadasNivel3);
 
 
-            textNivel3.setText(Integer.toString(maxJugadaNivel3.getPuntuacion())+" puntos");
+            textNivel3.setText(Integer.toString(maxJugadaNivel3.getPorcentaje())+"% completado");
 
 
             layoutNivel3.addView(textNivel3);

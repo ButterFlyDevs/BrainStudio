@@ -10,33 +10,39 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import butterflydevs.brainstudio.Juego2niveln;
 import butterflydevs.brainstudio.Juego5;
+import butterflydevs.brainstudio.Juego5niveln;
 import butterflydevs.brainstudio.R;
 
 /**
  * Created by juan on 18/06/15.
  */
-public class DialogoFinJuego5 extends DialogFragment {
+public class DialogoJuego5 extends DialogFragment {
+
+    public static enum ComportamientoBoton{
+        SALIR, CERRAR
+    }
+
+    public Juego5niveln padre;
 
     public Button botonSalir;
+    public ComportamientoBoton comp;
 
     public TextView textoInfo;
     public TextView textoA;
     public TextView textoB;
     public TextView textoPorcentajeSuperado;
 
+
+    public String textoInformacion;
     public String textoConvertidoA;
     public String textoConvertidoB;
-
     public int porcentajeSuperado;
-
+    public String textoBoton;
 
     public onSubmitListener mListener;
     public String text = "";
@@ -50,7 +56,23 @@ public class DialogoFinJuego5 extends DialogFragment {
     }
 
 
-    public void setDatos(List<Integer> secuenciaJuego, List<Integer> secuenciaJugador, int porcentajeSuperado){
+    public void setComportamientoBoton(ComportamientoBoton comportamiento){
+
+        if(comportamiento==ComportamientoBoton.SALIR)
+            textoBoton="Salir";
+        if(comportamiento==ComportamientoBoton.CERRAR)
+            textoBoton="Entendido";
+
+        comp=comportamiento;
+    }
+
+    public void setPadre(Juego5niveln padrePasado){
+        padre=padrePasado;
+    }
+
+    public void setDatos(String titulo, List<Integer> secuenciaJuego, List<Integer> secuenciaJugador, int porcentajeSuperado){
+
+       textoInformacion=titulo;
 
        textoConvertidoA="Original: ";
        textoConvertidoB="Introducida: ";
@@ -64,6 +86,13 @@ public class DialogoFinJuego5 extends DialogFragment {
        this.porcentajeSuperado=porcentajeSuperado;
     }
 
+    public void setDatos(String titulo, String textoA, String textoB, int porcentaje){
+        textoInformacion=titulo;
+        textoConvertidoA=textoA;
+        textoConvertidoB=textoB;
+        porcentajeSuperado=porcentaje;
+
+    }
 
     /**
      * Donde vamos a tener toda la programación del diálogo.
@@ -78,7 +107,7 @@ public class DialogoFinJuego5 extends DialogFragment {
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        dialog.setContentView(R.layout.dialogo_fin_juego_5);
+        dialog.setContentView(R.layout.dialogo_juego_5);
         dialog.getWindow().setBackgroundDrawable(
                 new ColorDrawable(Color.TRANSPARENT));
 
@@ -99,9 +128,9 @@ public class DialogoFinJuego5 extends DialogFragment {
         textoPorcentajeSuperado.setText(Integer.toString(porcentajeSuperado)+"% superado");
 
         //Algún ajuste:
-        textoInfo.setText("¡Te has equivocado!");
+        textoInfo.setText(textoInformacion);
 
-
+        botonSalir.setText(textoBoton);
 
 
         //Programación del boton "Salir"
@@ -110,18 +139,31 @@ public class DialogoFinJuego5 extends DialogFragment {
             @Override
             public void onClick(View v) {
 
+            if(comp==ComportamientoBoton.SALIR) {
+
+
 
                 Intent intent = new Intent(getActivity(), Juego5.class);
                 //Iniciamos la nueva actividad
                 startActivity(intent);
 
-
                 dismiss();
+            }else
+            if(comp==ComportamientoBoton.CERRAR){
+
+                padre.desbloquearJuego();
+                dismiss();
+            }
+
+
+
 
             }
         });
         return dialog;
     }
+
+
 
 
 }

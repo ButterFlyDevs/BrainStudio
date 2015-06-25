@@ -1,8 +1,5 @@
 package butterflydevs.brainstudio;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -11,8 +8,6 @@ import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -26,9 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import butterflydevs.brainstudio.extras.Dialogos.DialogoFinJuego5;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoJuego5;
 import butterflydevs.brainstudio.extras.Jugada;
-import butterflydevs.brainstudio.extras.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
@@ -82,6 +76,8 @@ public class Juego5niveln extends ActionBarActivity {
 
         private int porcentaje=0;
 
+        //Solo para el nivel 2
+        private int sector=1;
 
     private Button buttonBack, buttonHelp;
 
@@ -518,9 +514,37 @@ public class Juego5niveln extends ActionBarActivity {
         System.out.println("");
 
 
-        for(int i=0; i<secuenciaJugador.size(); i++) {
-            if (secuenciaJugador.get(i) != secuencia.get(i))
-                return false;
+        if(level==1) {
+            //Comprobacion de secuencia ordinaria
+            for (int i = 0; i < secuenciaJugador.size(); i++) {
+                if (secuenciaJugador.get(i) != secuencia.get(i))
+                    return false;
+            }
+        }
+        if(level==2){
+
+            //En algunos sectores del nivel 2 se hace una comprobacion inversa de la jugada:
+            // La secuencia debe sen introducida al reves de como es mostrada, es decir, empezando por los mayores
+            // y acabando en el menor.
+            if(sector==5 || sector==6 || sector==7){
+
+                //Por eso el bucle de comprobacion se construye a la inversa.
+                int j=secuencia.size()-1;
+                for(int i=0; i<secuenciaJugador.size(); i++){
+                    if(secuenciaJugador.get(i)!=secuencia.get(j))
+                        return false;
+                    else
+                        j--;
+                }
+
+
+            }else {
+                //Se realiza una comprobacion de secuencia ordinaria.
+                for (int i = 0; i < secuenciaJugador.size(); i++) {
+                    if (secuenciaJugador.get(i) != secuencia.get(i))
+                        return false;
+                }
+            }
         }
 
 
@@ -529,8 +553,10 @@ public class Juego5niveln extends ActionBarActivity {
 
     public void terminarJugada(){
 
-
-        porcentaje+=5;
+        if(level==1)
+            porcentaje+=5;
+        if(level==2)
+            porcentaje+=2;
 
         //Acemos que vibre:
         Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
@@ -560,28 +586,115 @@ public class Juego5niveln extends ActionBarActivity {
             //Aumentamos el contador de repeticiones porque hemos jugado otra pantalla.
             repeticionActual++;
 
-            //Si se ha llegado al máximo de repeticiones establecidas por el nivel se aumenta la dificultad.
-            if(repeticionActual==numRepeticiones) {
+
+        if(level==1) {
+
+            //Si se ha llegado al máximo de repeticiones establecidas por la sección del nivel se aumenta la dificultad.
+            if (repeticionActual == numRepeticiones) {
                 //Se aumenta el número de valores con los que jugamos
                 this.numNumeros++;
 
                 //CUando se llegue al final del juego se sale
-                if(numNumeros>numFilas*numColumnas) {
+                if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
                     this.finPartida();
                     //Cuando se llega al máximo no se puede seguir o se provocarán errores.
-                    puedeSeguir=false;
+                    puedeSeguir = false;
                 }
 
                 //Se aumenta el rango de valores que se pueden generar:
-                this.rangoMax+=2;
+                this.rangoMax += 2;
 
                 //Se reinicia la variable número de repeticiones:
-                repeticionActual=0;
+                repeticionActual = 0;
+            }
+        }
+        if(level==2){
+
+            //Si se ha llegado al máximo de repeticiones establecidas por el SECTOR del nivel se aumenta la dificultad.
+            if (repeticionActual == numRepeticiones) {
+
+                //Estamos pasando de sector:
+                sector++;
+
+                //Se avisa al usuario de paso al sector REVERSE (aplicable a sectores 5, 6 y 7.
+                if(sector==5){
+                    //Avisamos de que ahora la secuencia debe ser introducia al revés de como se muestra.
+
+                    //Informamos de ello:
+                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
+                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+
+                    dialogoCambioSector.setPadre(this);
+
+                    dialogoCambioSector.setDatos("REVERSO","Introduce los valores al reves","De mayor a menor", porcentaje);
+
+                    //Mostramos el diálogo
+                    dialogoCambioSector.show(getFragmentManager(), "");
+
+                    puedeSeguir=false;
+
+
+                }
+
+                //Se avisa al usuario de que se vuelve al modo de juego normal.
+                if(sector==8){
+
+                    //Informamos de ello:
+                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
+                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+
+                    dialogoCambioSector.setPadre(this);
+
+                    dialogoCambioSector.setDatos("NORMAL","Vuelve al modo normal","De menor a mayor", porcentaje);
+
+                    //Mostramos el diálogo
+                    dialogoCambioSector.show(getFragmentManager(), "");
+
+                    puedeSeguir=false;
+
+
+
+                }
+
+
+                //Se aumenta el número de valores con los que jugamos
+                this.numNumeros++;
+
+                //CUando se llegue al final del juego se sale
+                if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
+                    this.finPartida();
+                    //Cuando se llega al máximo no se puede seguir o se provocarán errores.
+                    puedeSeguir = false;
+                }
+
+                //En el nivel 2 la cota superior de los números que se pueden generar aumenta de tres en tres valores.
+                this.rangoMax += 3;
+
+                //Se reinicia la variable número de repeticiones:
+                repeticionActual = 0;
+
+                //Cuando se llega al sector 9 se reduce a 3 el númeoro de repeticiones del panel por nivel de dificultad, para los proximos.
+
+                if(sector==9)
+                    numRepeticiones=3;
+                //CUando se llega al sector 13 se reduce a 2 hasta el final del juego.
+                if(sector==13)
+                    numRepeticiones=2;
+
             }
 
+        }
 
 
-        //Lanzar nuevo panel
+
+
+
+
+        //Lanzar nuevo panel.
+        /*
+        Si puedeSeguir=false no se reiniciara la secuencia por lo tanto se quedara el juego bloqueado,
+        esto es interesante en algunos casos como la muestra de mensajes bloqueantes o la salida del juego final.
+         */
         if(puedeSeguir)
             reiniciaSecuencia();
 
@@ -594,7 +707,14 @@ public class Juego5niveln extends ActionBarActivity {
 
     }
 
+    /**
+     * Funcion para desbloquear juego bloqueado por un dialog de informacion.
+     */
+    public void desbloquearJuego(){
 
+        //Se llama al metodo que dejo bloqueado el dialog en la func. terminarJugada:
+        reiniciaSecuencia();
+    }
 
 
     public static int randInt(int min, int max) {
@@ -616,17 +736,18 @@ public class Juego5niveln extends ActionBarActivity {
     public void finPartida(){
 
         //Informamos de ello:
-        DialogoFinJuego5 dialogoMedalla = new DialogoFinJuego5();
-        dialogoMedalla.setDatos(secuencia, secuenciaJugador, porcentaje);
+        DialogoJuego5 dialogoFinJuego = new DialogoJuego5();
+        dialogoFinJuego.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setDatos("Te has equivocado!",secuencia, secuenciaJugador, porcentaje);
 
         //Mostramos el diálogo
-        dialogoMedalla.show(getFragmentManager(), "");
+        dialogoFinJuego.show(getFragmentManager(), "");
 
         //Grabar datos de partida!
 
         MySQLiteHelper db = new MySQLiteHelper(this);
 
-        db.addJugada(new Jugada(0, porcentaje), level,5);
+        db.addJugada(new Jugada(0, porcentaje), level, 5);
 
     }
 
