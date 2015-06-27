@@ -356,10 +356,11 @@ public class Juego1niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Creamos el Intent
-                        // Intent intent = new Intent(JuegoGrid12.this, Help.class);
-                        //Iniciamos la nueva actividad
-                        // startActivity(intent);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Zona_llamada","Tablero_juego");
+                        bundle.putInt("Numero_zona",1);
+                        Intent intent = new Intent(Juego1niveln.this, Help.class);
+                        startActivityForResult(intent,1);
                     }
                 }
         );

@@ -450,13 +450,11 @@ public class Juego2 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        Intent intent = new Intent(Juego2.this, Help.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("Juegos","Juego2");
-                        //Introducimos la informacion en el intent para enviarsela a la actívity.
-                        intent.putExtras(bundle);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
+                        bundle.putString("Zona_llamada","Juego");
+                        bundle.putInt("Numero_zona", 2);
+                        Intent intent = new Intent(Juego2.this, Help.class);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );
