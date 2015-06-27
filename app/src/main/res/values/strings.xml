@@ -95,5 +95,14 @@
         Cada nivel se desbloquea superando al menos el 10por ciento de la puntuación máxima alcanzable en el nivel previo (es decir, en el nivel 1 consiguiendo 120 puntos se desbloquea el nivel
         2, y el nivel 3 se desbloquea consiguiendo al menos 462 puntos en el nivel 2).
     </string>
+
+    <string name="titulo_juego2"> Memoria de colores</string>
+    <string name="descripcion_2"> ¡Recuerda la posición de los colores! El juego te preguntará por sólo
+    uno de los tres colores mostrados. Deberás quedarte con todas las celdas del color en cuestión. </string>
+    <string name="fin_ayuda_2"> La máxima puntuación del nivel uno es 300 puntos, y la del nivel dos 540. ¡Solo unos pocos son capaces de
+    conseguir las tres medallas aproximándose a las máximas puntuaciones!</string>
+    <string name="juego2_foto1"> El tablero se iluminará con los tres colores. Pero date prisa, ¡en cada repetición el tiempo para memorizar es menor!</string>
+    <string name="juego2_foto2"> El juego te preguntará por uno de los colores</string>
+    <string name="juego2_foto3"> Pincha sobre las celdas para seleccionarlas con el color preguntado.</string>
         <string name="title_activity_splash_screen">SplashScreenActivity</string>
 </resources>
