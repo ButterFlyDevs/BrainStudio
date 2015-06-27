@@ -1,3 +1,20 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. FernÃ¡ndez SÃ¡nchez
+*/
 package butterflydevs.brainstudio.extras;
 
 import android.app.Dialog;
@@ -95,11 +112,11 @@ public class DialogoJuego extends DialogFragment {
     }
 
     /**
-     * Función para establecer los parámetros a mostrar en el Fragment de diálogo que se muestra durante el juego
+     * Funciï¿½n para establecer los parï¿½metros a mostrar en el Fragment de diï¿½logo que se muestra durante el juego
      *
      * @param texto_recibido => texto que se quiere mostrar en el fragment
-     * @param titulo_recibido ==> texto que se quiere mostrar como título del fragment
-     * @param juego ==> número de juego desde el que se está llamando al fragment
+     * @param titulo_recibido ==> texto que se quiere mostrar como tï¿½tulo del fragment
+     * @param juego ==> nï¿½mero de juego desde el que se estï¿½ llamando al fragment
      */
     public void establecerInformacionDialogo(String texto_recibido, String titulo_recibido, int juego){
         this.texto_recibido = texto_recibido;
@@ -108,7 +125,7 @@ public class DialogoJuego extends DialogFragment {
     }
 
     /**
-     * Función para configurar un fondo para el fragment de dialogo
+     * Funciï¿½n para configurar un fondo para el fragment de dialogo
      *
      * @param color => Color de fondo
      */

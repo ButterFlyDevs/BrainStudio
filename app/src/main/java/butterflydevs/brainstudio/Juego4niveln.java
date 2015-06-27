@@ -27,8 +27,6 @@ import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -46,7 +44,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Random;
 
-import butterflydevs.brainstudio.extras.Dialogos.DialogoJuego5;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoSalidaJuegos;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
@@ -653,8 +651,9 @@ public class Juego4niveln extends ActionBarActivity {
     public void mensajeFin() {
 
         //Informamos de ello:
-        DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
-        dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.SALIR);
+        DialogoSalidaJuegos dialogoCambioSector = new DialogoSalidaJuegos();
+        dialogoCambioSector.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoCambioSector.setNivel(4);
 
         //dialogoCambioSector.setPadre(this);
 

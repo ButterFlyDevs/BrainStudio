@@ -1,3 +1,20 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. Fernández Sánchez
+*/
 package butterflydevs.brainstudio.extras.Dialogos;
 
 import android.app.Dialog;
@@ -14,20 +31,25 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterflydevs.brainstudio.Juego4;
 import butterflydevs.brainstudio.Juego5;
 import butterflydevs.brainstudio.Juego5niveln;
 import butterflydevs.brainstudio.R;
 
 /**
- * Created by juan on 18/06/15.
+ * Clase de configuración del Dialogo para la salida de las partidas. Con este conseguimos ofrecer
+ * al usuario un resumen de su partida y un botón salir que lo devuelve a la pantalla de su juego.
+ *
+ * Esta clase ofrece los suficientes metodos para configurar el DialogFragment como se quiera, uno
+ * de los mas importantes es el que establece el nivel al que se devuelve.
  */
-public class DialogoJuego5 extends DialogFragment {
+public class DialogoSalidaJuegos extends DialogFragment {
 
     public static enum ComportamientoBoton{
         SALIR, CERRAR
     }
 
-    public Juego5niveln padre;
+    public Juego5niveln padreJuego5;
 
     public Button botonSalir;
     public ComportamientoBoton comp;
@@ -67,7 +89,7 @@ public class DialogoJuego5 extends DialogFragment {
     }
 
     public void setPadre(Juego5niveln padrePasado){
-        padre=padrePasado;
+        padreJuego5=padrePasado;
     }
 
     public void setDatos(String titulo, List<Integer> secuenciaJuego, List<Integer> secuenciaJugador, int porcentajeSuperado){
@@ -93,6 +115,11 @@ public class DialogoJuego5 extends DialogFragment {
         porcentajeSuperado=porcentaje;
 
     }
+
+    public void setNivel(int nivelPasado){
+        nivel=nivelPasado;
+    }
+
 
     /**
      * Donde vamos a tener toda la programación del diálogo.
@@ -142,16 +169,28 @@ public class DialogoJuego5 extends DialogFragment {
             if(comp==ComportamientoBoton.SALIR) {
 
 
+                if(nivel==4){
+                    Intent intent = new Intent(getActivity(), Juego4.class);
+                    //Iniciamos la nueva actividad
+                    startActivity(intent);
+                }
 
-                Intent intent = new Intent(getActivity(), Juego5.class);
-                //Iniciamos la nueva actividad
-                startActivity(intent);
+                if(nivel==5) {
+                    Intent intent = new Intent(getActivity(), Juego5.class);
+                    //Iniciamos la nueva actividad
+                    startActivity(intent);
+                }
 
                 dismiss();
             }else
+
+            /**
+             * Juego5niveln usa este diálogo para informar de cosas específicas durante el juego y por eso requiere
+             * este método que es sólo específico de el.
+             */
             if(comp==ComportamientoBoton.CERRAR){
 
-                padre.desbloquearJuego();
+                padreJuego5.desbloquearJuego();
                 dismiss();
             }
 

@@ -1,3 +1,20 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. Fernández Sánchez
+*/
 package butterflydevs.brainstudio;
 
 import android.content.Intent;
@@ -204,7 +221,7 @@ public class Juego4 extends ActionBarActivity {
                 MyCustomDialog dialogoMedalla = new MyCustomDialog();
                 // fragment1.mListener = MainActivity.this;
                 dialogoMedalla.text = "nombre";
-                dialogoMedalla.juego = 1;
+                dialogoMedalla.juego = 4;
                 dialogoMedalla.nivel = 1;
                 dialogoMedalla.show(getFragmentManager(), "");
             }
@@ -529,7 +546,7 @@ public class Juego4 extends ActionBarActivity {
                     MyCustomDialog dialogoMedalla = new MyCustomDialog();
                     // fragment1.mListener = MainActivity.this;
                     dialogoMedalla.text = "nombre";
-                    dialogoMedalla.juego = 1;
+                    dialogoMedalla.juego = 4;
                     dialogoMedalla.nivel = 2;
                     dialogoMedalla.show(getFragmentManager(), "");
 
@@ -673,7 +690,7 @@ public class Juego4 extends ActionBarActivity {
                 MyCustomDialog dialogoMedalla = new MyCustomDialog();
                 // fragment1.mListener = MainActivity.this;
                 dialogoMedalla.text = "nombre";
-                dialogoMedalla.juego = 1;
+                dialogoMedalla.juego = 4;
                 dialogoMedalla.nivel = 3;
                 dialogoMedalla.show(getFragmentManager(), "");
             }
@@ -710,6 +727,18 @@ public class Juego4 extends ActionBarActivity {
 
 
     }
+
+    /**
+     * Función totalmente dependiente del juego, que se basará en cada uno en unas reglas distintas para calcular
+     * el porcentaje de puntuación obtenida respecto a todo el juego.
+     * El juego sabe el máximo de puntuación que puede conseguir un jugador y calcula según la puntuación
+     * que ha conseugido el % de ese máximo para mostrarselo junto al % de juego "fisico" pasado. Para que el
+     * jugador sepa en todo momento si puede obtener mejores resultados o ha llegado al final.
+     * @param nivel
+     * @param puntuacion
+     * @return
+     */
+
     public int calculaPorcentaje(int nivel, int puntuacion){
 
         /*
@@ -719,10 +748,20 @@ public class Juego4 extends ActionBarActivity {
          */
 
         int resultado=0;
+
+        int limiteNivel1=1200;
+        int limiteNivel2=4620;
+        int limiteNivel3=5000;
+
+
         if(nivel==1)
-            resultado=(100*puntuacion)/1200;
+            resultado=(100*puntuacion)/limiteNivel1;
         if(nivel==2)
-            resultado=(100*puntuacion)/4620;
+            resultado=(100*puntuacion)/limiteNivel2;
+        if(nivel==3)
+            resultado=(100*puntuacion)/limiteNivel3;
+
+
         return resultado;
     }
 
@@ -736,7 +775,7 @@ public class Juego4 extends ActionBarActivity {
         MyCustomDialog fragment1 = new MyCustomDialog();
         // fragment1.mListener = MainActivity.this;
         fragment1.text = "nombre";
-        fragment1.juego=1;
+        fragment1.juego=4;
         fragment1.nivel=2;
         fragment1.show(getFragmentManager(), "");
 

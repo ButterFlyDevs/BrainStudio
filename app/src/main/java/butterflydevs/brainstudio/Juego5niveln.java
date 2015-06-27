@@ -1,3 +1,20 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. Fernández Sánchez
+*/
 package butterflydevs.brainstudio;
 
 import android.content.Intent;
@@ -15,13 +32,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import butterflydevs.brainstudio.extras.Dialogos.DialogoJuego5;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoSalidaJuegos;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
@@ -644,8 +660,8 @@ public class Juego5niveln extends ActionBarActivity {
                     //Avisamos de que ahora la secuencia debe ser introducia al revés de como se muestra.
 
                     //Informamos de ello:
-                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
-                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+                    DialogoSalidaJuegos dialogoCambioSector = new DialogoSalidaJuegos();
+                    dialogoCambioSector.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.CERRAR);
 
                     dialogoCambioSector.setPadre(this);
 
@@ -663,8 +679,8 @@ public class Juego5niveln extends ActionBarActivity {
                 if(sector==8){
 
                     //Informamos de ello:
-                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
-                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+                    DialogoSalidaJuegos dialogoCambioSector = new DialogoSalidaJuegos();
+                    dialogoCambioSector.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.CERRAR);
 
                     dialogoCambioSector.setPadre(this);
 
@@ -721,8 +737,8 @@ public class Juego5niveln extends ActionBarActivity {
                     //Avisamos de que ahora la secuencia debe ser introducia al revés de como se muestra.
 
                     //Informamos de ello:
-                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
-                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+                    DialogoSalidaJuegos dialogoCambioSector = new DialogoSalidaJuegos();
+                    dialogoCambioSector.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.CERRAR);
 
                     dialogoCambioSector.setPadre(this);
 
@@ -740,8 +756,8 @@ public class Juego5niveln extends ActionBarActivity {
                 if(sector==10){
 
                     //Informamos de ello:
-                    DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
-                    dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.CERRAR);
+                    DialogoSalidaJuegos dialogoCambioSector = new DialogoSalidaJuegos();
+                    dialogoCambioSector.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.CERRAR);
 
                     dialogoCambioSector.setPadre(this);
 
@@ -830,8 +846,9 @@ public class Juego5niveln extends ActionBarActivity {
     public void finPartida(){
 
         //Informamos de ello:
-        DialogoJuego5 dialogoFinJuego = new DialogoJuego5();
-        dialogoFinJuego.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.SALIR);
+        DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
+        dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setNivel(5);
         dialogoFinJuego.setDatos("Te has equivocado!",secuencia, secuenciaJugador, porcentaje);
 
         //Mostramos el diálogo

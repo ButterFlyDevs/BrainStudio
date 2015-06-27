@@ -1,3 +1,20 @@
+/*
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+        Copyright 2015 Jose A. Gonzalez Cervera
+        Copyright 2015 Juan A. Fernández Sánchez
+*/
 package butterflydevs.brainstudio.extras;
 
 import android.app.Dialog;
@@ -97,6 +114,48 @@ public class MyCustomDialog extends DialogFragment {
                     textoAcceso.setText("Completada Zona B");
             }
 
+        }else if(juego==3){
+            switch (nivel) {
+                case 1:
+                    imagenMedalla.setImageResource(R.drawable.juego31);
+                    textoAcceso.setText("Nivel 2 desbloqueado!");
+                    break;
+                case 2:
+                    imagenMedalla.setImageResource(R.drawable.juego32);
+                    textoAcceso.setText("Nivel 3 desbloqueado!");
+                    break;
+                default:
+                    imagenMedalla.setImageResource(R.drawable.juego33);
+                    textoAcceso.setText("Completada Zona B");
+            }
+        }else if(juego==4){
+            switch (nivel) {
+                case 1:
+                    imagenMedalla.setImageResource(R.drawable.juego41);
+                    textoAcceso.setText("Nivel 2 desbloqueado!");
+                    break;
+                case 2:
+                    imagenMedalla.setImageResource(R.drawable.juego42);
+                    textoAcceso.setText("Nivel 3 desbloqueado!");
+                    break;
+                default:
+                    imagenMedalla.setImageResource(R.drawable.juego43);
+                    textoAcceso.setText("Completada Zona B");
+            }
+        }else if(juego==5){
+            switch (nivel) {
+                case 1:
+                    imagenMedalla.setImageResource(R.drawable.juego51);
+                    textoAcceso.setText("Nivel 2 desbloqueado!");
+                    break;
+                case 2:
+                    imagenMedalla.setImageResource(R.drawable.juego52);
+                    textoAcceso.setText("Nivel 3 desbloqueado!");
+                    break;
+                default:
+                    imagenMedalla.setImageResource(R.drawable.juego53);
+                    textoAcceso.setText("Completada Zona B");
+            }
         }
 
 
