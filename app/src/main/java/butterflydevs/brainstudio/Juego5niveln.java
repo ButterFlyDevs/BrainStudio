@@ -346,7 +346,7 @@ public class Juego5niveln extends ActionBarActivity {
                     numColumnas=4;
 
                     //2º Establecemos el tamaño de los botones:
-                    tamButtons=130;
+                    tamButtons=100;
 
                 }
 

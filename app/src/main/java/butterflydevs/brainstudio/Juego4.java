@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -155,8 +156,10 @@ public class Juego4 extends ActionBarActivity {
         //Instanciamos la base de datos.
         db = new MySQLiteHelper(this);
 
-        //Obtener todas la jugadas
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1,1);
+        //Obtener todas la jugadas del nivel 1 juego 4
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,4);
+
+    //    Toast.makeText(getApplicationContext(), "obtenidas " + jugadasNivel1.size() + "jugadas", Toast.LENGTH_SHORT).show();
 
         maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
 
@@ -510,8 +513,8 @@ public class Juego4 extends ActionBarActivity {
             textNivel2.setTextSize(tamTextoNiveles);
 
             db = new MySQLiteHelper(this);
-            //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel2=db.getAllJugadas(2,1);
+            //Conseguimos las jugadas del nivel 2 del juego 4
+            List<Jugada> jugadasNivel2=db.getAllJugadas(2,4);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
@@ -597,7 +600,8 @@ public class Juego4 extends ActionBarActivity {
 
 
 
-        if(this.puedeJugar3){ //Si se puede jugar en el nivel 3
+        //Si se puede jugar en el nivel 3 del juego 4 entonces nos molestamos en pedir los datos a la base de datos
+        if(this.puedeJugar3){
 
 
             //Creamos una variable:
@@ -608,8 +612,8 @@ public class Juego4 extends ActionBarActivity {
 
 
             db = new MySQLiteHelper(this);
-            //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel3=db.getAllJugadas(3,1);
+            //Conseguimos las jugadas del nivel 3 del juego 4
+            List<Jugada> jugadasNivel3=db.getAllJugadas(3,4);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel3=Jugada.obtenMaximaJugada(jugadasNivel3);

@@ -46,6 +46,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Random;
 
+import butterflydevs.brainstudio.extras.Dialogos.DialogoJuego5;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
@@ -74,6 +75,10 @@ public class Juego4niveln extends ActionBarActivity {
     private int colorAnterior=-1;
     private int botonAnterior=-1;
 
+    private int valorAnterior=-1;
+
+    private int sector=1;
+
 
     //Matrices usadas en el juego:
 
@@ -88,6 +93,12 @@ public class Juego4niveln extends ActionBarActivity {
     private int numMaximoCeldas;
 
     private float puntuacion;
+    private int puntos=0;
+
+    private int aciertos=0;
+
+    private int fallosConsecutivos=0;
+    private int maxFallosConsecutivos=5;
 
     private int numGridsJugados;
 
@@ -134,7 +145,7 @@ public class Juego4niveln extends ActionBarActivity {
 
 
         time = 15;
-        numRepeticionesMaximas = 4;
+        numRepeticionesMaximas = 2;
         numRepeticionActual = 1;
         numMaximoCeldas = 20;
         puntuacion = 0;
@@ -487,6 +498,7 @@ public class Juego4niveln extends ActionBarActivity {
         super.onStart();
 
 
+
         //1º Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
         matrizParejas = matrixHelper.obtenerMatrizParejas(numFilas,numColumnas);
 
@@ -592,25 +604,17 @@ public class Juego4niveln extends ActionBarActivity {
         counterView.start();
         System.out.println("Puntuacón : " + puntuacion);
 
-
-        //Ponemos la puntuación en pantalla
-        //textPuntos.setText(Float.toString(puntuacion));
-
-
-        //puntuacion=numCeldas*
-
     }
 
     public int calculaPorcentaje(){
 
         int resultado;
 
-        int gridsTotales=(numMaximoCeldas-1)*numRepeticionesMaximas;
 
         //Una regla de tres simple
-        resultado=(int)(100*numGridsJugados)/gridsTotales;
+        resultado=(int)(100*aciertos)/120;
 
-        System.out.println("numGridJugados "+numGridsJugados);
+
 
         return resultado;
 
@@ -631,31 +635,74 @@ public class Juego4niveln extends ActionBarActivity {
          */
 
         //System.out.println("GRabando "+(int)puntuacion+" puntos "+calculaPorcentaje()+"%");
-        db.addJugada(new Jugada((int) puntuacion, calculaPorcentaje()), level,1);
+        db.addJugada(new Jugada((int) puntos, calculaPorcentaje()), level,4);
     }
 
     public void finalizarPartida(){
 
+        //Grabar en la base de datos
+        grabarDatosBD();
+
+        //Mostrar mensaje de fin:
         mensajeFin();
+
+
+
     }
 
     public void mensajeFin() {
-        new AlertDialog.Builder(this)
-                .setTitle("YOU ARE DEAD")
-                .setMessage("Se te acabó el tiempo!")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                        grabarDatosBD();
-                        //Creamos el Intent
-                        Intent intent = new Intent(Juego4niveln.this, Juego1.class);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
 
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        //Informamos de ello:
+        DialogoJuego5 dialogoCambioSector = new DialogoJuego5();
+        dialogoCambioSector.setComportamientoBoton(DialogoJuego5.ComportamientoBoton.SALIR);
+
+        //dialogoCambioSector.setPadre(this);
+
+        dialogoCambioSector.setDatos("Ohh!", "puntos: "+puntos, "Completado:",calculaPorcentaje());
+
+        //Mostramos el diálogo
+        dialogoCambioSector.show(getFragmentManager(), "");
+
+
+    }
+
+    /**
+     * Función para reiniciar de nuevo el grid
+     */
+    public void reiniciarGrid(){
+
+        //1º Obtenemos la matriz de la jugada que el jugador debe resolver con la clase matrixHelper
+        matrizParejas = matrixHelper.obtenerMatrizParejas(numFilas,numColumnas);
+
+        //2º Obtenemos los colores con los que vamos a jugar.
+        /**
+         * Tenemos guardados 20 colores distintos que se usan en el grid de 40 pero en los mas pequeños
+         * se usan un numero menos de estos que tenemos que elegir y guardar en un vector (solo los indices).
+         */
+        coloresElegidos = matrixHelper.generaColores(20,(numFilas*numColumnas)/2);
+
+        matrixHelper.leeColores(coloresElegidos);
+
+
+        matrixHelper.leerMatrizParejas(matrizParejas, numFilas, numColumnas);
+
+
+
+        //Pintamos todos los botones grises
+        for (int i = 0; i < numFilas * numColumnas; i++)
+            botones[i].setBackgroundColor(getResources().getColor(R.color.darkgray));
+
+        if(sector==2 || sector==3 || sector==4 || sector==5){
+            for(int i=0; i<numFilas*numColumnas; i++)
+                botones[i].setText("");
+        }
+
+        //Ponemos toda la matriz de acertados a false
+        for(int i=0; i<numFilas*numColumnas; i++)
+            acertados[i]=false;
+
+
+
     }
 
     /**
@@ -674,8 +721,86 @@ public class Juego4niveln extends ActionBarActivity {
         return completa;
     }
 
+    /**
+     * Función que modifica las variables necesarias para que la proxima construcción sea correcta.
+     */
     public void finPartida(){
-            Toast.makeText(getApplicationContext(), "FIN DE PARTIDA ZORRA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "FIN DE GRID "+this.numRepeticionActual, Toast.LENGTH_SHORT).show();
+
+            //Si se han realizado todas las repeticiones de un sector
+            if(numRepeticionActual==numRepeticionesMaximas) {
+                //Se aumenta de sector
+                sector++;
+                //Damos un plus de puntos por pasar de sector.
+                aumentarPuntos(true);
+                System.out.println("pasando al sector: "+sector);
+                //Se reinicia la variable numRepeticionActual
+                numRepeticionActual=0;
+            }
+
+            //Modificación de variables:
+            this.numRepeticionActual++;
+
+
+
+            reiniciarGrid();
+    }
+
+    /**
+     * Función que aumenta el nivel de puntos del jugador.
+     * @param extra Indica si se trata de un bono por pasar de sector.
+     */
+    public void aumentarPuntos(boolean extra){
+
+
+
+        counterView.setStartValue(puntos);
+
+
+        //Si es un bono por pasar de sector se aumenta 100 puntos:
+        if(extra){
+            puntos+=100;
+        //Si son aciertos normales se aumenta dependiendo del punto en el que se encuentre:
+        }else {
+
+            //Se reestablece el numero de fallos
+            fallosConsecutivos=0;
+
+            //Se aumenta la puntuación
+            puntos+=10*sector;
+            //Contabilizamos un acierto:
+            aciertos++;
+        }
+        Toast.makeText(getApplicationContext(), "Puntos: "+puntos, Toast.LENGTH_SHORT).show();
+
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+
+
+        counterView.setEndValue(puntos);
+        counterView.start();
+    }
+
+    public void reducirPuntos(){
+
+        fallosConsecutivos++;
+
+        if(fallosConsecutivos==maxFallosConsecutivos)
+            finalizarPartida();
+
+        counterView.setStartValue(puntos);
+
+        //Se restan dos puntos por el numero de sector cada vez que se falle.
+        puntos-=2*(sector);
+
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+
+
+        counterView.setEndValue(puntos);
+        counterView.start();
+
+        Toast.makeText(getApplicationContext(), "Puntos: "+puntos, Toast.LENGTH_SHORT).show();
     }
 
     class MyListener implements Button.OnClickListener {
@@ -694,52 +819,174 @@ public class Juego4niveln extends ActionBarActivity {
         @Override
         public void onClick(View v) {
 
-            //Mensaje por terminal
-            System.out.println("Pulsado botón: " + numBoton);
+            /*
+            Comportamiento del click para el sector 1:
+             */
+            if(sector==1){
+                if (acertados[numBoton] == false) {
+                    //Cambiamos el color del boton según la matriz parejas.
 
+                    if(sector==1)
+                        botones[numBoton].setBackgroundColor(Color.parseColor(colores[coloresElegidos[matrizParejas[numBoton]]]));
+                    if (botonAnterior == -1)
+                        botonAnterior = numBoton;
+
+                    //Si es el primer boton pulsado de la pareja se guarda el color.
+                    if (colorAnterior == -1) {
+                        if(sector==1)
+                            colorAnterior = Color.parseColor(colores[coloresElegidos[matrizParejas[numBoton]]]);
+
+
+
+                       // Toast.makeText(getApplicationContext(), "Guardado color" + colorAnterior, Toast.LENGTH_SHORT).show();
+
+                        //Si es el segundo boton se compara con el primero
+                    } else {
+                        //Si HQY COINCIDENCIA
+
+                        //Control de pulsación sobre el mismo boton
+                        if (botonAnterior != numBoton){
+
+                            //Comprobación estandar
+                            if (colorAnterior == Color.parseColor(colores[coloresElegidos[matrizParejas[numBoton]]])) {
+                                //   Toast.makeText(getApplicationContext(), "MISMO COLOR", Toast.LENGTH_SHORT).show();
+                                acertados[numBoton] = true;
+                                acertados[botonAnterior] = true;
+
+                                //Se reinician los parámetros para una nueva jugada
+                                colorAnterior = -1;
+                                botonAnterior = -1;
+
+                                //Aumentamos puntos sin tratarse de un bono
+                                aumentarPuntos(false);
+
+                                if (matrizCompleta())
+                                    finPartida();
+
+
+                            //Si no hay coincidencia se oscurecen ambos botones y se reinician los punteros.
+                            } else {
+
+
+                                //Como se trata de un error del jugador le restamos puntos:
+                                reducirPuntos();
+
+                                //   Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+
+                                System.out.println("Botones: " + botonAnterior + " " + numBoton);
+
+                                botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));
+                                botones[botonAnterior].setBackgroundColor(getResources().getColor(R.color.darkgray));
+
+                                colorAnterior = -1;
+                                botonAnterior = -1;
+                            }
+
+                    }
+                    }
+                }
+
+
+
+
+        }else //Fin sector 1
+        if(sector==2 || sector==3 || sector==4 || sector==5 ){
             if (acertados[numBoton] == false) {
-                //Cambiamos el color del boton según la matriz parejas.
-                botones[numBoton].setBackgroundColor(Color.parseColor(colores[  coloresElegidos[matrizParejas[numBoton]]     ]));
+
+                    //El color de fondo del boton es aleatorio:
+                    botones[numBoton].setBackgroundColor(Color.parseColor(colores[matrixHelper.randInt(0,colores.length-1)]));
+                    botones[numBoton].setTextSize(70);
+
+                    //Introducimos numeros
+                    if(sector==2)
+                        botones[numBoton].setText(Integer.toString(matrizParejas[numBoton]+1));
+                    //Introducimos letras
+                    if(sector==3)
+                        botones[numBoton].setText(matrixHelper.letraEquivalente(matrizParejas[numBoton]+1));
+                    //Introducimos numeros y letras (siempre usamos matrizParejas[numBoton], ese int como base.
+                    if(sector==4)
+                        if(0==matrixHelper.randInt(0, 1))
+                            botones[numBoton].setText(Integer.toString(matrizParejas[numBoton]+1));
+                        else
+                            botones[numBoton].setText(matrixHelper.letraEquivalente(matrizParejas[numBoton] + 1));
+                    if(sector==5) {
+
+                        /**
+                         * En el sector 5 puede que se coloque una letra, un número o un número romano,
+                         * siempre significando el mismo valor decimal.
+                         */
+
+                        int rand=matrixHelper.randInt(1,3);
+
+                        if (rand==1) //Se colocal el número decimal
+                            botones[numBoton].setText(Integer.toString(matrizParejas[numBoton] + 1));
+
+                        if(rand==2) //Se coloca la letra equivalente al decimal
+                            botones[numBoton].setText(matrixHelper.letraEquivalente(matrizParejas[numBoton] + 1));
+
+                        if(rand==3) { //Se coloca el número romano equivalente al decimal.
+                            botones[numBoton].setText(matrixHelper.numeroRomanoEquivalente(matrizParejas[numBoton] + 1));
+                            botones[numBoton].setTextSize(30); //Se reduce un poco el tamaño.
+                        }
+
+                    }
+
+
+
+
+                    botones[numBoton].setTextSize(70);
+
                 if (botonAnterior == -1)
                     botonAnterior = numBoton;
 
                 //Si es el primer boton pulsado de la pareja se guarda el color.
-                if (colorAnterior == -1) {
-                    colorAnterior = Color.parseColor(colores[  coloresElegidos[matrizParejas[numBoton]]     ]);
-                    Toast.makeText(getApplicationContext(), "Guardado color" + colorAnterior, Toast.LENGTH_SHORT).show();
-
+                if (valorAnterior == -1) {
+                        valorAnterior=matrizParejas[numBoton];
                     //Si es el segundo boton se compara con el primero
                 } else {
-                    //Si hay coincidencia se avisa
-                    if (colorAnterior == Color.parseColor(colores[  coloresElegidos[matrizParejas[numBoton]]     ])) {
-                        Toast.makeText(getApplicationContext(), "MISMO COLOR", Toast.LENGTH_SHORT).show();
-                        acertados[numBoton] = true;
-                        acertados[botonAnterior] = true;
-
-                        //Se reinician los parámetros para una nueva jugada
-                        colorAnterior=-1;
-                        botonAnterior=-1;
-
-                        if(matrizCompleta())
-                            finPartida();
 
 
-                        //Si no hay coincidencia se oscurecen ambos botones y se reinician los punteros.
-                    }else {
+                    //Control de pulsación sobre el mismo boton
+                    if (botonAnterior != numBoton) {
+
+                        //Si hay coincidencia se avisa
+                        if (valorAnterior == matrizParejas[numBoton]) {
+                            Toast.makeText(getApplicationContext(), "MISMO VALOR", Toast.LENGTH_SHORT).show();
+                            acertados[numBoton] = true;
+                            acertados[botonAnterior] = true;
+
+                            //Se reinician los parámetros para una nueva jugada
+                            valorAnterior = -1;
+                            botonAnterior = -1;
+
+                            //Aumentamos puntos sin tratarse de un bono
+                            aumentarPuntos(false);
+
+                            if (matrizCompleta())
+                                finPartida();
 
 
-                        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                            //Si no hay coincidencia se elimina el valor de los dos botones y se reinician los punteros.
+                        } else {
 
-                        System.out.println("Botones: " + botonAnterior + " " + numBoton);
+                            //Como se trata de un error del jugador le restamos puntos:
+                            reducirPuntos();
+                            //   Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
 
-                        botones[numBoton].setBackgroundColor(getResources().getColor(R.color.darkgray));
-                        botones[botonAnterior].setBackgroundColor(getResources().getColor(R.color.darkgray));
+                            System.out.println("Botones: " + botonAnterior + " " + numBoton);
 
-                        colorAnterior = -1;
-                        botonAnterior = -1;
+                            botones[numBoton].setText("");
+                            botones[botonAnterior].setText("");
+
+                            valorAnterior = -1;
+                            botonAnterior = -1;
+                        }
                     }
                 }
             }
+
+
+        }
         }
 
     }

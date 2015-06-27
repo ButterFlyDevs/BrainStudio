@@ -388,6 +388,104 @@ public class matrixHelper {
             System.out.print(colores[i]+" ");
     }
 
+    static public String letraEquivalente(int numero){
+
+        //1  ->  A
+        //25 ->  Z
+
+        char letra = 'A'; // A es 65, el máximo es Z, 90
+        letra--;
+        letra+=numero;
+
+        return String.valueOf(letra);
+
+    }
+
+    static public String numeroRomanoEquivalente(int numero){
+        String n="";
+        switch(numero){
+            case 1:
+                n="I";
+                break;
+            case 2:
+                n="II";
+                break;
+            case 3:
+                n="III";
+                break;
+            case 4:
+                n="IV";
+                break;
+            case 5:
+                n="V";
+                break;
+            case 6:
+                n="VI";
+                break;
+            case 7:
+                n="VII";
+                break;
+            case 8:
+                n="VIII";
+                break;
+            case 9:
+                n="IX";
+                break;
+            case 10:
+                n="X";
+                break;
+            case 11:
+                n="XI";
+                break;
+            case 12:
+                n="XII";
+                break;
+            case 13:
+                n="XIII";
+                break;
+            case 14:
+                n="XIV";
+                break;
+            case 15:
+                n="XV";
+                break;
+            case 16:
+                n="XVI";
+                break;
+            case 17:
+                n="XVII";
+                break;
+            case 18:
+                n="XVIII";
+                break;
+            case 19:
+                n="XIX";
+                break;
+            case 20:
+                n="XX";
+                break;
+            case 21:
+                n="XXI";
+                break;
+            case 22:
+                n="XXII";
+                break;
+            case 23:
+                n="XXIII";
+                break;
+            case 24:
+                n="XXIV";
+                break;
+            case 25:
+                n="XXV";
+                break;
+            default:
+                n="";
+                break;
+        }
+        return n;
+    }
+
 
      // ### JUEGO 5 ### //
 
@@ -398,7 +496,7 @@ public class matrixHelper {
      * @param max Cota superior
      * @return  Un valor aleatorio entre las cotas inclusives.
      */
-    static int randInt(int min, int max) {
+    static public int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
         // variable so that it is not re-seeded every call.

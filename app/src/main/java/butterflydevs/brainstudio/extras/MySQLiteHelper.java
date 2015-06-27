@@ -636,7 +636,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                    Integer.parseInt(cursor.getString(1)),
                    Integer.parseInt(cursor.getString(2))
                 );
-                System.out.println("datooo"+cursor.getString(1));
+                //System.out.println("datooo"+cursor.getString(1));
 
                 //Sacada la jugada la añadimos a la lista
                 jugadas.add(jugada);

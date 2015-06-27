@@ -393,7 +393,111 @@ public class AlgoritmosBrainStudio {
         System.out.println("");
         
     }
+    //Los números solo pueden tener el rango
+    static public String letraEquivalente(int numero){
+        
+       
+        
+        char letra = 'A'; // A es 65, el máximo es Z, 90
+        letra+=numero;
+
+        return String.valueOf(letra);
+       
+    }
     
+    static public String numeroRomanoEquivalente(int numero){
+        
+        String n="";
+        
+        switch(numero){
+            
+            case 1:
+                n="I";
+                break;
+            case 2:
+                n="II";
+                break;
+            case 3:
+                n="III";
+                break;
+            case 4:
+                n="IV";
+                break;
+            case 5:
+                n="V";
+                break;
+            case 6:
+                n="VI";
+                break;
+            case 7:
+                n="VII";
+                break;
+            case 8:
+                n="VIII";
+                break;
+            case 9:
+                n="IX";
+                break;
+            case 10:
+                n="X";
+                break;
+            case 11:
+                n="XI";
+                break;
+            case 12:
+                n="XII";
+                break;
+            case 13:
+                n="XIII";
+                break;
+            case 14:
+                n="XIV";
+                break;
+            case 15:
+                n="XV";
+                break;
+            case 16:
+                n="XVI";
+                break;
+            case 17:
+                n="XVII";
+                break;
+            case 18:
+                n="XVIII";
+                break;
+            case 19:
+                n="XIX";
+                break;
+            case 20:
+                n="XX";
+                break;
+            case 21:
+                n="XXI";
+                break;
+            case 22:
+                n="XXII";
+                break;
+            case 23:
+                n="XXIII";
+                break;
+            case 24:
+                n="XXIV";
+                break;
+            case 25:
+                n="XXV";
+                break;
+            default:
+                n="";
+                break;
+            
+            
+        }
+        
+        
+        return n;
+        
+        
+    }
     
     
     
@@ -402,10 +506,15 @@ public class AlgoritmosBrainStudio {
      */
     public static void main(String[] args) {
         
+
+        System.out.println(letraEquivalente(25));
+        System.out.println(numeroRomanoEquivalente(25));
+        
+        
        // int colores[] = generaColores(20, 6);
        // leeColores(colores);
         
-        int prueba[][] = generaSecuencia(5,9,1,9);
+       // int prueba[][] = generaSecuencia(5,9,1,9);
         
         
         /*
