@@ -40,6 +40,17 @@ public class Help extends ActionBarActivity {
         //Con esta hacemos que la barra de estado del telefono no se vea y la actividad sea a pantalla completa.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        titulo = (TextView) findViewById(R.id.titulo_ayuda);
+        descripcion = (TextView) findViewById(R.id.descripcion_ayuda);
+        fin_texto = (TextView) findViewById(R.id.texto_fin_ayuda);
+        imagen_1 = (ImageView) findViewById(R.id.foto_linearLayout_1);
+        imagen_2 = (ImageView) findViewById(R.id.foto_linearLayout_2);
+
+        texto_imagen1 = (TextView) findViewById(R.id.texto_linearLayout_1);
+        texto_imagen2 = (TextView) findViewById(R.id.texto_linearLayout_2);
+        boton_back = (Button) findViewById(R.id.boton_atras_ayuda);
+
+
         //Obtenemos los datos que se le pasa a la actividad.
         intent=getIntent();
         //Obtenemos la información del intent
@@ -62,11 +73,12 @@ public class Help extends ActionBarActivity {
                     fin_texto = (TextView) findViewById(R.id.texto_fin_ayuda);
                     imagen_1 = (ImageView) findViewById(R.id.foto_linearLayout_1);
                     imagen_2 = (ImageView) findViewById(R.id.foto_linearLayout_2);
-                    imagen_3 = (ImageView) findViewById(R.id.foto_linearLayout_3);
+
                     texto_imagen1 = (TextView) findViewById(R.id.texto_linearLayout_1);
                     texto_imagen2 = (TextView) findViewById(R.id.texto_linearLayout_2);
-                    texto_imagen3 = (TextView) findViewById(R.id.texto_linearLayout_3);
                     boton_back = (Button) findViewById(R.id.boton_atras_ayuda);
+                    imagen_3 = (ImageView) findViewById(R.id.foto_linearLayout_3);
+                    texto_imagen3 = (TextView) findViewById(R.id.texto_linearLayout_3);
 
                     titulo.setText(getString(R.string.titulo_juego2));
                     fin_texto.setText(getString(R.string.fin_ayuda_2));
@@ -88,6 +100,17 @@ public class Help extends ActionBarActivity {
                     //Implementar
             }
         }
+
+        boton_back.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                       finish();
+                    }
+                });
+
     }
 
     @Override
