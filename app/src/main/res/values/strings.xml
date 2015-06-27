@@ -95,4 +95,5 @@
         Cada nivel se desbloquea superando al menos el 10por ciento de la puntuación máxima alcanzable en el nivel previo (es decir, en el nivel 1 consiguiendo 120 puntos se desbloquea el nivel
         2, y el nivel 3 se desbloquea consiguiendo al menos 462 puntos en el nivel 2).
     </string>
+        <string name="title_activity_splash_screen">SplashScreenActivity</string>
 </resources>

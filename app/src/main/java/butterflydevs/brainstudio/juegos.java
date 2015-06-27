@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,6 +28,9 @@ public class juegos extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juegos);
+
+        //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         botonAtras=(Button)findViewById(R.id.buttonBack);
         botonHelp=(Button)findViewById(R.id.buttonHelp);
