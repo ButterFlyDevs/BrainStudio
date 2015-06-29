@@ -59,8 +59,8 @@ public class Help extends ActionBarActivity {
 
         System.out.println(Zona_llamada);
         System.out.println(Numero_zona);
-        if(Zona_llamada.contains("Juego")){    //Si se llama desde las activitys de los juegos...
-            System.out.println("Entrando al if");
+        if(Zona_llamada.contains("Juego") || Zona_llamada.contains("Tablero_juego")){    //Si se llama desde las activitys de los juegos...
+
             switch (Numero_zona){
                 case 1:
                     //Implementar

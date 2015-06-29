@@ -78,23 +78,16 @@
     a la pantalla de selección de nivel, y también a la información de medallas conseguidas y puntuaciones.
     ¡Sólo unos pocos son capaces de conseguir superar todos los juegos en todos los niveles al 100 por cien!</string>
 
-    <string name="titulo_juego1"> Memoria Visual - Vision general</string>
-    <string name="desc_peque_juego1"> Juego con un solo color, sin orden.</string>
-    <string name="desc_larga_juego1">Juego con 3 niveles distintos: \n
-    - Nivel 1: Tablero de 12 celdas, teniendo que recordar de 2 a 6 celdas para completar el nivel. El máximo de puntuación es 1.200 puntos.\n
-    - Nivel 2: Tablero de 24 celdas, teniendo que recordar un máximo de 12 celdas. El máximo de puntuación es4.620. \n
-    - Nivel 3: Tablero de 40 celdas, teniendo que recordar hast aun máximo de 20 celdas.\n\n
+    <string name="titulo_juego1"> Memoria Visual</string>
+    <string name="descripcion_1"> En este juego, deberás recordar la posición de las celdas iluminadas para poder
+    avanzar de nivel. Pero se rápido memorizando, ¡tendrás poco tiempo para recordar la posición de las celdas
+        solución! Es un buen juego para iniciarse en BrainStudio. </string>
+    <string name="fin_ayuda_1"> La máxima puntuación del nivel uno es 1.200 y la del nivel dos es 4.620. ¡Deberás ser rápido
+    para acercarte lo máximo posible y conseguir todas las medallas!</string>
+    <string name="juego1_foto1"> Se mostrará el tablero con las celdas iluminadas de un color. ¡Recuerda la posición en el tiempo dado!</string>
+    <string name="juego1_foto2"> Toca las celdas que recuerdes que sean solución. ¡Tendrás solo 15 segundos!</string>
 
-    <u><b>Medallas</b></u>
-        \n
-        -La medalla de Bronce se desbloquea superando al menos el 10 por cientode la puntuación máxima alcanzble en el nivel 1.\n
-        -La medalla de Plata se desbloquea superando al menos el 10 de la puntuación máxima alcanzable en el nivel 2.\n
-        -La medalla de Oro se desbloquea superando la media de porcentaje superado en los 3 niveles. La media es un 20por ciento de la puntuación máxima superada.\n\n
-    <u><b>Niveles</b></u>
-        \n
-        Cada nivel se desbloquea superando al menos el 10por ciento de la puntuación máxima alcanzable en el nivel previo (es decir, en el nivel 1 consiguiendo 120 puntos se desbloquea el nivel
-        2, y el nivel 3 se desbloquea consiguiendo al menos 462 puntos en el nivel 2).
-    </string>
+
 
     <string name="titulo_juego2"> Memoria de colores</string>
     <string name="descripcion_2"> ¡Recuerda la posición de los colores! El juego te preguntará por sólo
@@ -104,5 +97,30 @@
     <string name="juego2_foto1"> El tablero se iluminará con los tres colores. Pero date prisa, ¡en cada repetición el tiempo para memorizar es menor!</string>
     <string name="juego2_foto2"> El juego te preguntará por uno de los colores</string>
     <string name="juego2_foto3"> Pincha sobre las celdas para seleccionarlas con el color preguntado.</string>
+
+    <string name="titulo_juego3"> Memoria secuencial</string>
+    <string name="descripcion_3"> En este juego deberás recordar el orden en el que se ha iluminado las celdas que aparecen
+    en la pantalla. Puedes relajarte, en este juego no hay tiempo.</string>
+    <string name="fin_ayuda_3"> El nivel 1 se supera con 15 repeticiones, y el nivel 2 se superará con 30 repeticiones. No obstante, ¡siempre
+    puedes seguir jugando en el mismo para sacar más puntuación!</string>
+    <string name="juego3_foto1">Las celdas se iluminan en un orden y de una en una. ¡Recuerda el orden!</string>
+    <string name="juego3_foto2"> Selecciona el orden correcto den el que se han iluminado, pinchando en las celdas.</string>
+
+    <string name="titulo_juego4"> Asociación de elementos</string>
+    <string name="descripcion_4">El clásico juego de las parejas, pero con colores. Todas las celdas estarán ocultas,
+    y deberás encontrar las parejas. No hay tiempo, ¡pero si que hay un máximo de errores permitidos! </string>
+    <string name="fin_ayuda_4">Deberás de rellenar todo el tablero con las distintas parejas. El máximo de puntuación  en el nivel uno es 1200, y en el nivel dos X. ¡Acercate a las máximas puntuaciones
+    para conseguir las medallas y desbloquear nuevos niveles!</string>
+    <string name="juego4_foto1"> Pincha en una celda para ver el color que esconde.</string>
+    <string name="juego4_foto2"> Deberás encontrar el color de esa celda en otra distinta, para formar la pareja. </string>
+
+    <string name="titulo_juego5">Memoria de mono</string>
+    <string name="descripcion_5">¡Si unos monos pudieron hacerlo en un laboratorio, tu también podrás! Aparecerán unos números
+    en la pantalla durante un breve tiempo, para después, esconderse como cobardes detrás de las celdas del tablero. Deberás
+    de recordar esos números, y descubrirlos en orden de menor a mayor.</string>
+    <string name="fin_ayuda_5"> </string>
+    <string name="juego5_foto1"> ¡Recuerda los números! Deberás de descubrirlos en orden de menor a mayor</string>
+    <string name="juego5_foto2"> Pincha sobre un cuadro para descubrir el número que esconde</string>
+    <string name="juego5_foto3"> Si es correcto, el juego continuará con ese número descubierto, hasta que limpies el tablero de celdas</string>
         <string name="title_activity_splash_screen">SplashScreenActivity</string>
 </resources>
