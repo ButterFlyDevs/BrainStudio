@@ -498,11 +498,14 @@ public class Juego4 extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Juego4.this, Help.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("Zona_llamada","Juego");
-                        bundle.putInt("Numero_zona",4);
-                        Intent intent = new Intent(Juego4.this, Help.class);
-                        startActivityForResult(intent,1);
+                        bundle.putInt("Numero_zona", 4);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );

@@ -499,14 +499,13 @@ public class Juego1 extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         //Creamos el Intent
-                        // Intent intent = new Intent(JuegoGrid12.this, Help.class);
-                        //Iniciamos la nueva actividad
-                        // startActivity(intent);
+                        Intent intent = new Intent(Juego1.this, Help.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("Zona_llamada","Juego");
-                        bundle.putInt("Numero_zona",1);
-                        Intent intent = new Intent(Juego1.this, Help.class);
-                        startActivityForResult(intent,1);
+                        bundle.putInt("Numero_zona", 1);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );

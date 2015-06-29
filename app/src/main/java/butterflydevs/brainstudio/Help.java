@@ -64,6 +64,13 @@ public class Help extends ActionBarActivity {
             switch (Numero_zona){
                 case 1:
                     //Implementar
+                    titulo.setText(getString(R.string.titulo_juego1));
+                    fin_texto.setText(getString(R.string.fin_ayuda_1));
+                    descripcion.setText(getString(R.string.descripcion_1));
+                    texto_imagen1.setText(getString(R.string.juego1_foto1));
+                    texto_imagen2.setText(getString(R.string.juego1_foto2));
+                    imagen_1.setImageResource(R.drawable.juego1_1);
+                    imagen_2.setImageResource(R.drawable.juego1_2);
                     break;
                 case 2:
                     //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMÁGENES!!!!)
@@ -91,13 +98,48 @@ public class Help extends ActionBarActivity {
                     imagen_3.setImageResource(R.drawable.juego2_3);
                     break;
                 case 3:
-                    //Implementar
+                    titulo.setText(getString(R.string.titulo_juego3));
+                    fin_texto.setText(getString(R.string.fin_ayuda_3));
+                    descripcion.setText(getString(R.string.descripcion_3));
+                    texto_imagen1.setText(getString(R.string.juego3_foto1));
+                    texto_imagen2.setText(getString(R.string.juego3_foto2));
+                    imagen_1.setImageResource(R.drawable.juego3_1);
+                    imagen_2.setImageResource(R.drawable.juego3_2);
                     break;
                 case 4:
-                    //Implementar
+                    titulo.setText(getString(R.string.titulo_juego4));
+                    fin_texto.setText(getString(R.string.fin_ayuda_4));
+                    descripcion.setText(getString(R.string.descripcion_4));
+                    texto_imagen1.setText(getString(R.string.juego4_foto1));
+                    texto_imagen2.setText(getString(R.string.juego4_foto2));
+                    imagen_1.setImageResource(R.drawable.juego4_1);
+                    imagen_2.setImageResource(R.drawable.juego4_2);
                     break;
                 default:
-                    //Implementar
+                    //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMÁGENES!!!!)
+                    setContentView(R.layout.activity_help__max3_imagenes);
+                    titulo = (TextView) findViewById(R.id.titulo_ayuda);
+                    descripcion = (TextView) findViewById(R.id.descripcion_ayuda);
+                    fin_texto = (TextView) findViewById(R.id.texto_fin_ayuda);
+                    imagen_1 = (ImageView) findViewById(R.id.foto_linearLayout_1);
+                    imagen_2 = (ImageView) findViewById(R.id.foto_linearLayout_2);
+
+                    texto_imagen1 = (TextView) findViewById(R.id.texto_linearLayout_1);
+                    texto_imagen2 = (TextView) findViewById(R.id.texto_linearLayout_2);
+                    boton_back = (Button) findViewById(R.id.boton_atras_ayuda);
+                    imagen_3 = (ImageView) findViewById(R.id.foto_linearLayout_3);
+                    texto_imagen3 = (TextView) findViewById(R.id.texto_linearLayout_3);
+
+                    titulo.setText(getString(R.string.titulo_juego5));
+                    fin_texto.setText(getString(R.string.fin_ayuda_5));
+                    descripcion.setText(getString(R.string.descripcion_5));
+                    texto_imagen1.setText(getString(R.string.juego5_foto1));
+                    texto_imagen2.setText(getString(R.string.juego5_foto2));
+                    texto_imagen3.setText(getString(R.string.juego5_foto3));
+                    imagen_1.setImageResource(R.drawable.juego5_1);
+                    imagen_2.setImageResource(R.drawable.juego5_2);
+                    imagen_3.setImageResource(R.drawable.juego5_3);
+                    break;
             }
         }
 
