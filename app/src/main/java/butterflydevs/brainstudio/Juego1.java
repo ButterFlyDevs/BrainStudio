@@ -217,7 +217,7 @@ public class Juego1 extends ActionBarActivity {
                      */
 
                     //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
-                    if(!db.compruebaMedala(1,1)) {
+                    if(!db.compruebaMedallas(1,1)) {
                         MyCustomDialog dialogoMedalla = new MyCustomDialog();
                         // fragment1.mListener = MainActivity.this;
                         dialogoMedalla.text = "nombre";
@@ -546,7 +546,7 @@ public class Juego1 extends ActionBarActivity {
 
                     //Informamos de ello:
                         //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
-                        if(!db.compruebaMedala(1,2)) {
+                        if(!db.compruebaMedallas(1,2)) {
                             MyCustomDialog dialogoMedalla = new MyCustomDialog();
                             // fragment1.mListener = MainActivity.this;
                             dialogoMedalla.text = "nombre";
@@ -688,7 +688,7 @@ public class Juego1 extends ActionBarActivity {
             puedeJugar3 = true;
 
             //Notificamos si no existe ya que se va a añadir:
-            if(!db.compruebaMedala(1,3)) {
+            if(!db.compruebaMedallas(1,3)) {
                 //Informamos de ello:
                 MyCustomDialog dialogoMedalla = new MyCustomDialog();
                 // fragment1.mListener = MainActivity.this;

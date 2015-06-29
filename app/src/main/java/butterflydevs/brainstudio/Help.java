@@ -13,15 +13,15 @@ import android.widget.TextView;
 
 
 /**
- * Activity para mostrar ayuda al usuario de la aplicación.
+ * Activity para mostrar ayuda al usuario de la aplicacion.
  *
- * La Activity reconocerá por los datos pasados a través del Intent desde qué Activity se le está llamando
- * y cargará los recursos necesarios para ella.
+ * La Activity reconocera por los datos pasados a traves del Intent desde que Activity se le este llamando
+ * y cargara los recursos necesarios para ella.
  */
 public class Help extends ActionBarActivity {
 
-    private String zona_de_llamada; //Podrá ser desde el activity de resultados de un juego concreto, o desde el tablero de jugo
-    private int numero_zona;    //Del 1 al 5 (POR AHORA! :D ), define el juego que está invocando a esta clase
+    private String zona_de_llamada; //Podre ser desde el activity de resultados de un juego concreto, o desde el tablero de jugo
+    private int numero_zona;    //Del 1 al 5 (POR AHORA! :D ), define el juego que este invocando a esta clase
 
     private TextView titulo, descripcion, fin_texto;
     //Textos de descripciones de imagen
@@ -53,7 +53,7 @@ public class Help extends ActionBarActivity {
 
         //Obtenemos los datos que se le pasa a la actividad.
         intent=getIntent();
-        //Obtenemos la información del intent
+        //Obtenemos la informaciï¿½n del intent
         String Zona_llamada = intent.getStringExtra("Zona_llamada");
         int Numero_zona = intent.getIntExtra("Numero_zona",0);
 
@@ -73,7 +73,7 @@ public class Help extends ActionBarActivity {
                     imagen_2.setImageResource(R.drawable.juego1_2);
                     break;
                 case 2:
-                    //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMÁGENES!!!!)
+                    //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMï¿½GENES!!!!)
                     setContentView(R.layout.activity_help__max3_imagenes);
                     titulo = (TextView) findViewById(R.id.titulo_ayuda);
                     descripcion = (TextView) findViewById(R.id.descripcion_ayuda);
@@ -116,7 +116,7 @@ public class Help extends ActionBarActivity {
                     imagen_2.setImageResource(R.drawable.juego4_2);
                     break;
                 default:
-                    //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMÁGENES!!!!)
+                    //Configuramos el layout (EL JUEGO 2 PRECISA DEL LAYOUT DE 3 IMï¿½GENES!!!!)
                     setContentView(R.layout.activity_help__max3_imagenes);
                     titulo = (TextView) findViewById(R.id.titulo_ayuda);
                     descripcion = (TextView) findViewById(R.id.descripcion_ayuda);

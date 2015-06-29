@@ -217,7 +217,7 @@ public class Juego4 extends ActionBarActivity {
                      */
 
             //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
-            if(!db.compruebaMedala(1,1)) {
+            if(!db.compruebaMedallas(1,1)) {
                 MyCustomDialog dialogoMedalla = new MyCustomDialog();
                 // fragment1.mListener = MainActivity.this;
                 dialogoMedalla.text = "nombre";
@@ -246,7 +246,7 @@ public class Juego4 extends ActionBarActivity {
             //Instanciamos la base de datos
             db = new MySQLiteHelper(this);
             //Añadimos la medalla de bronce: Juego1 , conseguida al superar el Nivel 1
-            db.addMedalla(1,1);
+            db.addMedalla(4,1);
 
         }
 
@@ -546,7 +546,7 @@ public class Juego4 extends ActionBarActivity {
 
                 //Informamos de ello:
                 //Si no existe la medalla se notifica que se ha ganado. Despues se añadira a la base de datos y no se mostrara mas-
-                if(!db.compruebaMedala(1,2)) {
+                if(!db.compruebaMedallas(1,2)) {
                     MyCustomDialog dialogoMedalla = new MyCustomDialog();
                     // fragment1.mListener = MainActivity.this;
                     dialogoMedalla.text = "nombre";
@@ -579,7 +579,7 @@ public class Juego4 extends ActionBarActivity {
                 //Instanciamos la base de datos
                 db = new MySQLiteHelper(this);
                 //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 2
-                db.addMedalla(1,2);
+                db.addMedalla(4,2);
 
             }
 
@@ -689,7 +689,7 @@ public class Juego4 extends ActionBarActivity {
             puedeJugar3 = true;
 
             //Notificamos si no existe ya que se va a añadir:
-            if(!db.compruebaMedala(1,3)) {
+            if(!db.compruebaMedallas(1,3)) {
                 //Informamos de ello:
                 MyCustomDialog dialogoMedalla = new MyCustomDialog();
                 // fragment1.mListener = MainActivity.this;
@@ -719,7 +719,7 @@ public class Juego4 extends ActionBarActivity {
             //Instanciamos la base de datos
             db = new MySQLiteHelper(this);
             //Añadimos la medalla de plata: Juego1 , conseguida al superar el Nivel 3 y media con los otros.
-            db.addMedalla(1,3);
+            db.addMedalla(4,3);
 
 
 

@@ -34,11 +34,16 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import net.frakbot.jumpingbeans.JumpingBeans;
 
+import java.util.List;
+
+import butterflydevs.brainstudio.extras.Medalla;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 public class ActividadPrincipal extends Activity {
@@ -61,6 +66,10 @@ public class ActividadPrincipal extends Activity {
 
     private JumpingBeans jumpingBeans1;
 
+    private List<Medalla> medallas;
+    private int tamMedallas=130;
+
+    private LinearLayout layoutMedallas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +112,8 @@ public class ActividadPrincipal extends Activity {
         colors = getResources().getStringArray(R.array.colors);
         botonBrain = (Button)findViewById(R.id.button);
         buttonUser=(Button)findViewById(R.id.buttonUser);
+        layoutMedallas=(LinearLayout)findViewById(R.id.layoutMedallas);
+
 
         botonBrain.startAnimation(loopParpadeante);
 
@@ -171,7 +182,81 @@ public class ActividadPrincipal extends Activity {
         customFont2.setText(Integer.toString(db.calcularPuntuacionGeneral()));
 
         porcentajeGeneral=db.calcularPorcentajeGeneral();
-        
+
+
+        //Comprueba medallas del juego 1, nivel 1
+        db.getMedallas();
+        medallas = db.getMedallas();
+        System.out.println("Recibidas "+medallas.size()+" medallas.");
+
+        //Introducimos las imagenes correspondientes a las medallas cargadas en la lista:
+
+                for(Medalla medallita: medallas){
+
+                    ImageView medalla = new ImageView(this);
+
+
+                    //Añadimos la imagen que diga la medalla
+                    if(medallita.juego==1) {
+                        if (medallita.nivel == 1)
+                            medalla.setImageResource(R.drawable.bronce);
+                        if (medallita.nivel == 2)
+                            medalla.setImageResource(R.drawable.plata);
+                        if (medallita.nivel == 3)
+                            medalla.setImageResource(R.drawable.oro);
+                    }
+                    if(medallita.juego==2) {
+                        if (medallita.nivel == 1)
+                            medalla.setImageResource(R.drawable.bronce_juego2);
+                        if (medallita.nivel == 2)
+                            medalla.setImageResource(R.drawable.plata_juego2);
+                        if (medallita.nivel == 3)
+                            medalla.setImageResource(R.drawable.oro_juego2);
+                    }
+                    if(medallita.juego==3) {
+                        if (medallita.nivel == 1)
+                            medalla.setImageResource(R.drawable.juego33);
+                        if (medallita.nivel == 2)
+                            medalla.setImageResource(R.drawable.juego32);
+                        if (medallita.nivel == 3)
+                            medalla.setImageResource(R.drawable.juego31);
+                    }
+                    if(medallita.juego==4) {
+                        if (medallita.nivel == 1)
+                            medalla.setImageResource(R.drawable.juego43);
+                        if (medallita.nivel == 2)
+                            medalla.setImageResource(R.drawable.juego42);
+                        if (medallita.nivel == 3)
+                            medalla.setImageResource(R.drawable.juego41);
+                    }
+                    if(medallita.juego==5) {
+                        if (medallita.nivel == 1)
+                            medalla.setImageResource(R.drawable.juego53);
+                        if (medallita.nivel == 2)
+                            medalla.setImageResource(R.drawable.juego52);
+                        if (medallita.nivel == 3)
+                            medalla.setImageResource(R.drawable.juego51);
+                    }
+
+
+
+                    //Creamos unos parámetros para su layout.
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(tamMedallas, tamMedallas);
+                    //Aplicamos el layout.
+                    medalla.setLayoutParams(layoutParams);
+
+                    //Añadimos la imagen al layout.
+                    layoutMedallas.addView(medalla);
+
+
+                }
+
+
+
+
+
+
+
 
         handler = new Handler();
         r = new Runnable(){

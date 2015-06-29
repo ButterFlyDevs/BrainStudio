@@ -24,6 +24,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -286,6 +289,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         //Tabla de información de medallas
 
+        //En esta tabla solo aparecen las medallas que se tienen, nada más.
+
             //Especificación
             String CREATE_LEVEL_TABLE_MEDALLAS = "CREATE TABLE medallas ( "+
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
@@ -439,19 +444,31 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      */
     public void addMedalla(int juego, int nivel){
 
-        //1. Referencia a la base de datos
-        SQLiteDatabase db = this.getWritableDatabase();
+        boolean existe=false;
 
-        //2. Crear contenido
-        ContentValues values = new ContentValues();
-        values.put(KEY_JUEGO, juego);
-        values.put(KEY_NIVEL, nivel);
+        //Comprobamos si existe ya esa medalla
+            List<Medalla> medallas = getMedallas();
+            for(Medalla medallita: medallas)
+                if(medallita.juego==juego && medallita.nivel==nivel)
+                    existe=true;
 
-        //3. Inserccion en la tabla
-        db.insert(MEDALLAS, null, values);
+        //Si no existe la añadimos:
+        if(!existe) {
 
-        //4. Cerrar la bd
-        db.close();
+            //1. Referencia a la base de datos
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            //2. Crear contenido
+            ContentValues values = new ContentValues();
+            values.put(KEY_JUEGO, juego);
+            values.put(KEY_NIVEL, nivel);
+
+            //3. Inserccion en la tabla
+            db.insert(MEDALLAS, null, values);
+
+            //4. Cerrar la bd
+            db.close();
+        }
     }
 
     /**
@@ -461,7 +478,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      * @param nivel El nivel del juego
      * @return Si la medalla ha sido obtenida.
      */
-    public boolean compruebaMedala(int juego, int nivel){
+    public boolean compruebaMedallas(int juego, int nivel){
 
         boolean encontrada=false;
 
@@ -488,6 +505,36 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         //Si se ha encontrado coincidencia se devolverá true y si nó se devolverá false.
         return encontrada;
+    }
+
+
+    public List<Medalla> getMedallas(){
+
+        List<Medalla> medallas = new ArrayList();
+
+        //1º Obtenemos una referencia a la base de datos
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //2º Creamos una consulta que nos devuelva todos las entradas de la tabla
+        String query = "SELECT * FROM "+ MEDALLAS;
+
+        //3º Creamos un cursor al que le pasamos la consulta para manejar los resultados de esta.
+        Cursor cursor = db.rawQuery(query,null);
+
+        System.out.println("PUTA MIERDA");
+
+        if(cursor.moveToFirst()){
+            do{
+                medallas.add(new Medalla(Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2))));
+               System.out.print("juego"+Integer.parseInt(cursor.getString(1)));
+               System.out.print("nivel" + Integer.parseInt(cursor.getString(2)));
+               System.out.println("");
+
+               System.out.println(cursor.toString());
+            }while(cursor.moveToNext());
+        }
+
+        return medallas;
     }
 
 
