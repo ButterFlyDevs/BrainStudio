@@ -21,23 +21,7 @@
             android:id="@+id/gridBotones">
 
         </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
-            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                android:id="@+id/progress_two"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                app:rcBackgroundPadding="2dp"
-                app:rcBackgroundRadius="5dp"
-                app:rcMax="100"
-                app:rcProgress="50"
-                app:rcProgressColor="@color/custom_progress_orange_progress" />
-
-        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"

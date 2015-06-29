@@ -32,9 +32,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.github.premnirmal.textcounter.CounterView;
+import com.github.premnirmal.textcounter.Formatter;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import butterflydevs.brainstudio.extras.Dialogos.DialogoSalidaJuegos;
@@ -50,6 +56,11 @@ import butterflydevs.brainstudio.extras.matrixHelper;
  * podremos calcular el porcenjate pasado del juego.
  *
  * En principio vamos a optar por la opción B.
+ *
+ *
+ * Nivel 1: 20 preguntas
+ * Nivel 2: 48 preguntas
+ * Nivel 3: 80 preguntas
  *
  */
 public class Juego5niveln extends ActionBarActivity {
@@ -92,6 +103,8 @@ public class Juego5niveln extends ActionBarActivity {
 
         private int porcentaje=0;
 
+        private int puntuacion=0;
+
         //Solo para el nivel 2
         private int sector=1;
 
@@ -112,6 +125,9 @@ public class Juego5niveln extends ActionBarActivity {
     private boolean mostrar=true;
 
     private int[][] matrizValores;
+
+
+    private CounterView counterView;
 
 
     public Juego5niveln(){
@@ -351,7 +367,6 @@ public class Juego5niveln extends ActionBarActivity {
                     //Que puede estar entre 0 y 9 (inclusives)
                     rangoMin=0;
                     rangoMax=9;
-
                     //El número de repeticiones por nivel de dificultad
                     numRepeticiones=4;
 
@@ -521,6 +536,25 @@ public class Juego5niveln extends ActionBarActivity {
         //Le especificamos una horientación
         layoutGridBotones.setOrientation(LinearLayout.VERTICAL);
 
+        //CounterView es el texto de puntos que va aumentando
+        counterView=(CounterView)findViewById(R.id.counter);
+
+        counterView.setAutoFormat(false);
+        counterView.setFormatter(new Formatter() {
+            @Override
+            public String format(String prefix, String suffix, float value) {
+                return prefix + NumberFormat.getNumberInstance(Locale.US).format(value) + suffix;
+            }
+        });
+        counterView.setAutoStart(false);
+        counterView.setStartValue(0);
+        counterView.setEndValue(0);
+        counterView.setIncrement(1f); // the amount the number increments at each time interval
+        counterView.setTimeInterval(2); // the time interval (ms) at which the text changes
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+        counterView.start();
+
     }
 
     public boolean secuenciaCorrecta(){
@@ -597,6 +631,19 @@ public class Juego5niveln extends ActionBarActivity {
             if(level==3)
                 porcentaje+=1;
 
+
+
+        counterView.setStartValue(puntuacion);
+
+        //La puntuación que se suma siempre es 10* el numero de numero impllicados en la jugada:
+            puntuacion+=10*numNumeros;
+
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+
+        counterView.setEndValue(puntuacion);
+        counterView.start();
+
         //Hacemos que vibre:
         Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
 
@@ -635,7 +682,7 @@ public class Juego5niveln extends ActionBarActivity {
 
                 //CUando se llegue al final del juego se sale
                 if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
-                    this.finPartida();
+                    this.finJuego();
                     //Cuando se llega al máximo no se puede seguir o se provocarán errores.
                     puedeSeguir = false;
                 }
@@ -701,7 +748,7 @@ public class Juego5niveln extends ActionBarActivity {
 
                 //CUando se llegue al final del juego se sale
                 if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
-                    this.finPartida();
+                    this.finJuego();
                     //Cuando se llega al máximo no se puede seguir o se provocarán errores.
                     puedeSeguir = false;
                 }
@@ -714,11 +761,12 @@ public class Juego5niveln extends ActionBarActivity {
 
                 //Cuando se llega al sector 9 se reduce a 3 el númeoro de repeticiones del panel por nivel de dificultad, para los proximos.
 
-                if(sector==9)
-                    numRepeticiones=3;
-                //CUando se llega al sector 13 se reduce a 2 hasta el final del juego.
-                if(sector==13)
-                    numRepeticiones=2;
+                //Si queremos reducir un poco el número de paneles que se le preguntan al usuario.
+                    //if(sector==9)
+                    //    numRepeticiones=3;
+                    //CUando se llega al sector 13 se reduce a 2 hasta el final del juego.
+                   // if(sector==13)
+                     //   numRepeticiones=2;
 
             }
 
@@ -778,7 +826,7 @@ public class Juego5niveln extends ActionBarActivity {
 
                 //CUando se llegue al final del juego se sale
                 if (numNumeros > numFilas * numColumnas) {             //CONDICIÓN DE SALIDA DEL JUEGO //
-                    this.finPartida();
+                    this.finJuego();
                     //Cuando se llega al máximo no se puede seguir o se provocarán errores.
                     puedeSeguir = false;
                 }
@@ -849,7 +897,7 @@ public class Juego5niveln extends ActionBarActivity {
         DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
         dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
         dialogoFinJuego.setNivel(5);
-        dialogoFinJuego.setDatos("Te has equivocado!",secuencia, secuenciaJugador, porcentaje);
+        dialogoFinJuego.setDatos("Te has equivocado!",secuencia, secuenciaJugador, porcentaje, puntuacion);
 
         //Mostramos el diálogo
         dialogoFinJuego.show(getFragmentManager(), "");
@@ -858,8 +906,28 @@ public class Juego5niveln extends ActionBarActivity {
 
         MySQLiteHelper db = new MySQLiteHelper(this);
 
-        db.addJugada(new Jugada(0, porcentaje), level, 5);
+        db.addJugada(new Jugada(puntuacion, porcentaje), level, 5);
 
+    }
+
+    /**
+     * Función que informa que has concluido el juego.
+     */
+    public void finJuego(){
+        //Informamos de ello:
+        DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
+        dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setNivel(5);
+        dialogoFinJuego.setDatos(" ¡ FIN ! ",secuencia, secuenciaJugador, porcentaje, puntuacion);
+
+        //Mostramos el diálogo
+        dialogoFinJuego.show(getFragmentManager(), "");
+
+        //Grabar datos de partida!
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        db.addJugada(new Jugada(puntuacion, porcentaje), level, 5);
     }
 
     public void reiniciaSecuencia(){

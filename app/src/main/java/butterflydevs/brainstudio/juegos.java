@@ -133,35 +133,41 @@ public class juegos extends Activity {
 
     /**
      * Función que se encarga de generar los datos que se cargan en el listView
-     * Usamos funciones que declaramos en esta clase para obtener los datos en el formatoq eu nos
+     * Usamos funciones que declaramos en esta clase para obtener los datos en el formato que nos
      * interese.
      *
      * @return El array con los items del ListView.
      */
     private ArrayList<Nivel> generateData(){
 
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
         ArrayList<Nivel> items = new ArrayList<Nivel>();
 
         //Juego 1
-        items.add(new Nivel(25, puntuacionJuego1()));
+        //items.add(new Nivel(25, puntuacionJuego1()));
+        items.add(new Nivel(db.calcularPorcentajeGeneral(1), db.calcularPuntuacionGeneral(1)));
 
         //Juego 2
-        items.add(new Nivel(25,puntuacionJuego2()));
+        items.add(new Nivel(db.calcularPorcentajeGeneral(2), db.calcularPuntuacionGeneral(2)));
 
         //Juego 3
-        items.add(new Nivel(25, puntuacionJuego2()));
+        items.add(new Nivel(db.calcularPorcentajeGeneral(3), db.calcularPuntuacionGeneral(3)));
 
         //Juego 4
-        items.add(new Nivel(25, puntuacionJuego2()));
+        items.add(new Nivel(db.calcularPorcentajeGeneral(4), db.calcularPuntuacionGeneral(4)));
 
         //Juego 5
-        items.add(new Nivel(porcentajeJuego5(), 0));
-
+        items.add(new Nivel(db.calcularPorcentajeGeneral(5), db.calcularPuntuacionGeneral(5)));
 
         return items;
+
     }
 
-
+    /**
+     * CANDIDATA A SER ELIMINADA
+     * @return
+     */
     public int puntuacionJuego1(){
 
         MySQLiteHelper db = new MySQLiteHelper(this);

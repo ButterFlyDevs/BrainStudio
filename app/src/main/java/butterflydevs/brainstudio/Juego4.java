@@ -123,11 +123,11 @@ public class Juego4 extends ActionBarActivity {
         tamCandado=70;
 
         //En % de juego pasado.
-        llaveNivel2=10; //Consiguiendo este valor en el nivel 1 se abre el nivel 2.
-        llaveNivel3=10; //Consiguiendo este valor en el nivel 2 se abre l nivel 3.
+        llaveNivel2=60; //Consiguiendo este valor en el nivel 1 se abre el nivel 2.
+        llaveNivel3=50; //Consiguiendo este valor en el nivel 2 se abre l nivel 3.
 
         //Media de todos los niveles superados en porcentaje para obtener la medalla de plata
-        llaveFinal=20;
+        llaveFinal=90;
 
         tamTextoNiveles=20;
         llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -749,17 +749,18 @@ public class Juego4 extends ActionBarActivity {
 
         int resultado=0;
 
-        int limiteNivel1=1200;
-        int limiteNivel2=4620;
-        int limiteNivel3=5000;
+        //Máxima puntuación que se puede conseguir en los distintos niveles:
+        int maxNivel1=4100;
+        int maxNivel2=7700;
+        int maxNivel3=12500;
 
 
         if(nivel==1)
-            resultado=(100*puntuacion)/limiteNivel1;
+            resultado=(100*puntuacion)/maxNivel1;
         if(nivel==2)
-            resultado=(100*puntuacion)/limiteNivel2;
+            resultado=(100*puntuacion)/maxNivel2;
         if(nivel==3)
-            resultado=(100*puntuacion)/limiteNivel3;
+            resultado=(100*puntuacion)/maxNivel3;
 
 
         return resultado;

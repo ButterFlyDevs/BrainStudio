@@ -44,6 +44,21 @@
                     android:background="@drawable/back"
                     android:layout_marginRight="50dp" />
 
+                <com.github.premnirmal.textcounter.CounterView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="30dp"
+                    android:id="@+id/counter"
+                    counter:autoStart="true"
+                    counter:startValue="100"
+                    counter:endValue="5000"
+                    counter:incrementValue="100"
+                    counter:timeInterval="2"
+                    counter:prefix="$"
+                    counter:suffix=" moneys"
+
+                    android:layout_gravity="center" />
+
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"

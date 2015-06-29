@@ -355,8 +355,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 
     // ### METODOS DE USO DIRECTO ###
-
-
     /**
      * Añade una juaga a la tabla del nivel J1N1
      * @param jugada
@@ -556,6 +554,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return jugada;
     }
 
+
     /**
      * Rescata todas las jugadas de la tabla J1N1 por ahora, después podría
      * pasarsele algún parámetro para cambiar de tabla.
@@ -650,6 +649,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return jugadas;
     }
 
+
     /**
      * Función que nos servirá para ver el estado de la base de datos,
      * Con ella podremos conocer el tamaño que tiene y como va creciendo para depuraciones.
@@ -706,6 +706,88 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         System.out.println("Número de elmentos en medallas: "+count);
 
     }
+
+    /**
+     * Para obtener la máxima jugada de un juego y un nivel concreto.
+     * @param juego
+     * @param nivel
+     * @return
+     */
+    public Jugada obtenerMaximaJugada(int juego, int nivel){
+
+
+        //1º Llamamos a getAllJugada (que requiere nivel y juego) para sacar de la base de datos todas las jugadas.
+        List<Jugada>todasJugadas=getAllJugadas(nivel, juego);
+
+        //System.out.println("Obtenidas "+todasJugadas.size()+" jugadas del juego "+juego+" nivel "+nivel);
+
+        //2º Llamamos a la funcion obtenMaximaJugada para que nos saque la maxima jugada de ese nivel:
+        if(juego==1 || juego==2 || juego==3 || juego==4 || juego==5)
+            return Jugada.obtenMaximaJugada(todasJugadas);
+        else //si se trata del juego 2 se usa otra métrica.
+            return Jugada.obtenMaximaJugada2(todasJugadas);
+
+
+        //return maxima;
+    }
+
+    public int calcularPuntuacionGeneral(){
+
+        int maxNiveles=3;
+        int maxJuegos=5;
+
+        int puntuacionAcumulada=0;
+
+        for(int juego=1; juego<=maxJuegos; juego++){
+            for(int nivel=1; nivel<=maxNiveles; nivel++)
+                puntuacionAcumulada+=(obtenerMaximaJugada(juego,nivel)).getPuntuacion();
+        }
+
+        return puntuacionAcumulada;
+
+    }
+
+    public int calcularPorcentajeGeneral(){
+
+
+        int maxJuegos=5;
+
+        int porcentajeAcumulado=0;
+
+        for(int juego=1; juego<=maxJuegos; juego++){
+                porcentajeAcumulado += calcularPorcentajeGeneral(juego);
+
+        }
+
+       return porcentajeAcumulado/maxJuegos;
+
+    }
+
+
+    // ### funciones de llamada en la activity  juegos.java ### //
+
+    /**
+     * Sobrecarga del metodo anterior para ofrecer la puntuación general de un nivel.
+     * Esta es la suma de todas las puntuaciones conseguidas en los distintos niveles que esta tenga.
+     * @param juego Por el que preguntamos.
+     * @return La suma de las puntuaciones de todos los niveles que ese juego tenga.
+     */
+    public int calcularPuntuacionGeneral(int juego){
+        int maxNiveles=3;
+        int puntuacionAcumulada=0;
+        for(int nivel=1; nivel<maxNiveles; nivel++)
+            puntuacionAcumulada+=(obtenerMaximaJugada(juego, nivel)).getPuntuacion();
+         return puntuacionAcumulada;
+    }
+
+    public int calcularPorcentajeGeneral(int juego){
+        int maxNiveles=3;
+        int porcentajeAcumulado=0;
+        for(int nivel=1; nivel<maxNiveles; nivel++)
+            porcentajeAcumulado+=(obtenerMaximaJugada(juego,nivel)).getPorcentaje();
+        return porcentajeAcumulado/maxNiveles;
+    }
+
 
 
 }

@@ -35,8 +35,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
+
+import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 public class ActividadPrincipal extends Activity {
 
@@ -53,6 +56,8 @@ public class ActividadPrincipal extends Activity {
     private TextView customFont, customFont2;
 
     private TextView textPuntos, textPTS, textPOS;
+
+    private int porcentajeGeneral=0;
 
     private JumpingBeans jumpingBeans1;
 
@@ -119,7 +124,7 @@ public class ActividadPrincipal extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(ActividadPrincipal.this, PruebasAnimaciones.class);
+                        Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
 
                     //    Bundle bundle = new Bundle();
                     //    bundle.putInt("nivel",3);
@@ -161,7 +166,12 @@ public class ActividadPrincipal extends Activity {
         meter.setTypeface(font);
 
 
+        MySQLiteHelper db = new MySQLiteHelper(this);
 
+        customFont2.setText(Integer.toString(db.calcularPuntuacionGeneral()));
+
+        porcentajeGeneral=db.calcularPorcentajeGeneral();
+        
 
         handler = new Handler();
         r = new Runnable(){
@@ -182,7 +192,7 @@ public class ActividadPrincipal extends Activity {
                 else
                     currV--;
                 */
-                if(currV<46)
+                if(currV<porcentajeGeneral)
                     currV++;
 
 

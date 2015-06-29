@@ -122,11 +122,11 @@ public class Juego5 extends ActionBarActivity {
         tamCandado=70;
 
         //En % de juego pasado.
-        llaveNivel2=10; //Consiguiendo este valor en el nivel 1 se abre el nivel 2.
-        llaveNivel3=10; //Consiguiendo este valor en el nivel 2 se abre l nivel 3.
+        llaveNivel2=60; //Consiguiendo este valor en el nivel 1 se abre el nivel 2.
+        llaveNivel3=50; //Consiguiendo este valor en el nivel 2 se abre l nivel 3.
 
         //Media de todos los niveles superados en porcentaje para obtener la medalla de plata
-        llaveFinal=20;
+        llaveFinal=90;
 
         tamTextoNiveles=20;
         llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -176,7 +176,7 @@ public class Juego5 extends ActionBarActivity {
         List<Jugada> jugadasNivel1=db.getAllJugadas(1,5);
 
         //Usamos la 2ª ya que aquí solo trabajamos con porcentajes y la primera implementación sólo lo hace con puntuación.
-        maxJugadaNivel1=Jugada.obtenMaximaJugada2(jugadasNivel1);
+        maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
 
         textNivel1=new TextView(this);
 
@@ -186,7 +186,7 @@ public class Juego5 extends ActionBarActivity {
         textNivel1.setTextSize(tamTextoNiveles);
 
         //Escribimos el pantalla la máxima jugada
-        textNivel1.setText(Integer.toString(maxJugadaNivel1.getPorcentaje())+"% completado");
+        textNivel1.setText(Integer.toString(maxJugadaNivel1.getPuntuacion())+" puntos");
 
         //Añadimos el texto al layout:
         layoutNivel1.addView(textNivel1);
@@ -533,7 +533,7 @@ public class Juego5 extends ActionBarActivity {
             List<Jugada> jugadasNivel2=db.getAllJugadas(2,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
-            maxJugadaNivel2=Jugada.obtenMaximaJugada2(jugadasNivel2);
+            maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
 
             //Obtenida la máxima jugada del nivel 2 vemos si puede acceder al nivel 3:
             if(maxJugadaNivel2.getPorcentaje()>llaveNivel3) {
@@ -579,7 +579,7 @@ public class Juego5 extends ActionBarActivity {
 
             }
 
-            textNivel2.setText(Integer.toString(maxJugadaNivel2.getPorcentaje())+"% completado");
+            textNivel2.setText(Integer.toString(maxJugadaNivel2.getPuntuacion())+" puntos");
 
 
             layoutNivel2.addView(textNivel2);
@@ -632,10 +632,10 @@ public class Juego5 extends ActionBarActivity {
             List<Jugada> jugadasNivel3=db.getAllJugadas(3,5);
 
             //Obtenemos la máxima jugada de estas jugadas:
-            maxJugadaNivel3=Jugada.obtenMaximaJugada2(jugadasNivel3);
+            maxJugadaNivel3=Jugada.obtenMaximaJugada(jugadasNivel3);
 
 
-            textNivel3.setText(Integer.toString(maxJugadaNivel3.getPorcentaje())+"% completado");
+            textNivel3.setText(Integer.toString(maxJugadaNivel3.getPuntuacion())+" puntos");
 
 
             layoutNivel3.addView(textNivel3);
@@ -726,19 +726,27 @@ public class Juego5 extends ActionBarActivity {
 
 
     }
+
+    /**
+     * Para calcular el porcentaje de puntuación máxima obtenida. Si el máximo que se puede conseguir en un
+     * juego es n, esta función calcula dada una m que % corresponde al n original.
+     * @param nivel El nivel del que se trata. En cada nivel la puntuación es distinta.
+     * @param puntuacion Puntuación con la que realizar el cálculo
+     * @return El porcentaje que representa.
+     */
     public int calculaPorcentaje(int nivel, int puntuacion){
 
-        /*
-        Tanto el 1200 como el 4620 son las puntuaciones máximas que se podrían sacar en ambos niveles
-        si se recorrieran todos los grid generados sin tardar nada en resolverlos. EL jugador nunca podrá conseguir
-        tanta puntuación pero obviamente podrá acercarse si es muy rápido contestando y no se equivoca.
-         */
-
         int resultado=0;
+        //Calculados con las sumatorias que supone el incremento de dificultad.
+        int maxNivel1=800, maxNivel2=5040, maxNivel3=11600;
+
         if(nivel==1)
-            resultado=(100*puntuacion)/1200;
+            resultado=(100*puntuacion)/maxNivel1;
         if(nivel==2)
-            resultado=(100*puntuacion)/4620;
+            resultado=(100*puntuacion)/maxNivel2;
+        if(nivel==3)
+            resultado=(100*puntuacion)/maxNivel3;
+
         return resultado;
     }
 

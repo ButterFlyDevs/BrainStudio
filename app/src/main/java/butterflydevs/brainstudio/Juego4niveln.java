@@ -59,8 +59,7 @@ public class Juego4niveln extends ActionBarActivity {
     private int numFilas = 6;
     private int numColumnas = 4;
 
-    //Variables de elementos visuales que necesitan referenciación
-    private RoundCornerProgressBar barraProgreso;
+
     private int progress2 = 100;
 
     private Button botonBack;
@@ -103,11 +102,8 @@ public class Juego4niveln extends ActionBarActivity {
     private int numCeldas = 2;
 
 
-    //Variables para el reloj:
-    private CountDownTimer countDownTimer;
+
     private CounterView counterView;
-    private int time;
-    private float timeNow;
 
     private int level;
 
@@ -140,10 +136,7 @@ public class Juego4niveln extends ActionBarActivity {
 
     public Juego4niveln() {
 
-
-
-        time = 15;
-        numRepeticionesMaximas = 2;
+        numRepeticionesMaximas = 4;
         numRepeticionActual = 1;
         numMaximoCeldas = 20;
         puntuacion = 0;
@@ -190,10 +183,6 @@ public class Juego4niveln extends ActionBarActivity {
             @Override
             public void onAnimationStart(Animation animation) {
                 System.out.println("La animación empieza");
-                barraProgreso.setProgress(100f);
-                updateProgressTwoColor(100f);
-
-
             }
 
             //Especificamos que ocurre cuando la animación1 termina
@@ -234,9 +223,6 @@ public class Juego4niveln extends ActionBarActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 System.out.println("La animacion acaba");
-                //Cuando la segunda animación termina el tiempo comienza a correr.
-                countDownTimer.start();
-                //countDownTimer.
             }
 
             @Override
@@ -247,36 +233,6 @@ public class Juego4niveln extends ActionBarActivity {
 
         });
 
-
-
-        //Configuracion del temporizador.
-        //Le pasamos al constructor la variable tiempo para ajustarlo a nuestro gusto.
-        countDownTimer = new CountDownTimer(time*1000, 1000) {
-
-            //Lo que hacemos en cada tick del reloj.
-            public void onTick(long millisUntilFinished) {
-
-                if(puedeMostrarBarra) //Evita mostrar la barra corriendo cuando no debe
-                    barraProgreso.setProgress(reglaTres((int)millisUntilFinished / 1000));
-
-                updateProgressTwoColor((int)millisUntilFinished / 1000);
-
-                System.out.println("reloj:" + (int)millisUntilFinished / 1000);
-                timeNow= millisUntilFinished;
-
-            }
-            //Comportamiento al acabarse el timepo.
-            public void onFinish(){
-
-                barraProgreso.setProgress(0f);
-                //updateProgressTwoColor();
-
-                finalizarPartida();
-                //Si el mensaje anterior queda ahí se añade muchisimas veces la puntuación otenida.
-
-
-            }
-        };
 
         asociarElementosVista();
 
@@ -358,11 +314,6 @@ public class Juego4niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        //Para evitar errores con la variable de tiempo lo paramos:
-                        countDownTimer.cancel();
-
-
                         //Creamos el Intent
                         Intent intent = new Intent(Juego4niveln.this, Juego4.class);
                         //Iniciamos la nueva actividad
@@ -384,10 +335,6 @@ public class Juego4niveln extends ActionBarActivity {
                 }
         );
 
-
-        //Hacemos transparente el fondo de la barra de progreso.
-        barraProgreso.setBackgroundColor(Color.TRANSPARENT);
-
     }
 
     /**
@@ -404,7 +351,7 @@ public class Juego4niveln extends ActionBarActivity {
             numColumnas=3;
 
             //2º Ajustar el tamaño de los botones
-            tamButtons = 150;
+            tamButtons = 140;
 
         }else if(level==2){
 
@@ -430,26 +377,10 @@ public class Juego4niveln extends ActionBarActivity {
         }
     }
 
-    public float reglaTres(int x){
-        return (x*100)/(time-1);
-    }
-
-    private void updateProgressTwoColor(float time ) {
-        if(time <= 2) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_red_progress));
-        } else if(time > 2 && time <= 6) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_orange_progress));
-        } else if(time > 6) {
-            barraProgreso.setProgressColor(getResources().getColor(R.color.custom_progress_green_progress));
-        }
-    }
 
 
 
     public void asociarElementosVista(){
-
-
-        barraProgreso=(RoundCornerProgressBar)findViewById(R.id.progress_two);
 
         botonBack=(Button)findViewById(R.id.botonBack);
         botonHelp=(Button)findViewById(R.id.botonHelp);
@@ -529,10 +460,6 @@ public class Juego4niveln extends ActionBarActivity {
 
         if(keyCode== KeyEvent.KEYCODE_BACK){
 
-            //Al pulsar sobre el botón atrás físico del terminal cancelamos el tiempo para evitar problemas
-            //De referencia después.
-            countDownTimer.cancel();
-
             //Despues de parar el tiempo salimos a la pantalla aterior.
             Intent intent = new Intent(Juego4niveln.this, Juego1.class);
             //Iniciamos la nueva actividad
@@ -559,50 +486,8 @@ public class Juego4niveln extends ActionBarActivity {
         //this.colorFondo=Color.DKGRAY;
     }
 
-    public void salirNivel() {
 
-        //Avisar de que se ha acabado el juego y salir al panel de niveles.
 
-        //¿Mostrar un fragment con la puntuación y y el porcentaje completado?
-
-        new AlertDialog.Builder(this)
-                .setTitle("TERMINADO")
-                .setMessage("has llegado al final del nivel")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                        grabarDatosBD();
-                        //Creamos el Intent
-                        Intent intent = new Intent(Juego4niveln.this, Juego1.class);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-    public void calculaPuntuacion() {
-        System.out.println("Tiempo al acabar: " + (float) timeNow / 1000);
-
-        //Ajustamos el tiempo a segundos con un decimal:
-        String tiempo = Float.toString((float) timeNow / 1000);
-
-        if(tiempo.length()>=4)
-            tiempo = tiempo.substring(0, 4);
-
-        timeNow = Float.parseFloat(tiempo);
-
-        counterView.setStartValue(puntuacion);
-        counterView.setPrefix("");
-        counterView.setSuffix("");
-        puntuacion += timeNow * numCeldas;
-
-        counterView.setEndValue(puntuacion);
-        counterView.start();
-        System.out.println("Puntuacón : " + puntuacion);
-
-    }
 
     public int calculaPorcentaje(){
 
@@ -702,6 +587,27 @@ public class Juego4niveln extends ActionBarActivity {
 
 
 
+    }
+
+
+    /**
+     * Función que informa que has concluido el juego.
+     */
+    public void finJuego(){
+        //Informamos de ello:
+        DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
+        dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setNivel(5);
+
+
+        //Mostramos el diálogo
+        dialogoFinJuego.show(getFragmentManager(), "");
+
+        //Grabar datos de partida!
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        db.addJugada(new Jugada((int) puntos, calculaPorcentaje()), level,5);
     }
 
     /**
@@ -985,6 +891,8 @@ public class Juego4niveln extends ActionBarActivity {
             }
 
 
+        }else if(sector>5){
+            finJuego();
         }
         }
 

@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterflydevs.brainstudio.Juego3;
 import butterflydevs.brainstudio.Juego4;
 import butterflydevs.brainstudio.Juego5;
 import butterflydevs.brainstudio.Juego5niveln;
@@ -64,6 +65,7 @@ public class DialogoSalidaJuegos extends DialogFragment {
     public String textoConvertidoA;
     public String textoConvertidoB;
     public int porcentajeSuperado;
+    public int puntosObtenidos;
     public String textoBoton;
 
     public onSubmitListener mListener;
@@ -92,7 +94,7 @@ public class DialogoSalidaJuegos extends DialogFragment {
         padreJuego5=padrePasado;
     }
 
-    public void setDatos(String titulo, List<Integer> secuenciaJuego, List<Integer> secuenciaJugador, int porcentajeSuperado){
+    public void setDatos(String titulo, List<Integer> secuenciaJuego, List<Integer> secuenciaJugador, int porcentajeSuperado, int puntos){
 
        textoInformacion=titulo;
 
@@ -106,6 +108,7 @@ public class DialogoSalidaJuegos extends DialogFragment {
            textoConvertidoB+=Integer.toString(b)+" ";
 
        this.porcentajeSuperado=porcentajeSuperado;
+       puntosObtenidos=puntos;
     }
 
     public void setDatos(String titulo, String textoA, String textoB, int porcentaje){
@@ -152,7 +155,7 @@ public class DialogoSalidaJuegos extends DialogFragment {
         textoA.setText(textoConvertidoA);
         textoB.setText(textoConvertidoB);
 
-        textoPorcentajeSuperado.setText(Integer.toString(porcentajeSuperado)+"% superado");
+        textoPorcentajeSuperado.setText(Integer.toString(porcentajeSuperado)+"% superado  "+puntosObtenidos+" puntos");
 
         //Algún ajuste:
         textoInfo.setText(textoInformacion);
@@ -171,6 +174,12 @@ public class DialogoSalidaJuegos extends DialogFragment {
 
                 if(nivel==4){
                     Intent intent = new Intent(getActivity(), Juego4.class);
+                    //Iniciamos la nueva actividad
+                    startActivity(intent);
+                }
+
+                if(nivel==3){
+                    Intent intent = new Intent(getActivity(), Juego3.class);
                     //Iniciamos la nueva actividad
                     startActivity(intent);
                 }

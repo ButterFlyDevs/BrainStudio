@@ -39,10 +39,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.github.premnirmal.textcounter.CounterView;
+import com.github.premnirmal.textcounter.Formatter;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
+import butterflydevs.brainstudio.extras.Dialogos.DialogoSalidaJuegos;
+import butterflydevs.brainstudio.extras.Jugada;
+import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 
 /**
@@ -94,8 +102,10 @@ public class Juego3niveln extends ActionBarActivity {
 
         List<Integer> secuenciaJugador = new ArrayList();
 
+        private CounterView counterView;
 
-
+        private int puntos=0;
+        private int level;
 
     public Juego3niveln(){
 
@@ -186,7 +196,7 @@ public class Juego3niveln extends ActionBarActivity {
 
             Intent intent=getIntent();
             //Obtenemos la información del intent que nos evía la actividad que nos crea.
-            int level=intent.getIntExtra("nivel",0);
+            level=intent.getIntExtra("nivel",0);
 
             System.out.println("recibiod de la actividad llamante: "+level);
 
@@ -203,9 +213,9 @@ public class Juego3niveln extends ActionBarActivity {
                         @Override
                         public void onClick(View v) {
                             //Creamos el Intent
-                            // Intent intent = new Intent(JuegoGrid12.this, Help.class);
+                             Intent intent = new Intent(Juego3niveln.this, Juego3.class);
                             //Iniciamos la nueva actividad
-                            // startActivity(intent);
+                             startActivity(intent);
                         }
                     }
             );
@@ -216,9 +226,9 @@ public class Juego3niveln extends ActionBarActivity {
                         @Override
                         public void onClick(View v) {
                             //Creamos el Intent
-                            // Intent intent = new Intent(JuegoGrid12.this, Help.class);
+                             Intent intent = new Intent(Juego3niveln.this, Help.class);
                             //Iniciamos la nueva actividad
-                            // startActivity(intent);
+                             startActivity(intent);
                         }
                     }
             );
@@ -392,9 +402,14 @@ public class Juego3niveln extends ActionBarActivity {
         super.onStart();
 
 
-
+        System.out.println("random entre 0 y "+(maxRandom-1));
         //Añadimos el primer elemento:
-        secuencia.add(randInt(0,maxRandom));
+        secuencia.add(randInt(0,maxRandom-1));
+
+        //Mostramos la secuencia por consola:
+        for(int a: secuencia)
+                System.out.print(a+" ");
+        System.out.println(" ");
 
         //Inicializamos la hebra:
         inicializarHebra();
@@ -419,6 +434,25 @@ public class Juego3niveln extends ActionBarActivity {
         layoutGridBotones = (LinearLayout) findViewById(R.id.gridBotones);
         //Le especificamos una horientación
         layoutGridBotones.setOrientation(LinearLayout.VERTICAL);
+
+        //CounterView es el texto de puntos que va aumentando
+        counterView=(CounterView)findViewById(R.id.counter);
+
+        counterView.setAutoFormat(false);
+        counterView.setFormatter(new Formatter() {
+            @Override
+            public String format(String prefix, String suffix, float value) {
+                return prefix + NumberFormat.getNumberInstance(Locale.US).format(value) + suffix;
+            }
+        });
+        counterView.setAutoStart(false);
+        counterView.setStartValue(0);
+        counterView.setEndValue(0);
+        counterView.setIncrement(1f); // the amount the number increments at each time interval
+        counterView.setTimeInterval(2); // the time interval (ms) at which the text changes
+        counterView.setPrefix("");
+        counterView.setSuffix("");
+        counterView.start();
 
     }
 
@@ -451,6 +485,18 @@ public class Juego3niveln extends ActionBarActivity {
             //Acemos que vibre:
             Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
 
+
+            counterView.setStartValue(puntos);
+
+            puntos=secuencia.size()*level*10;
+
+            counterView.setPrefix("");
+            counterView.setSuffix("");
+
+
+            counterView.setEndValue(puntos);
+            counterView.start();
+
             // Vibrar durante 3 segundos
             v.vibrate(200);
         }
@@ -462,7 +508,7 @@ public class Juego3niveln extends ActionBarActivity {
 
     public void avance(){
         System.out.println("Avance");
-        secuencia.add(randInt(0,maxRandom));
+        secuencia.add(randInt(0,maxRandom-1));
         reiniciaSecuencia();
     }
 
@@ -481,8 +527,67 @@ public class Juego3niveln extends ActionBarActivity {
     }
 
     public void finPartida(){
-        Toast.makeText(this, "FIN DE PARTIDA", Toast.LENGTH_SHORT).show();
-        System.out.println("Se acabo la partida");
+        //Informamos de ello:
+        DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
+        dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setNivel(3);
+        dialogoFinJuego.setDatos(" Oups! ",secuencia, secuenciaJugador, calculaPorcentaje(), puntos);
+
+        //Mostramos el diálogo
+        dialogoFinJuego.show(getFragmentManager(), "");
+
+        //Grabar datos de partida!
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        db.addJugada(new Jugada(puntos, calculaPorcentaje()), level, 3);
+    }
+
+    public int calculaPorcentaje(){
+
+        int resultado=0;
+
+
+
+        if(level==1){
+            //Una regla de tres simple
+            resultado=(int)(100*secuencia.size())/20;
+        }
+        if(level==2){
+            //Una regla de tres simple
+            resultado=(int)(100*secuencia.size())/40;
+        }
+        if(level==3){
+            //Una regla de tres simple
+            resultado=(int)(100*secuencia.size())/60;
+        }
+
+
+
+
+        return resultado;
+
+
+    }
+
+    /**
+     * Función que informa que has concluido el juego.
+     */
+    public void finJuego(){
+        //Informamos de ello:
+        DialogoSalidaJuegos dialogoFinJuego = new DialogoSalidaJuegos();
+        dialogoFinJuego.setComportamientoBoton(DialogoSalidaJuegos.ComportamientoBoton.SALIR);
+        dialogoFinJuego.setNivel(3);
+        dialogoFinJuego.setDatos(" ¡ FIN ! ",secuencia, secuenciaJugador, calculaPorcentaje(), puntos);
+
+        //Mostramos el diálogo
+        dialogoFinJuego.show(getFragmentManager(), "");
+
+        //Grabar datos de partida!
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        db.addJugada(new Jugada(puntos, calculaPorcentaje()), level, 3);
     }
 
     public void reiniciaSecuencia(){

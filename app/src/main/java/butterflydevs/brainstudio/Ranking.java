@@ -18,20 +18,18 @@
 package butterflydevs.brainstudio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterflydevs.brainstudio.extras.ConexionServidor;
 import butterflydevs.brainstudio.extras.Jugador;
 
@@ -40,6 +38,8 @@ public class Ranking extends ActionBarActivity {
 
 
     private ConexionServidor miConexion = new ConexionServidor();
+
+    private Button buttonBack, buttonHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,25 +53,70 @@ public class Ranking extends ActionBarActivity {
 
         setContentView(R.layout.activity_ranking);
 
+        //Asociamos los botones de la vista a variables de la clase
+        buttonBack=(Button)findViewById(R.id.buttonBack);
+        buttonHelp=(Button)findViewById(R.id.buttonHelp);
+
+        //Programamos el comportamiento de los botones:
+        buttonBack.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(Ranking.this, ActividadPrincipal.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+        buttonHelp.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Ranking.this, Help.class);
+
+                        //    Bundle bundle = new Bundle();
+                        //    bundle.putInt("nivel",3);
+
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        //    intent.putExtras(bundle);
+
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
+
+
         //Asociamos el listview de la vista
         final ListView listview = (ListView)findViewById(R.id.listview);
 
         //Creamos un ArrayList que es lo que el Adapter necesita
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<String> listaElementos = new ArrayList<String>();
 
         /*Descargamos la lista de objetos Jugador desde el servidor y le pasamos la información
           que queramos de los jugadores.
         */
         List <Jugador> lista = miConexion.pedirRankingNueva();
+
+        //Recorremos la lista añadiendo extractos de los objetos a la lista de elementos a visualizar.
+        int pos=1;
         for(Jugador jugador: lista){
             System.out.println(jugador.getNombre());
-            list.add(jugador.getNombre());
+
+            /* Clave donde se especifica lo que se introduce en cada item de la lista. */
+            listaElementos.add(pos+"#  "+jugador.getNombre()+" "+jugador.getPuntuacion()+" "+jugador.getPais());
+            pos++;
         }
 
 
         //Una vez construida la lista se la pasamos a nuestro StableArrayAdapter
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+                android.R.layout.simple_list_item_1, listaElementos);
 
         //Configuramos el listView de la vista con el adaptador de Arrays que hemos creado.
         listview.setAdapter(adapter);

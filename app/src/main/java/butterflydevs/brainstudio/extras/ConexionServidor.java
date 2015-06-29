@@ -123,9 +123,8 @@ public class ConexionServidor {
 
             try{
                 Context mContext;
-                //  mContext.getResources().getClass()
-                //Registramos el driver:
 
+                //Registramos el driver:
                 System.out.println(Class.forName("org.postgresql.Driver"));
 
                 System.out.println("Cargado driver de la base de datos!!");
@@ -135,10 +134,10 @@ public class ConexionServidor {
                 e.printStackTrace();
             }
 
-            String url="jdbc:postgresql://horton.elephantsql.com:5432/idviomlw";
-            String username = "idviomlw";
-            String password = "CiOKqiaqBk6FXQzDAVbEUbP-Kj5Oeopb";
-            // jdbc:postgresql://host:port/database";
+            String url=Claves.url;
+            String username=Claves.username;
+            String password=Claves.password;
+
             try{
 
                 System.out.println("Ejecutando la conexión");
@@ -158,7 +157,7 @@ public class ConexionServidor {
                     //Mostramos por terminal
                     System.out.print("Nombre: ");
                     System.out.println(rs.getString(1));
-                    System.out.print("Puntuación: ");
+                    System.out.print("Puntuacion: ");
                     System.out.println(rs.getString(2));
                     //Cargamos los datos que obtenemos en la variable ranking propia del objeto que luego devolveremos:
                    // ranking.add(rs.getString(1)+" "+rs.getString(2));
@@ -198,10 +197,11 @@ public class ConexionServidor {
                 e.printStackTrace();
             }
 
-            String url="jdbc:postgresql://horton.elephantsql.com:5432/idviomlw";
-            String username = "idviomlw";
-            String password = "CiOKqiaqBk6FXQzDAVbEUbP-Kj5Oeopb";
-            // jdbc:postgresql://host:port/database";
+            String url=Claves.url;
+            String username=Claves.username;
+            String password=Claves.password;
+
+
             try{
 
                 System.out.println("Ejecutando la conexión");

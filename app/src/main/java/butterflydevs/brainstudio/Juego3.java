@@ -173,7 +173,7 @@ public class Juego3 extends ActionBarActivity {
         db = new MySQLiteHelper(this);
 
         //Obtener todas la jugadas
-        List<Jugada> jugadasNivel1=db.getAllJugadas(1,1);
+        List<Jugada> jugadasNivel1=db.getAllJugadas(1,3);
 
         maxJugadaNivel1=Jugada.obtenMaximaJugada(jugadasNivel1);
 
@@ -528,7 +528,7 @@ public class Juego3 extends ActionBarActivity {
 
             db = new MySQLiteHelper(this);
             //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel2=db.getAllJugadas(2,1);
+            List<Jugada> jugadasNivel2=db.getAllJugadas(2,3);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel2=Jugada.obtenMaximaJugada(jugadasNivel2);
@@ -626,7 +626,7 @@ public class Juego3 extends ActionBarActivity {
 
             db = new MySQLiteHelper(this);
             //Conseguimos las jugadas:
-            List<Jugada> jugadasNivel3=db.getAllJugadas(3,1);
+            List<Jugada> jugadasNivel3=db.getAllJugadas(3,3);
 
             //Obtenemos la máxima jugada de estas jugadas:
             maxJugadaNivel3=Jugada.obtenMaximaJugada(jugadasNivel3);
