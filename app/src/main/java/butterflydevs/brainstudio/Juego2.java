@@ -452,11 +452,11 @@ public class Juego2 extends ActionBarActivity {
                         //Creamos el Intent
                         Intent intent = new Intent(Juego2.this, Help.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("Juegos","Juego2");
+                        bundle.putString("Zona_llamada","Juego");
+                        bundle.putInt("Numero_zona", 2);
                         //Introducimos la informacion en el intent para enviarsela a la actívity.
                         intent.putExtras(bundle);
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );
