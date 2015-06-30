@@ -42,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.facebook.AppEventsLogger;
 import com.github.premnirmal.textcounter.CounterView;
 import com.github.premnirmal.textcounter.Formatter;
 
@@ -851,12 +852,11 @@ public class Juego2niveln extends ActionBarActivity {
 
     }
 
-    /**
-     * Creación de la clase Animaciones (Extiende de AsyncTask)
-     * Se debe encargar de hacer la animación en segundo plano.
-     */
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-    /*class Animaciones extends AsyncTask<String, void, AnimationUtils>{
-
-    }*/
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 }

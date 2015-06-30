@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.facebook.AppEventsLogger;
 import com.github.premnirmal.textcounter.CounterView;
 import com.github.premnirmal.textcounter.Formatter;
 
@@ -804,5 +805,13 @@ public class Juego1niveln extends ActionBarActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 }

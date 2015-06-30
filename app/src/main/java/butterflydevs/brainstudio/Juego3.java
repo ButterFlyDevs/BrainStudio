@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.AppEventsLogger;
+
 import java.util.List;
 
 import butterflydevs.brainstudio.extras.AccesoRestringidoDialog;
@@ -805,6 +807,7 @@ public class Juego3 extends ActionBarActivity {
     protected void onPause(){
         super.onPause();
         handler.removeCallbacks(r);
+        AppEventsLogger.deactivateApp(this);
     }
 
 }

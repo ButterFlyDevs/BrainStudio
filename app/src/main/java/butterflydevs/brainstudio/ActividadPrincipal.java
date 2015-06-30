@@ -39,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.facebook.AppEventsLogger;
+
 import net.frakbot.jumpingbeans.JumpingBeans;
 
 import java.util.List;
@@ -325,6 +327,7 @@ public class ActividadPrincipal extends Activity {
     protected void onResume(){
         super.onResume();
         handler.postDelayed(r, 500);
+        AppEventsLogger.activateApp(this);
     }
 
     @Override
@@ -352,6 +355,7 @@ public class ActividadPrincipal extends Activity {
     protected void onPause(){
         super.onPause();
         handler.removeCallbacks(r);
+        AppEventsLogger.deactivateApp(this);
     }
 
     /*

@@ -28,6 +28,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.facebook.AppEventsLogger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -230,5 +232,12 @@ public class juegos extends Activity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
 }
