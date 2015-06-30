@@ -58,7 +58,7 @@ public class ActividadPrincipal extends Activity {
 
     private Runnable r;
 
-    private Button botonBrain, buttonUser;
+    private Button botonBrain, buttonUser, buttonShare;
 
     private TextView customFont, customFont2;
 
@@ -114,6 +114,7 @@ public class ActividadPrincipal extends Activity {
         colors = getResources().getStringArray(R.array.colors);
         botonBrain = (Button)findViewById(R.id.button);
         buttonUser=(Button)findViewById(R.id.buttonUser);
+        buttonShare = (Button) findViewById(R.id.buttonShare);
         layoutMedallas=(LinearLayout)findViewById(R.id.layoutMedallas);
 
 
@@ -146,6 +147,17 @@ public class ActividadPrincipal extends Activity {
                     //    intent.putExtras(bundle);
 
                         //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        buttonShare.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ActividadPrincipal.this,PruebasFacebook.class);
                         startActivity(intent);
                     }
                 }

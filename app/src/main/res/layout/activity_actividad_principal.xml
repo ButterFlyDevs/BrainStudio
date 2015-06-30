@@ -108,6 +108,12 @@
                 android:id="@+id/buttonUser"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/profile" />
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/buttonShare"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/share" />
         </LinearLayout>
     </RelativeLayout>
 
