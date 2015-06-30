@@ -1,4 +1,4 @@
-/***
+/**
  * Copyright 2010-present Facebook.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -311,9 +311,9 @@ public class PruebasFacebook extends FragmentActivity {
 
     private FacebookDialog.ShareDialogBuilder createShareDialogBuilderForLink() {
         return new FacebookDialog.ShareDialogBuilder(this)
-                .setName("Hello Facebook")
-                .setDescription("The 'Hello Facebook' sample application showcases simple Facebook integration")
-                .setLink("http://developers.facebook.com/android");
+                .setName("BrainStudio")
+                .setDescription("Brainstudio es un juego pensado para entrenar tu memoria. Por que ella tambien quiere jugar!")
+                .setLink("https://github.com/ButterFlyDevs/BrainStudio/");
     }
 
     private void postStatusUpdate() {
@@ -345,7 +345,7 @@ public class PruebasFacebook extends FragmentActivity {
     }
 
     private void postPhoto() {
-        Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.circulo);
+        Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.icon);
         if (canPresentShareDialogWithPhotos) {
             FacebookDialog shareDialog = createShareDialogBuilderForPhoto(image).build();
             uiHelper.trackPendingDialogCall(shareDialog.present());

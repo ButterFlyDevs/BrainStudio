@@ -16,7 +16,7 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/lib/com.facebook.*"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            facebook:onfirm_logout="false"
+            facebook:confirm_logout="false"
             facebook:fetch_user_info="true"
             />
         <LinearLayout
