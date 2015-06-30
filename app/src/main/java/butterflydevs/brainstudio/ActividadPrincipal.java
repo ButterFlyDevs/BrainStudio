@@ -21,7 +21,6 @@ package butterflydevs.brainstudio;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -45,7 +44,11 @@ import net.frakbot.jumpingbeans.JumpingBeans;
 
 import java.util.List;
 
+import butterflydevs.brainstudio.extras.ConexionServidor;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoRanking;
+import butterflydevs.brainstudio.extras.Jugador;
 import butterflydevs.brainstudio.extras.Medalla;
+import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 public class ActividadPrincipal extends Activity {
@@ -72,6 +75,11 @@ public class ActividadPrincipal extends Activity {
     private int tamMedallas=130;
 
     private LinearLayout layoutMedallas;
+
+    private ConexionServidor miConexion = new ConexionServidor();
+
+    private int puntuacionGeneral;
+    private int posicion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +109,40 @@ public class ActividadPrincipal extends Activity {
         textPuntos=(TextView)findViewById(R.id.textPuntos);
         textPTS=(TextView)findViewById(R.id.textPTS);
         textPOS=(TextView)findViewById(R.id.textPos);
+
+
+        //Introducimos en textPos la posicion que tiene el jugador en el ranking:
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        puntuacionGeneral=db.calcularPuntuacionGeneral();
+        posicion=calcularPosicion(puntuacionGeneral);
+
+        textPOS.setText(posicion+"º ");
+
+
+        textPOS.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //Creamos el dialogo:
+                        DialogoRanking dialogoRanking = new DialogoRanking();
+
+                        //Le enviamos los datos:
+                        dialogoRanking.setPuntuacion(puntuacionGeneral);
+                        dialogoRanking.setPosicion(posicion);
+
+                        dialogoRanking.show(getFragmentManager(), "");
+
+
+
+
+                        //Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
+                       // startActivity(intent);
+                    }
+                }
+        );
 
         jumpingBeans1 = JumpingBeans.with(textPOS)
                 .makeTextJump(0, textPOS.getText().toString().indexOf(' '))
@@ -191,9 +233,9 @@ public class ActividadPrincipal extends Activity {
         meter.setTypeface(font);
 
 
-        MySQLiteHelper db = new MySQLiteHelper(this);
 
-        customFont2.setText(Integer.toString(db.calcularPuntuacionGeneral()));
+
+        customFont2.setText(Integer.toString(puntuacionGeneral));
 
         porcentajeGeneral=db.calcularPorcentajeGeneral();
 
@@ -310,30 +352,39 @@ public class ActividadPrincipal extends Activity {
 
     }
 
-    private void runFragment() {
+    public int calcularPosicion(int puntuacion){
+
+        System.out.println("Puntuación recibida" + puntuacion);
+
+        int posicion=0;
+        boolean esUltimo=true;
+
+        //Obtenemos el ranking de usuarios
+        List<Jugador> rankingJugadores = miConexion.pedirRankingNueva();
 
 
-        //Declaramos una nueva hebra
-        new Thread() {
-            //Le decimos lo que queremos que haga:
-            public void run() {
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                MyDialogFragment frag = new MyDialogFragment();
-                frag.show(ft, "txn_tag");
-
-
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                frag.dismiss();
-
+        for(Jugador jugador: rankingJugadores){
+            if(puntuacion>=jugador.getPuntuacion()) {
+                System.out.println("Puntuación del jugador "+rankingJugadores.indexOf(jugador)+" "+jugador.getPuntuacion());
+                posicion = rankingJugadores.indexOf(jugador);
+                esUltimo=false;
+                break;
             }
-        }.start();
+        }
+
+        if(!esUltimo)
+            posicion++; //Sólo para evitar que salga posición cero si eres el primero
+        if(esUltimo) {
+            posicion = rankingJugadores.size();
+            posicion++;
+        }
+
+        System.out.println("Woo ");
+        return posicion;
     }
+
+
+
 
     @Override
     protected void onResume(){
@@ -345,21 +396,6 @@ public class ActividadPrincipal extends Activity {
     @Override
     protected void onStart(){
         super.onStart();
-
-       // MySQLiteHelper db = new MySQLiteHelper(this);
-
-        //Operaciones de prueba:
-
-        //Añadir jugadas
-       // db.addJugada(new Jugada(4839984, 54));
-       // db.addJugada(new Jugada(2783827, 67));
-
-        //Obtener todas la jugadas
-        //List<Jugada> jugadas=db.getAllJugadas();
-
-       // System.out.println("datos"+jugadas.size()+jugadas.toString());
-
-
 
     }
 

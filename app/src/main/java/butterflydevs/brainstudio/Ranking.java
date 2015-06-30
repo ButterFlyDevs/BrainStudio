@@ -30,6 +30,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import butterflydevs.brainstudio.extras.AdaptadorListRanking;
 import butterflydevs.brainstudio.extras.ConexionServidor;
 import butterflydevs.brainstudio.extras.Jugador;
 
@@ -92,47 +94,24 @@ public class Ranking extends ActionBarActivity {
 
 
 
-        //Asociamos el listview de la vista
+        //1º Asociamos el listview de la vista
         final ListView listview = (ListView)findViewById(R.id.listview);
 
-        //Creamos un ArrayList que es lo que el Adapter necesita
-        final ArrayList<String> listaElementos = new ArrayList<String>();
-
-        /*Descargamos la lista de objetos Jugador desde el servidor y le pasamos la información
-          que queramos de los jugadores.
-        */
+        //2º Descargamos la lista de objetos Jugador desde el servidor
         List <Jugador> lista = miConexion.pedirRankingNueva();
 
-        //Recorremos la lista añadiendo extractos de los objetos a la lista de elementos a visualizar.
-        int pos=1;
-        for(Jugador jugador: lista){
-            System.out.println(jugador.getNombre());
+        //Converitmos el list en un ArrayList
+        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
-            /* Clave donde se especifica lo que se introduce en cada item de la lista. */
-            listaElementos.add(pos+"#  "+jugador.getNombre()+" "+jugador.getPuntuacion()+" "+jugador.getPais());
-            pos++;
-        }
+        jugadores.addAll(lista);
 
 
-        //Una vez construida la lista se la pasamos a nuestro StableArrayAdapter
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, listaElementos);
+        //3º Iniciamos el adaptador y le pasamos la lista
+        AdaptadorListRanking adapter = new AdaptadorListRanking(this,jugadores);
 
-        //Configuramos el listView de la vista con el adaptador de Arrays que hemos creado.
+        //4º ASociamos el adaptador
         listview.setAdapter(adapter);
 
-
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0);
-            }
-
-        });
 
 
 
