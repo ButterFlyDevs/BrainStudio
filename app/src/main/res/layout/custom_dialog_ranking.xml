@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Registro en ranking"
+        android:id="@+id/textoTitulo"
+        android:textIsSelectable="false"
+        android:textSize="18dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="blablabla"
+        android:id="@+id/textoInfo"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Tu nombre aquí"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/botonCancelar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="CANCELAR"
+            android:background="@color/bright_foreground_material_dark"
+            android:layout_marginTop="20dp" />
+
+        <Button
+            android:id="@+id/botonEnviar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="ENVIAR"
+            android:background="@color/bright_foreground_material_dark"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
+</LinearLayout>

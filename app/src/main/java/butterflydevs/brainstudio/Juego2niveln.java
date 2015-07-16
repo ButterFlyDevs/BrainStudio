@@ -23,7 +23,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -37,9 +36,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.facebook.AppEventsLogger;
@@ -52,7 +49,6 @@ import java.util.Random;
 
 import butterflydevs.brainstudio.extras.DialogoJuego;
 import butterflydevs.brainstudio.extras.Jugada;
-import butterflydevs.brainstudio.extras.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
 

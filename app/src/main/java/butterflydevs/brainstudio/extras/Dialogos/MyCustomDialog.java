@@ -15,7 +15,7 @@
         Copyright 2015 Jose A. Gonzalez Cervera
         Copyright 2015 Juan A. Fernández Sánchez
 */
-package butterflydevs.brainstudio.extras;
+package butterflydevs.brainstudio.extras.Dialogos;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

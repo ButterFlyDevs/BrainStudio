@@ -36,7 +36,7 @@ import java.util.List;
 
 import butterflydevs.brainstudio.extras.AccesoRestringidoDialog;
 import butterflydevs.brainstudio.extras.Jugada;
-import butterflydevs.brainstudio.extras.MyCustomDialog;
+import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 

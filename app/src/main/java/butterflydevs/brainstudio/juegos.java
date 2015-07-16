@@ -80,14 +80,19 @@ public class juegos extends Activity {
         );
 
 
-
-
-
-        MyAdapter adapter = new MyAdapter(this,generateData());
-
+        //1º Asociamos el listview de la vista
         ListView listView = (ListView) findViewById(R.id.listview);
 
+
+        //2º Inicializamos un adaptador creado por nosotros mismos
+        MyAdapter adapter = new MyAdapter(this,generateData());
+
+
         listView.setAdapter(adapter);
+
+
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> listView, View itemView, int itemPosition, long itemId)
             {

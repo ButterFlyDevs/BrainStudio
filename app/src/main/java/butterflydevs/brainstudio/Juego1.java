@@ -17,7 +17,6 @@
 */
 package butterflydevs.brainstudio;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -25,12 +24,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AppEventsLogger;
@@ -39,7 +36,7 @@ import java.util.List;
 
 import butterflydevs.brainstudio.extras.AccesoRestringidoDialog;
 import butterflydevs.brainstudio.extras.Jugada;
-import butterflydevs.brainstudio.extras.MyCustomDialog;
+import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 /**
