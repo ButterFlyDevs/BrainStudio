@@ -17,8 +17,10 @@
 */
 package butterflydevs.brainstudio;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,6 +45,12 @@ public class Ranking extends ActionBarActivity {
 
     private Button buttonBack, buttonHelp;
 
+    List <Jugador> lista;
+
+    final ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +59,7 @@ public class Ranking extends ActionBarActivity {
         getSupportActionBar().hide();
         getSupportActionBar().hide();
         //Con esta hacemos que la barra de estado del teléfono no se vea y la actividad sea a pantalla completa.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_ranking);
 
@@ -93,31 +101,33 @@ public class Ranking extends ActionBarActivity {
 
 
 
+        //Poner dialog a funcionar
+        progressDialog = ProgressDialog.show(Ranking.this, "", "Cargando lista de jugadores...");
+        //Ejecutar la hebra para obtener los datos
 
-        //1º Asociamos el listview de la vista
         final ListView listview = (ListView)findViewById(R.id.listview);
 
-        //2º Descargamos la lista de objetos Jugador desde el servidor
-        List <Jugador> lista = miConexion.pedirRankingNueva();
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               lista = miConexion.pedirRankingNueva();
+               jugadores.addAll(lista);
+               final AdaptadorListRanking adapter = new AdaptadorListRanking(getApplicationContext(),jugadores);
+               System.out.println("TAMAÑO DE LA LISTA: " + jugadores.size());
 
-        //Converitmos el list en un ArrayList
-        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+               //4º ASociamos el adaptador
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       listview.setAdapter(adapter);
+                   }
+               });
 
-        jugadores.addAll(lista);
-
-
-        //3º Iniciamos el adaptador y le pasamos la lista
-        AdaptadorListRanking adapter = new AdaptadorListRanking(this,jugadores);
-
-        //4º ASociamos el adaptador
-        listview.setAdapter(adapter);
-
-
-
+               progressDialog.dismiss();
+           }
+       }).start();
 
     }
-
-
 
     //Clase que configura el adaptador del Array,
     private class StableArrayAdapter extends ArrayAdapter<String> {
