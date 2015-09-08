@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Registro en ranking"
+        android:text="Fallo de red"
         android:id="@+id/textoTitulo"
         android:textIsSelectable="false"
         android:textSize="18dp"
@@ -27,17 +27,6 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Tu nombre aquí"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginTop="30dp" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -45,18 +34,10 @@
         android:weightSum="1">
 
         <Button
-            android:id="@+id/botonCancelar"
-            android:layout_width="150dp"
+            android:id="@+id/botonEntendido"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="CANCELAR"
-            android:background="@color/bright_foreground_material_dark"
-            android:layout_marginTop="20dp" />
-
-        <Button
-            android:id="@+id/botonEnviar"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="ENVIAR"
+            android:text="ENTENDIDO"
             android:background="@color/bright_foreground_material_dark"
             android:layout_marginTop="20dp" />
     </LinearLayout>

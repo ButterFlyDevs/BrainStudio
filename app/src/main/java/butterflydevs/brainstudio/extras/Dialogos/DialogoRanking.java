@@ -40,24 +40,17 @@ import butterflydevs.brainstudio.Ranking;
 import butterflydevs.brainstudio.extras.ConexionServidor;
 
 /**
- * Created by juan on 18/06/15.
+ * Clase asociada al diseño custom_dialog.xml que construye el DialgoFragment para avisar
+ * de que no se tiene acceso a la red. Usando cuando el usuario en la pantalla principal intenta
+ * acceder al ranking de usuarios y no se tiene red.)
  */
 public class DialogoRanking extends DialogFragment {
 
-    public Button botonEnviar;
-    public Button botonCancelar;
+    public Button botonEntendido;
     public TextView textoInfo;
-    public EditText cajaTexto;
 
-    public int puntuacion=0;
-    public int posicion=0;
 
-    public void setPuntuacion(int newPuntuacion){
-        puntuacion=newPuntuacion;
-    }
-    public void setPosicion(int newPosicion){
-        posicion=newPosicion;
-    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -75,53 +68,26 @@ public class DialogoRanking extends DialogFragment {
 
 
         //Asociamos los elementos de la vista
-        botonEnviar=(Button) dialog.findViewById(R.id.botonEnviar);
-        botonCancelar=(Button)dialog.findViewById(R.id.botonCancelar);
+        botonEntendido=(Button) dialog.findViewById(R.id.botonEntendido);
         textoInfo = (TextView) dialog.findViewById(R.id.textoInfo);
-        cajaTexto = (EditText) dialog.findViewById(R.id.editText);
+
 
         //Ajuste de la info que se muestra:
-        textoInfo.setText("Tienes "+puntuacion+" puntos acumulados. " +
-                          "Te colocarías en la posicion "+posicion+" del ranking." +
-                           "¿Quieres registrar tu puntuación?");
+        textoInfo.setText("Necesitamos acceso a la red para mostrarte el ranking mundial de jugadores."
+                         +" Por favor, revisa tu conexión.");
 
 
-
-        botonEnviar.setOnClickListener(new View.OnClickListener() {
+        //Cuando pulsamos el botón de entendido sólo se cierra el diálogo.
+        botonEntendido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Enviamos los datos al servidor:
-                    enviarDatos();
-
-                //Vamos a la actividad del ranking:
-                    Intent intent = new Intent(getActivity(), Ranking.class);
-                    startActivity(intent);
-
                 //Cerramos el diálogo
                 dismiss();
 
             }
         });
 
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-
         return dialog;
     }
-
-    /**
-     * Realiza el envio real a la base de datos en linea.
-     */
-    public void enviarDatos(){
-        ConexionServidor miConexion = new ConexionServidor();
-        miConexion.enviaPuntuacion(cajaTexto.getText().toString(),puntuacion,getActivity().getResources().getConfiguration().locale.getISO3Country().toString());
-    }
-
 
 }

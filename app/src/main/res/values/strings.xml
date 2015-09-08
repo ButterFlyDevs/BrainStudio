@@ -122,5 +122,5 @@
     <string name="juego5_foto1"> ¡Recuerda los números! Deberás de descubrirlos en orden de menor a mayor</string>
     <string name="juego5_foto2"> Pincha sobre un cuadro para descubrir el número que esconde</string>
     <string name="juego5_foto3"> Si es correcto, el juego continuará con ese número descubierto, hasta que limpies el tablero de celdas</string>
-        <string name="title_activity_splash_screen">SplashScreenActivity</string>
+        <string name="title_activity_splash_screen">Brain Studio</string>
 </resources>

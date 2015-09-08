@@ -21,9 +21,12 @@ package butterflydevs.brainstudio;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,6 +54,12 @@ import butterflydevs.brainstudio.extras.Medalla;
 import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
+/**
+ * Actividad principal donde se encuentra el meter del estado general, la lista de las medallas obtenidas,
+ * los puntos acumulaods y la posición general en el ranking.
+ * Además de esto proporciona el menú principal que da acceso al ranking de jugadores mundial,
+ * al botón de compartir y al botón de jugar.
+ */
 public class ActividadPrincipal extends Activity {
 
     private CircularCounter meter, meter2;
@@ -61,12 +70,11 @@ public class ActividadPrincipal extends Activity {
 
     private Runnable r;
 
-    private Button botonBrain, buttonUser, buttonShare;
+    private Button botonBrain, buttonRanking, buttonShare;
 
     private TextView customFont, customFont2;
 
-    private TextView textPuntos, textPTS, textPOS;
-
+    private TextView textPuntos, textPOS;
     private int porcentajeGeneral=0;
 
     private JumpingBeans jumpingBeans1;
@@ -107,7 +115,6 @@ public class ActividadPrincipal extends Activity {
         Animation loopParpadeante = AnimationUtils.loadAnimation(this, R.anim.animacionbotonplay);
 
         textPuntos=(TextView)findViewById(R.id.textPuntos);
-        textPTS=(TextView)findViewById(R.id.textPTS);
         textPOS=(TextView)findViewById(R.id.textPos);
 
 
@@ -115,47 +122,36 @@ public class ActividadPrincipal extends Activity {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         puntuacionGeneral=db.calcularPuntuacionGeneral();
-        posicion=calcularPosicion(puntuacionGeneral);
-
-        textPOS.setText(posicion+"º ");
 
 
-        textPOS.setOnClickListener(
-
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        //Creamos el dialogo:
-                        DialogoRanking dialogoRanking = new DialogoRanking();
-
-                        //Le enviamos los datos:
-                        dialogoRanking.setPuntuacion(puntuacionGeneral);
-                        dialogoRanking.setPosicion(posicion);
-
-                        dialogoRanking.show(getFragmentManager(), "");
-
-
-
-
-                        //Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
-                       // startActivity(intent);
-                    }
-                }
-        );
-
-        jumpingBeans1 = JumpingBeans.with(textPOS)
+        //Si el dispositivo tiene red.
+        if(hayRed()) {
+            //Se calcula la posición que el jugador tendría en el ranking mundial.
+            posicion = calcularPosicion(puntuacionGeneral);
+            //Se graba dicha posición en el TextView
+            textPOS.setText(posicion + "º en el mundo.");
+            textPOS.setTextColor(Color.BLACK);
+            textPOS.setTextSize(25);
+            // Hacemos que el texto de la posición salte.
+            jumpingBeans1 = JumpingBeans.with(textPOS)
                 .makeTextJump(0, textPOS.getText().toString().indexOf(' '))
                 .setIsWave(false)
                 .setLoopDuration(2000)
                 .build();
 
+        //Si no es así, se graba un mensaje advirtiéndolo.
+        }else {
+            textPOS.setText("Sin conexión de red.");
+            textPOS.setTextColor(Color.RED);
+            textPOS.setTextSize(15);
+        }
+
 
 
 
         colors = getResources().getStringArray(R.array.colors);
-        botonBrain = (Button)findViewById(R.id.button);
-        buttonUser=(Button)findViewById(R.id.buttonUser);
+        botonBrain = (Button)findViewById(R.id.buttonGAme);
+        buttonRanking=(Button)findViewById(R.id.buttonUser);
         buttonShare = (Button) findViewById(R.id.buttonShare);
         layoutMedallas=(LinearLayout)findViewById(R.id.layoutMedallas);
 
@@ -175,21 +171,33 @@ public class ActividadPrincipal extends Activity {
                     }
                 }
         );
-        buttonUser.setOnClickListener(
+        buttonRanking.setOnClickListener(
 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
 
-                    //    Bundle bundle = new Bundle();
-                    //    bundle.putInt("nivel",3);
+                        if(hayRed()) {
 
-                        //Introducimos la informacion en el intent para enviarsela a la actívity.
-                    //    intent.putExtras(bundle);
+                            Intent intent = new Intent(ActividadPrincipal.this, Ranking.class);
 
-                        //Iniciamos la nueva actividad
-                        startActivity(intent);
+                            //    Bundle bundle = new Bundle();
+                            //    bundle.putInt("nivel",3);
+
+                            //Introducimos la informacion en el intent para enviarsela a la actívity.
+                            //    intent.putExtras(bundle);
+
+                            //Iniciamos la nueva actividad
+                            startActivity(intent);
+                        }else{
+
+                            //Creamos el dialogo:
+                            DialogoRanking dialogoRanking = new DialogoRanking();
+
+
+                            dialogoRanking.show(getFragmentManager(), "");
+
+                        }
                     }
                 }
         );
@@ -227,7 +235,11 @@ public class ActividadPrincipal extends Activity {
 
         customFont = (TextView)findViewById(R.id.textView);
         customFont2 = (TextView)findViewById(R.id.textPuntos);
+
+        //Cargamos una fuente que tenemos almacenada en el directorio princiapl assets (bienes, activs)
         Typeface font = Typeface.createFromAsset(getAssets(), "gloriahallelujah.ttf");
+
+        //Aplicamos esa fuente a los TextView de los puntos y del titulo principal
         customFont.setTypeface(font);
         customFont2.setTypeface(font);
         meter.setTypeface(font);
@@ -235,7 +247,7 @@ public class ActividadPrincipal extends Activity {
 
 
 
-        customFont2.setText(Integer.toString(puntuacionGeneral));
+        customFont2.setText(Integer.toString(puntuacionGeneral)+" pts");
 
         porcentajeGeneral=db.calcularPorcentajeGeneral();
 
@@ -352,6 +364,29 @@ public class ActividadPrincipal extends Activity {
 
     }
 
+    /**
+     * Comprueba si el dispositivo tiene conexión de red.
+     * @return
+     */
+    public boolean hayRed(){
+
+        boolean salida=true;
+
+        System.out.println("HAY RED??");
+
+        ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = conMgr.getActiveNetworkInfo();
+        if(info!=null)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * Calcula la posición de un jugador en el ranking mundial a través de la puntuación que tiene acumulada.
+     * @param puntuacion Puntuación que tiene acumulada en el juego.
+     * @return Posición que esa puntuación le da en el ranking.
+     */
     public int calcularPosicion(int puntuacion){
 
         System.out.println("Puntuación recibida" + puntuacion);
@@ -365,7 +400,7 @@ public class ActividadPrincipal extends Activity {
 
         for(Jugador jugador: rankingJugadores){
             if(puntuacion>=jugador.getPuntuacion()) {
-                System.out.println("Puntuación del jugador "+rankingJugadores.indexOf(jugador)+" "+jugador.getPuntuacion());
+                System.out.println("Posición  del jugador "+rankingJugadores.indexOf(jugador)+" "+jugador.getPuntuacion());
                 posicion = rankingJugadores.indexOf(jugador);
                 esUltimo=false;
                 break;
@@ -384,7 +419,14 @@ public class ActividadPrincipal extends Activity {
     }
 
 
-
+    /**
+     * Programa la acción a tomar cuando se pulsa el botón back del teclado físico del terminal.
+     */
+    @Override
+    public void onBackPressed() {
+        //Se cierra la apliación.
+        this.finish();
+    }
 
     @Override
     protected void onResume(){

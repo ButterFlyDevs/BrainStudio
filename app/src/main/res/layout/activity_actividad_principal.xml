@@ -15,19 +15,50 @@
         android:id="@+id/textView"
         android:gravity="center" />
 
-    <butterflydevs.brainstudio.CircularCounter
-        xmlns:meter="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/meter"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:padding="5dp"
-        meter:range="60"
-        meter:textSize="50sp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-        meter:textColor="#2a2b2b"
-        meter:metricSize="10sp"
-        meter:metricText="metric"
-        android:layout_gravity="center_horizontal" />
+        <butterflydevs.brainstudio.CircularCounter
+            xmlns:meter="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/meter"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:padding="5dp"
+            meter:range="60"
+            meter:textSize="50sp"
+
+            meter:textColor="#2a2b2b"
+            meter:metricSize="10sp"
+            meter:metricText="metric"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="34592"
+                android:id="@+id/textPuntos"
+                android:textStyle="bold"
+                android:textSize="30dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="31th "
+                android:id="@+id/textPos"
+                android:textStyle="bold"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="fill_parent"
@@ -49,45 +80,21 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:layout_marginTop="50dp">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="34592"
-            android:id="@+id/textPuntos"
-            android:textStyle="bold"
-            android:textSize="30dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="pts"
-            android:id="@+id/textPTS"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_marginLeft="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="31th "
-            android:id="@+id/textPos"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_marginLeft="20dp" />
-
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:id="@+id/buttonGAme"
+            android:background="@drawable/brain2" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="bottom">
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_marginTop="40dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -95,12 +102,6 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-
-            <Button
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:id="@+id/button"
-                android:background="@drawable/brain" />
 
             <Button
                 android:layout_width="75dp"
@@ -115,6 +116,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/share" />
         </LinearLayout>
+
     </RelativeLayout>
 
 </LinearLayout>
