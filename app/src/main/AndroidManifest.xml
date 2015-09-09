@@ -18,6 +18,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".Ajustes"
+            android:label="ajustes"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".Juego1"
             android:label="@string/title_activity_niveles"
             android:screenOrientation="portrait" >

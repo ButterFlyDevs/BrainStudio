@@ -51,7 +51,6 @@ import butterflydevs.brainstudio.extras.ConexionServidor;
 import butterflydevs.brainstudio.extras.Dialogos.DialogoRanking;
 import butterflydevs.brainstudio.extras.Jugador;
 import butterflydevs.brainstudio.extras.Medalla;
-import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 
 /**
@@ -70,7 +69,7 @@ public class ActividadPrincipal extends Activity {
 
     private Runnable r;
 
-    private Button botonBrain, buttonRanking, buttonShare;
+    private Button botonBrain, buttonRanking, buttonShare, buttonSettings;
 
     private TextView customFont, customFont2;
 
@@ -153,6 +152,7 @@ public class ActividadPrincipal extends Activity {
         botonBrain = (Button)findViewById(R.id.buttonGAme);
         buttonRanking=(Button)findViewById(R.id.buttonUser);
         buttonShare = (Button) findViewById(R.id.buttonShare);
+        buttonSettings=(Button)findViewById(R.id.buttonSettings);
         layoutMedallas=(LinearLayout)findViewById(R.id.layoutMedallas);
 
 
@@ -171,6 +171,24 @@ public class ActividadPrincipal extends Activity {
                     }
                 }
         );
+
+        /**
+         * Programación de la acción del botón Settings que nos lleva a la
+         * pantalla de ajustes.
+         */
+        buttonSettings.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(ActividadPrincipal.this, Ajustes.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
         buttonRanking.setOnClickListener(
 
                 new View.OnClickListener() {

@@ -836,6 +836,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     *  ## Función ERASE ALL ##
+     *
+     *  Con esta función borramos todo el contenido de la base de datos.
+     */
+    public void eraseAll(){
+
+    }
 
 }
 

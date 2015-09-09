@@ -104,17 +104,26 @@
 
 
             <Button
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/buttonUser"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/ranking" />
+                android:background="@drawable/ranking"
+                android:layout_margin="20dp" />
             <Button
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/buttonShare"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/share" />
+                android:background="@drawable/share"
+                android:layout_margin="20dp" />
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/buttonSettings"
+                android:background="@drawable/settings2"
+                android:layout_margin="20dp" />
         </LinearLayout>
 
     </RelativeLayout>
