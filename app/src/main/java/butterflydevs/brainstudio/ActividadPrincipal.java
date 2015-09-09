@@ -121,29 +121,54 @@ public class ActividadPrincipal extends Activity {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         puntuacionGeneral=db.calcularPuntuacionGeneral();
+        textPOS.setText("Calculando...");
+        textPOS.setTextColor(Color.BLACK);
+        textPOS.setTextSize(25);
+        //Ejecutamos en segundo plano la hebra que calcula la posición
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Ponemos el texto a "Calculando..." con el metodo post.
+                //Este metodo se utiliza para actualizar objetos de la
+                //vista de la aplicación
+
+                //Si el dispositivo tiene red.
+                if(hayRed()) {
+                    //Se calcula la posición que el jugador tendría en el ranking mundial.
+                    posicion = calcularPosicion(puntuacionGeneral);
+                    //Se graba dicha posición en el TextView
+                    textPOS.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textPOS.setText(posicion + "º en el mundo.");
+                            textPOS.setTextColor(Color.BLACK);
+                            textPOS.setTextSize(25);
+                            // Hacemos que el texto de la posición salte.
+
+                            jumpingBeans1 = JumpingBeans.with(textPOS)
+                                    .makeTextJump(0, textPOS.getText().toString().indexOf(' '))
+                                    .setIsWave(false)
+                                    .setLoopDuration(2000)
+                                    .build();
+                        }
+                    });
 
 
-        //Si el dispositivo tiene red.
-        if(hayRed()) {
-            //Se calcula la posición que el jugador tendría en el ranking mundial.
-            posicion = calcularPosicion(puntuacionGeneral);
-            //Se graba dicha posición en el TextView
-            textPOS.setText(posicion + "º en el mundo.");
-            textPOS.setTextColor(Color.BLACK);
-            textPOS.setTextSize(25);
-            // Hacemos que el texto de la posición salte.
-            jumpingBeans1 = JumpingBeans.with(textPOS)
-                .makeTextJump(0, textPOS.getText().toString().indexOf(' '))
-                .setIsWave(false)
-                .setLoopDuration(2000)
-                .build();
+                    //Si no es así, se graba un mensaje advirtiéndolo.
+                }else {
+                    textPOS.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textPOS.setText("Sin conexión de red.");
+                            textPOS.setTextColor(Color.RED);
+                            textPOS.setTextSize(15);
+                        }
+                    });
 
-        //Si no es así, se graba un mensaje advirtiéndolo.
-        }else {
-            textPOS.setText("Sin conexión de red.");
-            textPOS.setTextColor(Color.RED);
-            textPOS.setTextSize(15);
-        }
+                }
+            }
+        }).start();
+
 
 
 
@@ -387,7 +412,6 @@ public class ActividadPrincipal extends Activity {
      * @return
      */
     public boolean hayRed(){
-
         boolean salida=true;
 
         System.out.println("HAY RED??");
