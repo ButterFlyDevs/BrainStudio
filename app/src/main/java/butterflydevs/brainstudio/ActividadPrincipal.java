@@ -23,12 +23,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,16 +44,19 @@ import android.widget.TextView;
 
 
 import com.facebook.AppEventsLogger;
+import com.facebook.SharedPreferencesTokenCachingStrategy;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
 
 import java.util.List;
 
 import butterflydevs.brainstudio.extras.ConexionServidor;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoGrabadoAlias;
 import butterflydevs.brainstudio.extras.Dialogos.DialogoRanking;
 import butterflydevs.brainstudio.extras.Jugador;
 import butterflydevs.brainstudio.extras.Medalla;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  * Actividad principal donde se encuentra el meter del estado general, la lista de las medallas obtenidas,
@@ -71,7 +76,7 @@ public class ActividadPrincipal extends Activity {
 
     private Button botonBrain, buttonRanking, buttonShare, buttonSettings;
 
-    private TextView customFont, customFont2;
+    private TextView titulo, customFont2;
 
     private TextView textPuntos, textPOS;
     private int porcentajeGeneral=0;
@@ -276,14 +281,14 @@ public class ActividadPrincipal extends Activity {
         meter.setTextColor(Color.GRAY);
         meter.setTextSize(40.f);
 
-        customFont = (TextView)findViewById(R.id.textView);
+        titulo = (TextView)findViewById(R.id.textViewTitle);
         customFont2 = (TextView)findViewById(R.id.textPuntos);
 
         //Cargamos una fuente que tenemos almacenada en el directorio princiapl assets (bienes, activs)
         Typeface font = Typeface.createFromAsset(getAssets(), "gloriahallelujah.ttf");
 
         //Aplicamos esa fuente a los TextView de los puntos y del titulo principal
-        customFont.setTypeface(font);
+        titulo.setTypeface(font);
         customFont2.setTypeface(font);
         meter.setTypeface(font);
 
@@ -400,12 +405,63 @@ public class ActividadPrincipal extends Activity {
             }
         };
 
+        // ### NOMBRE DE USUARIO ### //
+
+        SharedPreferences prefe = getSharedPreferences("datos", Context.MODE_PRIVATE);
+        /*Si no se ha introducido nunca el alias la consulta de este devolverá "" (lo hemos puesto como
+        valor de regreso en ese caso) y entonces el if procederá y mostrará el diálogo para que se
+        introduzca. Así conseguiremos que el diálogo sólo se abra cuando no exista nombre de usuario.
+         */
+        String userAlias=prefe.getString("alias","");
+        if(userAlias.equals("")) {
+            //Lo primero que hace la actividad tras cargar todos sus elementos es preguntar por el nombre
+            //de usuario.
+
+            DialogoGrabadoAlias dga = new DialogoGrabadoAlias();
+            dga.setPadre(this); //Para que pueda acceder a las sharesPreferences de la app
+            dga.show(getFragmentManager(), "");
 
 
 
+        }else{
+            //Se usa ese nombre para el título
+
+            //titulo.setText(userAlias+" "+titulo.getText());
+            cargarNombreUsuario();
+        }
+
+        utilidades.cargarColorFondo(this);
 
 
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+
+        //Si pulsamos el botón back nos saca de la pantalla.
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+
+            finish();
+        }
+
+        return super.onKeyDown(keyCode, event);
+
+    }
+
+    public void cargarNombreUsuario(){
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+       // textNombreUsuario.setText(prefe.getString("alias","Nombre"));
+        titulo.setText(prefe.getString("alias","Nombre")+" "+titulo.getText());
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * Comprueba si el dispositivo tiene conexión de red.

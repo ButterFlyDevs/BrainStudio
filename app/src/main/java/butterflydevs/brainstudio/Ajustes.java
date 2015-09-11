@@ -19,38 +19,20 @@
 package butterflydevs.brainstudio;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.AppEventsLogger;
-
-import net.frakbot.jumpingbeans.JumpingBeans;
-
-import java.util.List;
-
-import butterflydevs.brainstudio.extras.ConexionServidor;
-import butterflydevs.brainstudio.extras.Dialogos.DialogoRanking;
-import butterflydevs.brainstudio.extras.Jugador;
-import butterflydevs.brainstudio.extras.Medalla;
-import butterflydevs.brainstudio.extras.MySQLiteHelper;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoBorrarBD;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoGrabadoAlias;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  * Actividad que permite al usuario configurar algunos ajustes de la aplicación.
@@ -62,9 +44,11 @@ public class Ajustes extends Activity {
 
 
 
-    private Button buttonBack, buttonSave;
+    private Button buttonBack, buttonBorrarDatos, buttonEditarNombre;
     private TextView textNombreUsuario;
 
+    private Button colorA, colorB, colorC, colorD;
+    private info.hoang8f.android.segmented.SegmentedGroup grupo;
 
 
     @Override
@@ -81,7 +65,64 @@ public class Ajustes extends Activity {
 
 
         buttonBack=(Button)findViewById(R.id.buttonBack);
+        buttonBorrarDatos=(Button)findViewById(R.id.buttonBorrarDatos);
         textNombreUsuario=(TextView)findViewById(R.id.textViewNombreUsuario2);
+        buttonEditarNombre=(Button)findViewById(R.id.buttonEditName);
+
+        colorA=(Button)findViewById(R.id.ColorA);
+        colorB=(Button)findViewById(R.id.ColorB);
+        colorC=(Button)findViewById(R.id.ColorC);
+        colorD=(Button)findViewById(R.id.ColorD);
+
+
+        grupo=(info.hoang8f.android.segmented.SegmentedGroup)findViewById(R.id.grupoLista);
+
+        cargarNombreUsuario();
+
+
+        //Al pulsar uno de los colores cambiamos el color de fondo.
+        colorA.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    //Cambiamos de color el fondo, extrayendolo desde colors.xml
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorfondoA));
+                        grabaColor("a");
+                    }
+                }
+        );
+
+        colorB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Cambiamos de color el fondo, extrayendolo desde colors.xml
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorfondoB));
+                        grabaColor("b");
+                    }
+                }
+        );
+        colorC.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Cambiamos de color el fondo, extrayendolo desde colors.xml
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorfondoC));
+                        grabaColor("c");
+                    }
+                }
+        );
+        colorD.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Cambiamos de color el fondo, extrayendolo desde colors.xml
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.colorfondoD));
+                        grabaColor("d");
+                    }
+                }
+        );
+
 
 
         buttonBack.setOnClickListener(
@@ -98,9 +139,78 @@ public class Ajustes extends Activity {
         );
 
 
+        buttonEditarNombre.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //Se procede de la misma manera que cuando se arranca la activida principal por primera vez.
+                        DialogoGrabadoAlias dga = new DialogoGrabadoAlias();
+                        dga.setPadre(Ajustes.this); //Para que pueda acceder a las sharesPreferences de la app
+                        dga.show(getFragmentManager(), "");
+                    }
+                }
+        );
 
 
+        buttonBorrarDatos.setOnClickListener(
 
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        /*Cuando el usuario quiere borra la base de datos tenemos que advertirle
+                        de las consecuencias con un diálogo.
+                        */
+
+                        //Creamos el dialogo:
+                        DialogoBorrarBD dialogoAlerta = new DialogoBorrarBD();
+                        dialogoAlerta.setPadre(Ajustes.this);
+                        //Lo mostramos:
+                        dialogoAlerta.show(getFragmentManager(), "");
+                    }
+                }
+        );
+
+        utilidades.cargarColorFondo(this);
+
+        String colorUsado=utilidades.colorUsado(this);
+
+        if (colorUsado.contains("a"))
+            grupo.check(colorA.getId());
+
+        if(colorUsado.contains("b"))
+            grupo.check(colorB.getId());
+
+        if(colorUsado.contains("c"))
+            grupo.check(colorC.getId());
+
+        if(colorUsado.contains("d"))
+            grupo.check(colorD.getId());
+
+    }
+
+    /**
+     * Función para grabar color en las shared preferences.
+     */
+
+    public void grabaColor(String color){
+
+        SharedPreferences datos=getSharedPreferences("datos", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=datos.edit();
+
+        editor.putString("colorFondo",color);
+        editor.commit(); //Cuando se hace realmente la grabación.
+    }
+
+
+    /**
+     * Se extrae a una función para que pueda llamarse desde un par de sitios y así no duplicar código.
+     */
+    public void cargarNombreUsuario(){
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+        textNombreUsuario.setText(prefe.getString("alias","Nombre"));
     }
 
     /**

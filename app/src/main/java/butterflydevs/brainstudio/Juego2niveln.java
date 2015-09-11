@@ -51,6 +51,7 @@ import butterflydevs.brainstudio.extras.DialogoJuego;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 
 /**
@@ -394,6 +395,8 @@ public class Juego2niveln extends ActionBarActivity {
         );
         //Hacemos transparente el fondo de la barra de progreso.
         barraProgreso.setBackgroundColor(Color.TRANSPARENT);
+        utilidades.cargarColorFondo(this);
+
     }
 
     public static void IniciarTemporizador(){

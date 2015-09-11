@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="colorfondoA" type="color">#ffffffff</item>
+    <item name="colorfondoB" type="color">#ffb5ffaa</item>
+    <item name="colorfondoC" type="color">#acff8b84</item>
+    <item name="colorfondoD" type="color">#ffcdd2ff</item>
+
+
 
     <string-array name="colores">
         <item name="kiwi">#9AB900</item>

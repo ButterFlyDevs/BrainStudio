@@ -32,6 +32,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import butterflydevs.brainstudio.extras.utilidades;
+
 public class SplashScreenActivity extends Activity {
 
     // Set the duration of the splash screen
@@ -66,9 +68,13 @@ public class SplashScreenActivity extends Activity {
             }
         };
 
+        utilidades.cargarColorFondo(this);
+
         // Simulate a long loading process on application startup.
         Timer timer = new Timer();
         timer.schedule(task, 1500);
+
+
 
     }
 

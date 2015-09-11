@@ -36,6 +36,7 @@ import java.util.List;
 import butterflydevs.brainstudio.extras.AdaptadorListRanking;
 import butterflydevs.brainstudio.extras.ConexionServidor;
 import butterflydevs.brainstudio.extras.Jugador;
+import butterflydevs.brainstudio.extras.utilidades;
 
 
 public class Ranking extends ActionBarActivity {
@@ -126,6 +127,8 @@ public class Ranking extends ActionBarActivity {
                progressDialog.dismiss();
            }
        }).start();
+
+        utilidades.cargarColorFondo(this);
 
     }
 

@@ -322,33 +322,33 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // JUEGO1
             db.execSQL("DROP TABLE IF EXISTS juego1nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego1nivel2");
-            db.execSQL("DROP TALBE IF EXISTS juego1nivel3");
+            db.execSQL("DROP TABLE IF EXISTS juego1nivel3");
 
         // JUEGO2
 
             db.execSQL("DROP TABLE IF EXISTS juego2nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego2nivel2");
-            db.execSQL("DROP TALBE IF EXISTS juego2nivel3");
+            db.execSQL("DROP TABLE IF EXISTS juego2nivel3");
 
 
         // JUEGO3
 
             db.execSQL("DROP TABLE IF EXISTS juego3nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego3nivel2");
-            db.execSQL("DROP TALBE IF EXISTS juego3nivel3");
+            db.execSQL("DROP TABLE IF EXISTS juego3nivel3");
 
         // JUEGO4
 
             db.execSQL("DROP TABLE IF EXISTS juego4nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego4nivel2");
-            db.execSQL("DROP TALBE IF EXISTS juego4nivel3");
+            db.execSQL("DROP TABLE IF EXISTS juego4nivel3");
 
 
         // JUEGO5
 
             db.execSQL("DROP TABLE IF EXISTS juego5nivel1");
             db.execSQL("DROP TABLE IF EXISTS juego5nivel2");
-            db.execSQL("DROP TALBE IF EXISTS juego5nivel3");
+            db.execSQL("DROP TABLE IF EXISTS juego5nivel3");
 
         // MEDALLAS
 
@@ -667,7 +667,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         String query = "SELECT * FROM "+ tabla;
 
-
         //Obtenemos una referencia a la base de datos
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
@@ -843,6 +842,51 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      */
     public void eraseAll(){
 
+        /**
+         * No podemos usar la orden TRUNCATE que es más rápida que DELETE FROM porque
+         * SQLite no tiene esas optimizaciones.
+         */
+
+        System.out.println("Llamando a borrar toda la base de datos");
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Elimina si exisitera alguna versión anterior
+
+
+        // JUEGO1
+        db.execSQL("DELETE FROM juego1nivel1");
+        db.execSQL("DELETE FROM juego1nivel2");
+        db.execSQL("DELETE FROM juego1nivel3");
+
+        // JUEGO2
+
+        db.execSQL("DELETE FROM juego2nivel1");
+        db.execSQL("DELETE FROM juego2nivel2");
+        db.execSQL("DELETE FROM juego2nivel3");
+
+
+        // JUEGO3
+
+        db.execSQL("DELETE FROM juego3nivel1");
+        db.execSQL("DELETE FROM juego3nivel2");
+        db.execSQL("DELETE FROM juego3nivel3");
+
+        // JUEGO4
+
+        db.execSQL("DELETE FROM juego4nivel1");
+        db.execSQL("DELETE FROM juego4nivel2");
+        db.execSQL("DELETE FROM juego4nivel3");
+
+
+        // JUEGO5
+
+        db.execSQL("DELETE FROM juego5nivel1");
+        db.execSQL("DELETE FROM juego5nivel2");
+        db.execSQL("DELETE FROM juego5nivel3");
+
+        // MEDALLAS
+
+        db.execSQL("DELETE FROM medallas");
     }
 
 }

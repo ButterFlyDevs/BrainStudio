@@ -53,6 +53,7 @@ import butterflydevs.brainstudio.extras.Dialogos.DialogoSalidaJuegos;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  * Puede funcionar de dos maneras, tendrems que elegir una:
@@ -259,7 +260,7 @@ public class Juego3niveln extends ActionBarActivity {
 
 
             });
-
+        utilidades.cargarColorFondo(this);
     }
 
     public void resetearBotones(){

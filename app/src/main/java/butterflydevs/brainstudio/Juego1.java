@@ -38,6 +38,7 @@ import butterflydevs.brainstudio.extras.AccesoRestringidoDialog;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  *  Dinamización del juego:
@@ -510,6 +511,7 @@ public class Juego1 extends ActionBarActivity {
         );
 
 
+        utilidades.cargarColorFondo(this);
     }
 
     /**
