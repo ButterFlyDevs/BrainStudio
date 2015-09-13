@@ -95,6 +95,7 @@ public class DialogoGrabadoAlias extends DialogFragment {
 
                 SharedPreferences datos = actividadPadre.getSharedPreferences("datos", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=datos.edit();
+                //Cuando cambiamos realmente el nombre
                 editor.putString("alias",editTextNombre.getText().toString());
                 editor.commit(); //Cuando se hace realmente la grabación.
 
@@ -103,13 +104,20 @@ public class DialogoGrabadoAlias extends DialogFragment {
                 a entrar a la página llamamos a un método de la clase, sea la que sea que puede usarlo
                 para que modifique en el acto el nombre.
                 */
-                if(actividadPadre.getLocalClassName().contains("Ajustes"))
+                if(actividadPadre.getLocalClassName().contains("Ajustes")) {
                     //Hacemos casting a Ajustes.
-                    ((Ajustes)actividadPadre).cargarNombreUsuario();
+                    ((Ajustes) actividadPadre).cargarNombreUsuario();
+                    ((Ajustes) actividadPadre).cambiarNombreUsuarioBD();
+                }
 
-                if(actividadPadre.getLocalClassName().contains("ActividadPrincipal"))
+                if(actividadPadre.getLocalClassName().contains("ActividadPrincipal")) {
                     //Hacemos casting a ActividadPrincipal.
-                    ((ActividadPrincipal)actividadPadre).cargarNombreUsuario();
+                    ((ActividadPrincipal) actividadPadre).cargarNombreUsuario();
+                    //Tambien hacemos el cambio en la base de datos.
+                    ((ActividadPrincipal) actividadPadre).cambiarNombreUsuarioBD();
+                }
+
+
 
 
 

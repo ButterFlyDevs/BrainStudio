@@ -25,11 +25,13 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import butterflydevs.brainstudio.extras.ConexionServidor;
 import butterflydevs.brainstudio.extras.Dialogos.DialogoBorrarBD;
 import butterflydevs.brainstudio.extras.Dialogos.DialogoGrabadoAlias;
 import butterflydevs.brainstudio.extras.utilidades;
@@ -204,6 +206,19 @@ public class Ajustes extends Activity {
         editor.commit(); //Cuando se hace realmente la grabación.
     }
 
+
+    /**
+     * Cambia el nombre del usuario en la base de datos.
+     */
+    public void cambiarNombreUsuarioBD(){
+
+
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+        ConexionServidor miConexion = new ConexionServidor();
+        miConexion.actualizarNombre(prefe.getString("alias","Nombre"),telephonyManager.getDeviceId() );
+    }
 
     /**
      * Se extrae a una función para que pueda llamarse desde un par de sitios y así no duplicar código.

@@ -17,8 +17,10 @@
 */
 package butterflydevs.brainstudio;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -52,6 +54,13 @@ public class SplashScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash_screen);
+
+
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        System.out.println("ID telefono"+telephonyManager.getDeviceId());
+
+
+
 
         TimerTask task = new TimerTask() {
             @Override

@@ -34,15 +34,11 @@ public class ConexionServidor {
 
     private List<Jugador> rankingJugadores;
 
-    //Lo usamos como paliativo a no poder enviar datos a las hebras
-    private Jugador jugadorTMP = new Jugador();
-
     public ConexionServidor(){
         System.out.println("START CLIENT");
         this.ranking=new ArrayList();
         this.rankingJugadores=new ArrayList();
     }
-
 
     public String recorteNombre(String nombre){
         //Esto siempre dependerá de nuestra base de datos.
@@ -55,49 +51,78 @@ public class ConexionServidor {
 
     }
 
-    public void enviaPuntuacion(String alias, int puntos, String pais){
 
+    String alias, pais;
+    int puntos;
+    String idUser;
 
+    /*
+    1. Crear usuario en la BD.
+     */
+    public void crearUsuarioBD(String alias, int puntos, String pais, String idUser){
 
-        /*
-        El campo nombre de nuestra base de datos tiene una limitación (10char) por lo que podremos permitir que los nombres tenan mayor longitud,
-        para asegurarnos de esto llamaremos siempre a la función recorteNombre que en el caso de que excedan eliminará los carácteres necesarios.
-         */
-        alias=recorteNombre(alias);
-
-        jugadorTMP.setNombre(alias);
-        jugadorTMP.setPuntuacion(puntos);
-        jugadorTMP.setPais(pais);
-
-
-
-        sqlThreadintroducirPuntuacion.start();
-        //Forzamos a que la ejecución de la hebra termine antes de continuar:
-        try {
-            sqlThreadintroducirPuntuacion.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public List<String> pedirRanking(){
+        this.alias=alias;
+        this.puntos=puntos;
+        this.idUser=idUser;
+        this.pais=pais;
 
         //Lanzamos la conexión a la base de datos y la petición de los datos en una hebra (debe de ser así para que funcione):
-        sqlThreadpedirRanking.start();
+        sqlThreadaddUser.start();
 
         //Forzamos a que la ejecución de la hebra termine antes de continuar:
         try {
-            sqlThreadpedirRanking.join();
+            sqlThreadaddUser.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //Devolvemos el ranking que es una variable pribada de clase
-        return ranking;
+
 
     }
 
+
+    /*
+    4. actualizar.
+     */
+    public void actualizarNombre(String nuevoNombre, String idUser){
+
+        alias=nuevoNombre;
+        this.idUser=idUser;
+
+        //Lanzamos la conexión a la base de datos y la petición de los datos en una hebra (debe de ser así para que funcione):
+        sqlThreadactualizarNombre.start();
+
+        //Forzamos a que la ejecución de la hebra termine antes de continuar:
+        try {
+            sqlThreadactualizarNombre.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private boolean existe=true;
+    /*
+    2. Comprueba usuario.
+     */
+    public boolean existeUsuario(String idUser){
+
+        this.idUser=idUser;
+
+        //Lanzamos la conexión a la base de datos y la petición de los datos en una hebra (debe de ser así para que funcione):
+        sqlThreadexisteUsuario.start();
+
+        //Forzamos a que la ejecución de la hebra termine antes de continuar:
+        try {
+            sqlThreadexisteUsuario.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return existe;
+    }
+
+    /*
+    5. Perdir ranking.
+     */
     public List<Jugador> pedirRankingNueva(){
         //Lanzamos la conexión a la base de datos y la petición de los datos en una hebra (debe de ser así para que funcione):
         sqlThreadpedirRanking.start();
@@ -115,8 +140,85 @@ public class ConexionServidor {
             return rankingJugadores;
     }
 
+    /**
+     * 3.
+     * Actualiza los puntos de un jugador en la BD usando nueva puntuacion y el id de su
+     * dispositivo.
+     * @param nuevaPuntuacion Nueva puntuacion con la que actualizar la actual.
+     * @param idUser Identificado con el que distinguir unívocamente al user en la BD.
+     */
+    public void actualizarPuntuacionEnBD(int nuevaPuntuacion, String idUser){
+
+        this.puntos=nuevaPuntuacion;
+        this.idUser=idUser;
+
+        //Lanzamos la conexión a la base de datos y la petición de los datos en una hebra (debe de ser así para que funcione):
+        sqlThreadactualizarPuntuacionENBD.start();
+
+        //Forzamos a que la ejecución de la hebra termine antes de continuar:
+        try {
+            sqlThreadactualizarPuntuacionENBD.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
+
+    }
+
+
+
+    Thread sqlThreadactualizarPuntuacionENBD = new Thread() {
+        public void run() {
+
+
+            try{
+                Context mContext;
+
+                //Registramos el driver:
+                System.out.println(Class.forName("org.postgresql.Driver"));
+
+                System.out.println("Cargado driver de la base de datos!!");
+            }
+            catch(java.lang.ClassNotFoundException e){
+                System.err.println("Imposible encontrar driver del motor: ");
+                e.printStackTrace();
+            }
+            String url=Claves.url;
+            String username=Claves.username;
+            String password=Claves.password;
+
+            try{
+
+                System.out.println("Ejecutando la conexión");
+                //Establecemos la conexión:
+                Connection db = DriverManager.getConnection(url, username, password);
+                Statement st = db.createStatement();
+
+
+                //Para insertar una columna que sea id_user
+                String modificacion1="UPDATE puntuaciones SET puntuacion = '"+puntos+"' WHERE id_user= '"+idUser+"';";
+
+            /*Si usamos executeQuery aunque la operación se realice bien nos dará un error por que la
+            consulta no reotorna nigún resultado.
+            */
+                st.executeUpdate(modificacion1);
+
+                st.close();
+                db.close();
+
+                System.out.println("Conexión terminada");
+
+
+            }catch (java.sql.SQLException e) {
+                System.out.println(e.getMessage()+e.getErrorCode()+e);
+            }
+
+        }
+    };
+
+
+    //Hebra que se ejecuta realizando una acción en pararlelo a la ejecución normal del programa.
     Thread sqlThreadpedirRanking = new Thread() {
         public void run() {
 
@@ -181,11 +283,128 @@ public class ConexionServidor {
         }
     };
 
-    Thread sqlThreadintroducirPuntuacion = new Thread() {
+
+    //Hebra que se ejecuta realizando una acción en pararlelo a la ejecución normal del programa.
+    Thread sqlThreadaddUser = new Thread() {
+        public void run() {
+            System.out.println("Usuario nuevo en la base de datos");
+
+            try{
+                Context mContext;
+
+                //Registramos el driver:
+                System.out.println(Class.forName("org.postgresql.Driver"));
+
+                System.out.println("Cargado driver de la base de datos!!");
+            }
+            catch(java.lang.ClassNotFoundException e){
+                System.err.println("Imposible encontrar driver del motor: ");
+                e.printStackTrace();
+            }
+            String url=Claves.url;
+            String username=Claves.username;
+            String password=Claves.password;
+
+
+            try{
+
+                System.out.println("Ejecutando la conexión");
+                //Establecemos la conexión:
+                Connection db = DriverManager.getConnection(url, username, password);
+                Statement st = db.createStatement();
+
+
+                //Para insertar un usuario en la BD.
+                //String query="INSERT INTO puntuaciones VALUES ('"+alias+"','"+puntos+"','"+pais+"','"+idUser+"')";
+                //String query="INSERT INTO puntuaciones VALUES ('prueba','200','UGR','8848873626')";
+                String query="INSERT INTO puntuaciones VALUES ('"+alias+"','"+puntos+"','"+pais+"','"+idUser+"')";
+
+            /*Si usamos executeQuery aunque la operación se realice bien nos dará un error por que la
+            consulta no reotorna nigún resultado.
+            */
+                st.executeUpdate(query);
+
+                st.close();
+                db.close();
+
+                System.out.println("Conexión terminada");
+
+
+            }catch (java.sql.SQLException e) {
+                System.out.println(e.getMessage()+e.getErrorCode()+e);
+            }
+
+        }
+    };
+
+
+
+    //Hebra que se ejecuta realizando una acción en pararlelo a la ejecución normal del programa.
+    Thread sqlThreadactualizarNombre = new Thread() {
         public void run() {
 
 
             try{
+                Context mContext;
+
+                //Registramos el driver:
+                System.out.println(Class.forName("org.postgresql.Driver"));
+
+                System.out.println("Cargado driver de la base de datos!!");
+            }
+            catch(java.lang.ClassNotFoundException e){
+                System.err.println("Imposible encontrar driver del motor: ");
+                e.printStackTrace();
+            }
+
+            String url=Claves.url;
+            String username=Claves.username;
+            String password=Claves.password;
+
+            try{
+
+                System.out.println("Ejecutando la conexión");
+                //Establecemos la conexión:
+                Connection db = DriverManager.getConnection(url, username, password);
+                Statement st = db.createStatement();
+
+
+                //Para insertar una columna que sea id_user
+                String query="UPDATE puntuaciones SET nombre = '"+alias+"' WHERE id_user= '"+idUser+"';";
+
+                System.out.println(query);
+
+            /*Si usamos executeQuery aunque la operación se realice bien nos dará un error por que la
+            consulta no reotorna nigún resultado.
+            */
+                st.executeUpdate(query);
+
+                st.close();
+                db.close();
+
+                System.out.println("Conexión terminada");
+
+
+            }catch (java.sql.SQLException e) {
+                System.out.println(e.getMessage()+e.getErrorCode()+e);
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+
+    Thread sqlThreadexisteUsuario = new Thread() {
+        public void run() {
+
+
+            try{
+
 
                 //Registramos el driver:
                 System.out.println(Class.forName("org.postgresql.Driver"));
@@ -204,26 +423,26 @@ public class ConexionServidor {
 
             try{
 
-                System.out.println("Ejecutando la conexión");
-                //Establecemos la conexión:
                 Connection db = DriverManager.getConnection(url, username, password);
                 Statement st = db.createStatement();
 
-                System.out.println(ranking.size()+" elementos en ranking. ANTES");
+                //Establecemos la query que vamos a usar.
+                String query2="SELECT * FROM puntuaciones WHERE id_user="+idUser;
 
-                String query="INSERT INTO puntuaciones VALUES ('"+jugadorTMP.getNombre()+"',"+jugadorTMP.getPuntuacion()+",'"+jugadorTMP.getPais()+"')";
-                System.out.println(query);
-                //Introducimos datos
-                ResultSet rs = st.executeQuery(query);
+                System.out.println(query2);
 
-                System.out.println(ranking.size()+" elementos en ranking. DESPUÉS");
+                //String query="INSERT INTO puntuaciones VALUES ( '"+nombre+"', '"+puntuacion+"', '"+pais+"', '"+idUser+"')";
+                //Ejecutamos la consulta y guardamos los datos en rs
 
+                ResultSet rs = st.executeQuery(query2);
 
-                rs.close();
+                if(!rs.isBeforeFirst())
+                    existe=false;
+                //Cerramos todos los objetos que lo necesitan.
+
                 st.close();
                 db.close();
 
-                System.out.println("Conexión terminada");
 
 
             }catch (java.sql.SQLException e) {
@@ -231,5 +450,6 @@ public class ConexionServidor {
             }
         }
     };
+
 
 }

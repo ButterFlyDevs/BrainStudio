@@ -30,6 +30,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.facebook.AppEventsLogger;
@@ -417,9 +419,9 @@ public class ActividadPrincipal extends Activity {
             //Lo primero que hace la actividad tras cargar todos sus elementos es preguntar por el nombre
             //de usuario.
 
-            DialogoGrabadoAlias dga = new DialogoGrabadoAlias();
-            dga.setPadre(this); //Para que pueda acceder a las sharesPreferences de la app
-            dga.show(getFragmentManager(), "");
+            DialogoGrabadoAlias dialogoSetAlias = new DialogoGrabadoAlias();
+            dialogoSetAlias.setPadre(this); //Para que pueda acceder a las sharesPreferences de la app
+            dialogoSetAlias.show(getFragmentManager(), "");
 
 
 
@@ -433,19 +435,27 @@ public class ActividadPrincipal extends Activity {
         utilidades.cargarColorFondo(this);
 
 
+
     }
 
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
+    public void onBackPressed() {
+        finish();
+        return;
+    }
 
-        //Si pulsamos el botón back nos saca de la pantalla.
-        if(keyCode==KeyEvent.KEYCODE_BACK){
+    /**
+     * Cambia el nombre del usuario en la base de datos.
+     */
+    public void cambiarNombreUsuarioBD(){
 
-            finish();
-        }
 
-        return super.onKeyDown(keyCode, event);
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
+
+        miConexion.actualizarNombre(prefe.getString("alias","Nombre"),telephonyManager.getDeviceId() );
     }
 
     public void cargarNombreUsuario(){
@@ -453,13 +463,6 @@ public class ActividadPrincipal extends Activity {
        // textNombreUsuario.setText(prefe.getString("alias","Nombre"));
         titulo.setText(prefe.getString("alias","Nombre")+" "+titulo.getText());
     }
-
-
-
-
-
-
-
 
 
 
@@ -480,6 +483,12 @@ public class ActividadPrincipal extends Activity {
             return false;
     }
 
+
+
+
+
+
+
     /**
      * Calcula la posición de un jugador en el ranking mundial a través de la puntuación que tiene acumulada.
      * @param puntuacion Puntuación que tiene acumulada en el juego.
@@ -487,12 +496,50 @@ public class ActividadPrincipal extends Activity {
      */
     public int calcularPosicion(int puntuacion){
 
+
+        //Obtenemos todos los datos necesarios del usuario:
+
+
+            //Número de identificación de su dispositivo.
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            String ID=telephonyManager.getDeviceId();
+
+            //Nombre del usuario:
+            SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+            // textNombreUsuario.setText(prefe.getString("alias","Nombre"));
+            String nombreUser = prefe.getString("alias","uname"); //Si el usuario no tiene nombre todavía se guardará con uname hasta que lo cambie.
+
+            //Pais del usuario:
+            String pais=getResources().getConfiguration().locale.getISO3Country().toString();
+
+
+
+
+        //Primero comprobamos si existe el usuario
+
+            // usando el ID del dispositivo.
+            if(miConexion.existeUsuario(ID)) {
+
+                //Si existe lo que hacemos es actualiza su puntuación:
+                miConexion.actualizarPuntuacionEnBD(puntuacion, ID);
+
+
+            }else{//Si no existe entonces tenemos que crear al usuario:
+
+                miConexion.crearUsuarioBD(nombreUser,puntuacion,pais,ID);
+
+            }
+
+
+
+
         System.out.println("Puntuación recibida" + puntuacion);
 
         int posicion=0;
         boolean esUltimo=true;
 
-        //Obtenemos el ranking de usuarios
+        //DESPUÉS
+        //Obtenemos el ranking de usuarios;
         List<Jugador> rankingJugadores = miConexion.pedirRankingNueva();
 
 
@@ -517,14 +564,6 @@ public class ActividadPrincipal extends Activity {
     }
 
 
-    /**
-     * Programa la acción a tomar cuando se pulsa el botón back del teclado físico del terminal.
-     */
-    @Override
-    public void onBackPressed() {
-        //Se cierra la apliación.
-        this.finish();
-    }
 
     @Override
     protected void onResume(){
