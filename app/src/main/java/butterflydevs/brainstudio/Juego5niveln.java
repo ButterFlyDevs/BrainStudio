@@ -260,11 +260,15 @@ public class Juego5niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Zona_llamada","Tablero_juego");
-                        bundle.putInt("Numero_zona",5);
+
+                        //Creamos el Intent
                         Intent intent = new Intent(Juego5niveln.this, Help.class);
-                        startActivityForResult(intent,1);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Zona_llamada","Juego");
+                        bundle.putInt("Numero_zona", 5);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );

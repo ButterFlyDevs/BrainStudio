@@ -357,11 +357,15 @@ public class Juego1niveln extends ActionBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Zona_llamada","Tablero_juego");
-                        bundle.putInt("Numero_zona",1);
+                        //Paramos el cronómetro del juego para evitar problemas
+                        countDownTimer.cancel();
                         Intent intent = new Intent(Juego1niveln.this, Help.class);
-                        startActivityForResult(intent,1);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Zona_llamada","Juego");
+                        bundle.putInt("Numero_zona", 1);
+                        //Introducimos la informacion en el intent para enviarsela a la actívity.
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, 1);
                     }
                 }
         );

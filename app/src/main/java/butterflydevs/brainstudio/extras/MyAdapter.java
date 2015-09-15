@@ -18,10 +18,12 @@
 package butterflydevs.brainstudio.extras;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,10 +56,19 @@ public class MyAdapter  extends ArrayAdapter<Nivel> {
         View rowView = inflater.inflate(R.layout.nivel, parent, false);
 
         // 3. Get the two text view from the rowView
+        ImageView imagen = (ImageView) rowView.findViewById(R.id.imageView_imagen);
         TextView labelView = (TextView) rowView.findViewById(R.id.textView_superior);
         TextView valueView = (TextView) rowView.findViewById(R.id.textView_inferior);
 
         // 4. Set the text for textView
+        switch (position){
+            case 0: imagen.setImageResource(R.drawable.ojos); break;
+            case 1: imagen.setImageResource(R.drawable.colores);break;
+            case 2: imagen.setImageResource(R.drawable.secuencial); break;
+            case 3: imagen.setImageResource(R.drawable.asociacion);break;
+            default: imagen.setImageResource(R.drawable.mono);break;
+
+        }
         labelView.setText(Integer.toString(itemsArrayList.get(position).getPuntuacion())+"%");
         valueView.setText(Integer.toString(itemsArrayList.get(position).getPorcentaje())+" PUNTOS");
 
