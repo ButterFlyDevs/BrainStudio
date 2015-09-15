@@ -23,12 +23,15 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,20 +42,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.facebook.AppEventsLogger;
+import com.facebook.SharedPreferencesTokenCachingStrategy;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
 
 import java.util.List;
 
 import butterflydevs.brainstudio.extras.ConexionServidor;
+import butterflydevs.brainstudio.extras.Dialogos.DialogoGrabadoAlias;
 import butterflydevs.brainstudio.extras.Dialogos.DialogoRanking;
 import butterflydevs.brainstudio.extras.Jugador;
 import butterflydevs.brainstudio.extras.Medalla;
-import butterflydevs.brainstudio.extras.Dialogos.MyCustomDialog;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  * Actividad principal donde se encuentra el meter del estado general, la lista de las medallas obtenidas,
@@ -70,9 +76,9 @@ public class ActividadPrincipal extends Activity {
 
     private Runnable r;
 
-    private Button botonBrain, buttonRanking, buttonShare;
+    private Button botonBrain, buttonRanking, buttonShare, buttonSettings;
 
-    private TextView customFont, customFont2;
+    private TextView titulo, customFont2;
 
     private TextView textPuntos, textPOS;
     private int porcentajeGeneral=0;
@@ -178,6 +184,7 @@ public class ActividadPrincipal extends Activity {
         botonBrain = (Button)findViewById(R.id.buttonGAme);
         buttonRanking=(Button)findViewById(R.id.buttonUser);
         buttonShare = (Button) findViewById(R.id.buttonShare);
+        buttonSettings=(Button)findViewById(R.id.buttonSettings);
         layoutMedallas=(LinearLayout)findViewById(R.id.layoutMedallas);
 
 
@@ -196,6 +203,24 @@ public class ActividadPrincipal extends Activity {
                     }
                 }
         );
+
+        /**
+         * Programación de la acción del botón Settings que nos lleva a la
+         * pantalla de ajustes.
+         */
+        buttonSettings.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Creamos el Intent
+                        Intent intent = new Intent(ActividadPrincipal.this, Ajustes.class);
+                        //Iniciamos la nueva actividad
+                        startActivity(intent);
+                    }
+                }
+        );
+
         buttonRanking.setOnClickListener(
 
                 new View.OnClickListener() {
@@ -258,14 +283,14 @@ public class ActividadPrincipal extends Activity {
         meter.setTextColor(Color.GRAY);
         meter.setTextSize(40.f);
 
-        customFont = (TextView)findViewById(R.id.textView);
+        titulo = (TextView)findViewById(R.id.textViewTitle);
         customFont2 = (TextView)findViewById(R.id.textPuntos);
 
         //Cargamos una fuente que tenemos almacenada en el directorio princiapl assets (bienes, activs)
         Typeface font = Typeface.createFromAsset(getAssets(), "gloriahallelujah.ttf");
 
         //Aplicamos esa fuente a los TextView de los puntos y del titulo principal
-        customFont.setTypeface(font);
+        titulo.setTypeface(font);
         customFont2.setTypeface(font);
         meter.setTypeface(font);
 
@@ -382,12 +407,64 @@ public class ActividadPrincipal extends Activity {
             }
         };
 
+        // ### NOMBRE DE USUARIO ### //
+
+        SharedPreferences prefe = getSharedPreferences("datos", Context.MODE_PRIVATE);
+        /*Si no se ha introducido nunca el alias la consulta de este devolverá "" (lo hemos puesto como
+        valor de regreso en ese caso) y entonces el if procederá y mostrará el diálogo para que se
+        introduzca. Así conseguiremos que el diálogo sólo se abra cuando no exista nombre de usuario.
+         */
+        String userAlias=prefe.getString("alias","");
+        if(userAlias.equals("")) {
+            //Lo primero que hace la actividad tras cargar todos sus elementos es preguntar por el nombre
+            //de usuario.
+
+            DialogoGrabadoAlias dialogoSetAlias = new DialogoGrabadoAlias();
+            dialogoSetAlias.setPadre(this); //Para que pueda acceder a las sharesPreferences de la app
+            dialogoSetAlias.show(getFragmentManager(), "");
 
 
+
+        }else{
+            //Se usa ese nombre para el título
+
+            //titulo.setText(userAlias+" "+titulo.getText());
+            cargarNombreUsuario();
+        }
+
+        utilidades.cargarColorFondo(this);
 
 
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        return;
+    }
+
+    /**
+     * Cambia el nombre del usuario en la base de datos.
+     */
+    public void cambiarNombreUsuarioBD(){
+
+
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+
+        miConexion.actualizarNombre(prefe.getString("alias","Nombre"),telephonyManager.getDeviceId() );
+    }
+
+    public void cargarNombreUsuario(){
+        SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+       // textNombreUsuario.setText(prefe.getString("alias","Nombre"));
+        titulo.setText(prefe.getString("alias","Nombre")+" "+titulo.getText());
+    }
+
+
 
     /**
      * Comprueba si el dispositivo tiene conexión de red.
@@ -406,6 +483,12 @@ public class ActividadPrincipal extends Activity {
             return false;
     }
 
+
+
+
+
+
+
     /**
      * Calcula la posición de un jugador en el ranking mundial a través de la puntuación que tiene acumulada.
      * @param puntuacion Puntuación que tiene acumulada en el juego.
@@ -413,12 +496,50 @@ public class ActividadPrincipal extends Activity {
      */
     public int calcularPosicion(int puntuacion){
 
+
+        //Obtenemos todos los datos necesarios del usuario:
+
+
+            //Número de identificación de su dispositivo.
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            String ID=telephonyManager.getDeviceId();
+
+            //Nombre del usuario:
+            SharedPreferences prefe=getSharedPreferences("datos", Context.MODE_PRIVATE);
+            // textNombreUsuario.setText(prefe.getString("alias","Nombre"));
+            String nombreUser = prefe.getString("alias","uname"); //Si el usuario no tiene nombre todavía se guardará con uname hasta que lo cambie.
+
+            //Pais del usuario:
+            String pais=getResources().getConfiguration().locale.getISO3Country().toString();
+
+
+
+
+        //Primero comprobamos si existe el usuario
+
+            // usando el ID del dispositivo.
+            if(miConexion.existeUsuario(ID)) {
+
+                //Si existe lo que hacemos es actualiza su puntuación:
+                miConexion.actualizarPuntuacionEnBD(puntuacion, ID);
+
+
+            }else{//Si no existe entonces tenemos que crear al usuario:
+
+                miConexion.crearUsuarioBD(nombreUser,puntuacion,pais,ID);
+
+            }
+
+
+
+
         System.out.println("Puntuación recibida" + puntuacion);
 
         int posicion=0;
         boolean esUltimo=true;
 
-        //Obtenemos el ranking de usuarios
+        //DESPUÉS
+        //Obtenemos el ranking de usuarios;
         List<Jugador> rankingJugadores = miConexion.pedirRankingNueva();
 
 
@@ -443,14 +564,6 @@ public class ActividadPrincipal extends Activity {
     }
 
 
-    /**
-     * Programa la acción a tomar cuando se pulsa el botón back del teclado físico del terminal.
-     */
-    @Override
-    public void onBackPressed() {
-        //Se cierra la apliación.
-        this.finish();
-    }
 
     @Override
     protected void onResume(){

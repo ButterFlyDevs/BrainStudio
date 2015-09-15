@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.facebook.AppEventsLogger;
 
+import butterflydevs.brainstudio.extras.utilidades;
+
 
 /**
  * Activity para mostrar ayuda al usuario de la aplicacion.
@@ -154,6 +156,8 @@ public class Help extends ActionBarActivity {
                        finish();
                     }
                 });
+
+        utilidades.cargarColorFondo(this);
 
     }
 

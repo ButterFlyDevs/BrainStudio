@@ -17,8 +17,10 @@
 */
 package butterflydevs.brainstudio;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,6 +33,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import butterflydevs.brainstudio.extras.utilidades;
 
 public class SplashScreenActivity extends Activity {
 
@@ -51,6 +55,13 @@ public class SplashScreenActivity extends Activity {
 
         setContentView(R.layout.activity_splash_screen);
 
+
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        System.out.println("ID telefono"+telephonyManager.getDeviceId());
+
+
+
+
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -66,9 +77,13 @@ public class SplashScreenActivity extends Activity {
             }
         };
 
+        utilidades.cargarColorFondo(this);
+
         // Simulate a long loading process on application startup.
         Timer timer = new Timer();
         timer.schedule(task, 1500);
+
+
 
     }
 

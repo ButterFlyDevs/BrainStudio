@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity"
-    android:gravity="bottom"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="top">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp">
 
         <TextView
             android:layout_width="fill_parent"
@@ -20,7 +22,7 @@
             android:layout_above="@+id/imageView2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="100dp" />
+            android:textSize="75dp" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -30,7 +32,7 @@
             android:id="@+id/textTitulo2"
             android:layout_alignBottom="@+id/textTitulo1"
             android:layout_centerHorizontal="true"
-            android:textSize="100dp" />
+            android:textSize="80dp" />
     </LinearLayout>
 
     <ImageView
@@ -39,6 +41,6 @@
         android:id="@+id/imageView2"
         android:src="@drawable/brain"
         android:layout_marginBottom="25dp"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="30dp" />
 
 </LinearLayout>

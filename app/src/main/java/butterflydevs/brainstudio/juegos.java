@@ -37,6 +37,7 @@ import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MyAdapter;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.Nivel;
+import butterflydevs.brainstudio.extras.utilidades;
 
 
 public class juegos extends Activity {
@@ -135,6 +136,10 @@ public class juegos extends Activity {
                     }
             }
         });
+
+        utilidades.cargarColorFondo(this);
+
+
     }
 
 

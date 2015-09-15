@@ -49,6 +49,7 @@ import java.util.Random;
 import butterflydevs.brainstudio.extras.Jugada;
 import butterflydevs.brainstudio.extras.MySQLiteHelper;
 import butterflydevs.brainstudio.extras.matrixHelper;
+import butterflydevs.brainstudio.extras.utilidades;
 
 /**
  * Clase para el Juego1 en todos sus niveles. Actualmente sólo 3.
@@ -373,6 +374,8 @@ public class Juego1niveln extends ActionBarActivity {
 
         //Hacemos transparente el fondo de la barra de progreso.
         barraProgreso.setBackgroundColor(Color.TRANSPARENT);
+
+        utilidades.cargarColorFondo(this);
 
     }
 
