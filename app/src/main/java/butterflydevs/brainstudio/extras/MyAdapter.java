@@ -26,6 +26,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterflydevs.brainstudio.R;
@@ -59,7 +61,7 @@ public class MyAdapter  extends ArrayAdapter<Nivel> {
         ImageView imagen = (ImageView) rowView.findViewById(R.id.imageView_imagen);
         TextView labelView = (TextView) rowView.findViewById(R.id.textView_superior);
         TextView valueView = (TextView) rowView.findViewById(R.id.textView_inferior);
-
+        TextView titulo_juego = (TextView) rowView.findViewById(R.id.textView_titulo);
         // 4. Set the text for textView
         switch (position){
             case 0: imagen.setImageResource(R.drawable.ojos); break;
@@ -68,6 +70,14 @@ public class MyAdapter  extends ArrayAdapter<Nivel> {
             case 3: imagen.setImageResource(R.drawable.asociacion);break;
             default: imagen.setImageResource(R.drawable.mono);break;
 
+        }
+        switch (position){
+
+            case 0: titulo_juego.setText(getContext().getString(R.string.titulo_juego1));break;
+            case 1: titulo_juego.setText(getContext().getString(R.string.titulo_juego2));break;
+            case 2: titulo_juego.setText(getContext().getString(R.string.titulo_juego3));break;
+            case 3: titulo_juego.setText(getContext().getString(R.string.titulo_juego4));break;
+            default: titulo_juego.setText(getContext().getString(R.string.titulo_juego5));break;
         }
         labelView.setText(Integer.toString(itemsArrayList.get(position).getPuntuacion())+"%");
         valueView.setText(Integer.toString(itemsArrayList.get(position).getPorcentaje())+" PUNTOS");

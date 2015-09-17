@@ -291,7 +291,7 @@ public class Juego3niveln extends ActionBarActivity {
                 numColumnas=1;
 
                 //2º Establecemos el tamaño de los botones:
-                tamButtons=350;
+                tamButtons=300;
 
                 maxRandom=numFilas*numColumnas;
 
@@ -305,7 +305,7 @@ public class Juego3niveln extends ActionBarActivity {
                 numFilas=2;
                 numColumnas=2;
 
-                tamButtons=250;
+                tamButtons=200;
 
                 maxRandom=numFilas*numColumnas;
 
@@ -318,7 +318,7 @@ public class Juego3niveln extends ActionBarActivity {
                 numFilas=3;
                 numColumnas=2;
 
-                tamButtons=200;
+                tamButtons=150;
 
                 maxRandom=numFilas*numColumnas;
             }
